@@ -1,27 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>QRCODE</class>
+ <widget class="QWidget" name="QRCODE">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>725</width>
-    <height>567</height>
+    <width>669</width>
+    <height>625</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>QRCODE</string>
   </property>
-  <widget class="QGraphicsView" name="graphicsView">
+  <widget class="QWidget" name="horizontalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>50</x>
-     <y>30</y>
-     <width>256</width>
-     <height>192</height>
+     <x>40</x>
+     <y>40</y>
+     <width>271</width>
+     <height>260</height>
     </rect>
    </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QLabel" name="CAMERA">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>qr-code.jpg</pixmap>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>

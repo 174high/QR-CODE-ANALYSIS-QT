@@ -8,28 +8,34 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(725, 567)
-        self.graphicsView = QtWidgets.QGraphicsView(Form)
-        self.graphicsView.setGeometry(QtCore.QRect(50, 30, 256, 192))
-        self.graphicsView.setObjectName("graphicsView")
+class Ui_QRCODE(object):
+    def setupUi(self, QRCODE):
+        QRCODE.setObjectName("QRCODE")
+        QRCODE.resize(669, 625)
+        self.horizontalLayoutWidget = QtWidgets.QWidget(QRCODE)
+        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(40, 40, 271, 260))
+        self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.CAMERA = QtWidgets.QLabel(self.horizontalLayoutWidget)
+        self.CAMERA.setText("")
+        self.CAMERA.setPixmap(QtGui.QPixmap("qr-code.jpg"))
+        self.CAMERA.setObjectName("CAMERA")
+        self.horizontalLayout.addWidget(self.CAMERA)
 
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
+        self.retranslateUi(QRCODE)
+        QtCore.QMetaObject.connectSlotsByName(QRCODE)
 
-    def retranslateUi(self, Form):
+    def retranslateUi(self, QRCODE):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
-
-
+        QRCODE.setWindowTitle(_translate("QRCODE", "QRCODE"))
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    FormPort = QtWidgets.QWidget()
-    ui = Ui_Form()
-    ui.setupUi(FormPort)
-    FormPort.show()
-    sys.exit(app.exec_()) 
+    FormSerialPort = QtWidgets.QWidget()
+    ui = Ui_QRCODE()
+    ui.setupUi(FormSerialPort)
+    FormSerialPort.show()
+    sys.exit(app.exec_())
