@@ -7,6 +7,10 @@ from PyQt5.QtWebEngineWidgets import *
 from PyQt5.QtCore import QTimer
 
 
+
+
+from imutils.video import VideoStream
+
 from qr_code_window import Ui_QRCODE
 
 import datetime
@@ -19,10 +23,17 @@ class Window(QWidget, Ui_QRCODE):
         super(Window, self).__init__(*args, **kwargs)
         self.setupUi(self)
 
-   
+
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.on_timeout);
+        self.timer.start(5000)
+
+
 #    def request_will_be_sent(**kwargs):
 #        print("loading: %s" % kwargs.get('request').get('url'))
 
+    def on_timeout(self):
+        self.label.setPixmap(QtGui.QPixmap("qr-code.jpg"))      
 
 def signal_handler(signal,frame):
     print('You pressed Ctrl+C!')
