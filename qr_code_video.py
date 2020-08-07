@@ -41,8 +41,8 @@ class Window(QWidget, Ui_QRCODE):
         h, w, ch = rgbImage.shape
         bytesPerLine = ch * w
         convertToQtFormat = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
-        p = convertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
-        self.label.setPixmap(QtGui.QPixmap(p)) 
+        #p = convertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
+        self.label.setPixmap(QtGui.QPixmap(convertToQtFormat)) 
 
 '''
         cap = cv2.VideoCapture(0)
