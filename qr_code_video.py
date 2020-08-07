@@ -6,12 +6,8 @@ from PyQt5.QtCore import *
 from PyQt5.QtWebEngineWidgets import *
 from PyQt5.QtCore import QTimer
 
-import pychrome
-from bs4 import BeautifulSoup
-import requests
-import re
 
-from qr_code_window import Ui_Form 
+from qr_code_window import Ui_QRCODE
 
 import datetime
 import signal
