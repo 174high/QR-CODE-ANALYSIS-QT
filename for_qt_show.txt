@@ -1,0 +1,8 @@
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    FormSerialPort = QtWidgets.QWidget()
+    ui = Ui_QRCODE()
+    ui.setupUi(FormSerialPort)
+    FormSerialPort.show()
+    sys.exit(app.exec_())

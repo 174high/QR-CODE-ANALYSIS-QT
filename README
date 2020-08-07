@@ -1,0 +1,8 @@
+
+
+[python QT from UI into python file]
+pyuic5 -o   qr_code_window.py qr_code.ui
+
+[run video show]
+python qr_code_video.py
+
