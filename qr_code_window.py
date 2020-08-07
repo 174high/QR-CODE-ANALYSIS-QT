@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_QRCODE(object):
     def setupUi(self, QRCODE):
         QRCODE.setObjectName("QRCODE")
-        QRCODE.resize(669, 625)
+        QRCODE.resize(951, 625)
         self.horizontalLayoutWidget = QtWidgets.QWidget(QRCODE)
         self.horizontalLayoutWidget.setGeometry(QtCore.QRect(40, 40, 271, 260))
         self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
@@ -23,6 +23,11 @@ class Ui_QRCODE(object):
         self.CAMERA.setPixmap(QtGui.QPixmap("qr-code.jpg"))
         self.CAMERA.setObjectName("CAMERA")
         self.horizontalLayout.addWidget(self.CAMERA)
+        self.label = QtWidgets.QLabel(QRCODE)
+        self.label.setGeometry(QtCore.QRect(350, 40, 261, 261))
+        self.label.setText("")
+        self.label.setPixmap(QtGui.QPixmap("qr-code.jpg"))
+        self.label.setObjectName("label")
 
         self.retranslateUi(QRCODE)
         QtCore.QMetaObject.connectSlotsByName(QRCODE)
@@ -30,6 +35,7 @@ class Ui_QRCODE(object):
     def retranslateUi(self, QRCODE):
         _translate = QtCore.QCoreApplication.translate
         QRCODE.setWindowTitle(_translate("QRCODE", "QRCODE"))
+
 
 if __name__ == "__main__":
     import sys
@@ -39,3 +45,4 @@ if __name__ == "__main__":
     ui.setupUi(FormSerialPort)
     FormSerialPort.show()
     sys.exit(app.exec_())
+
