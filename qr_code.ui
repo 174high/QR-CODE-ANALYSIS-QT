@@ -47,9 +47,6 @@
    <property name="text">
     <string/>
    </property>
-   <property name="pixmap">
-    <pixmap>qr-code.jpg</pixmap>
-   </property>
   </widget>
  </widget>
  <resources/>

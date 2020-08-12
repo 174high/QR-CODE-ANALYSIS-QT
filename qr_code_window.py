@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'qr-code.ui'
+# Form implementation generated from reading ui file 'qr_code.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -26,7 +26,6 @@ class Ui_QRCODE(object):
         self.label = QtWidgets.QLabel(QRCODE)
         self.label.setGeometry(QtCore.QRect(350, 40, 261, 261))
         self.label.setText("")
-        self.label.setPixmap(QtGui.QPixmap("qr-code.jpg"))
         self.label.setObjectName("label")
 
         self.retranslateUi(QRCODE)
@@ -35,14 +34,4 @@ class Ui_QRCODE(object):
     def retranslateUi(self, QRCODE):
         _translate = QtCore.QCoreApplication.translate
         QRCODE.setWindowTitle(_translate("QRCODE", "QRCODE"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    FormSerialPort = QtWidgets.QWidget()
-    ui = Ui_QRCODE()
-    ui.setupUi(FormSerialPort)
-    FormSerialPort.show()
-    sys.exit(app.exec_())
 
