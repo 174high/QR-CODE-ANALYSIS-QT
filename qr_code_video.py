@@ -25,9 +25,6 @@ class Window(QWidget, Ui_QRCODE):
         super(Window, self).__init__(*args, **kwargs)
         self.setupUi(self)
 
-        self.CAMERA.setPixmap(QtGui.QPixmap("qr-code.jpg"))
-        self.label.setPixmap(QtGui.QPixmap("qr-code.jpg"))
-
         self.vs = VideoStream(src=0).start()
 
         # construct the argument parser and parse the arguments
@@ -50,8 +47,9 @@ class Window(QWidget, Ui_QRCODE):
         self.timer.start(100)        
 
     def stop(self):
-        self.CAMERA.setPixmap(QtGui.QPixmap("qr-code.jpg"))
-        self.label.setPixmap(QtGui.QPixmap("qr-code.jpg"))
+        self.camera.setPixmap(QtGui.QPixmap("qr-code.jpg"))
+        self.decode.setPixmap(QtGui.QPixmap("qr-code.jpg"))
+        self.detail.setPixmap(QtGui.QPixmap("qr-code.jpg"))
         self.timer.stop()
 
 #    def start(self):
@@ -71,7 +69,7 @@ class Window(QWidget, Ui_QRCODE):
         bytesPerLine = ch * w
         convertToQtFormat = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
         #p = convertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
-        self.CAMERA.setPixmap(QtGui.QPixmap(convertToQtFormat)) 
+        self.camera.setPixmap(QtGui.QPixmap(convertToQtFormat)) 
 
 
         # find the barcodes in the frame and decode each of the barcodes
@@ -110,7 +108,9 @@ class Window(QWidget, Ui_QRCODE):
         bytesPerLine = ch * w
         convertToQtFormat = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
         #p = convertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
-        self.label.setPixmap(QtGui.QPixmap(convertToQtFormat)) 
+        self.decode.setPixmap(QtGui.QPixmap(convertToQtFormat)) 
+
+        self.detail.setPixmap(QtGui.QPixmap(convertToQtFormat))
 
 
 def signal_handler(signal,frame):
@@ -127,7 +127,7 @@ if __name__ == '__main__':
 
     app = QApplication(sys.argv)
     w = Window()
-    w.setFixedSize(950,400)
+    w.setFixedSize(950,450)
     signal.signal(signal.SIGINT,signal_handler)
     w.show()
     sys.exit(app.exec_())
