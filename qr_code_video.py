@@ -27,6 +27,10 @@ class Window(QWidget, Ui_QRCODE):
         super(Window, self).__init__(*args, **kwargs)
         self.setupUi(self)
 
+        self.running = False
+        self.timer_record = QTimer()  
+        self.timer_record.timeout.connect(self.record); 
+
         self.vs = VideoStream(src=0).start()
 
         self.currentFrame = np.array([])
@@ -51,15 +55,22 @@ class Window(QWidget, Ui_QRCODE):
     def start(self):
         self.timer = QTimer()
         self.timer.timeout.connect(self.on_timeout);
-        self.timer.start(100)        
+        self.timer.start(100)  
+        self.running = True       
 
     def stop(self):
         self.camera.setPixmap(QtGui.QPixmap("qr-code.jpg"))
         self.decode.setPixmap(QtGui.QPixmap("qr-code.jpg"))
         self.detail.setPixmap(QtGui.QPixmap("qr-code.jpg"))
         self.timer.stop()
+        self.running = False  
+        self.timer_record.stop()
 
     def record(self):
+
+        if self.running == False :
+            return 
+
         if self.writer == None:
             print("init")
             # store the image dimensions, initialzie the video writer,
@@ -67,17 +78,12 @@ class Window(QWidget, Ui_QRCODE):
             #(h, w) = self.raw_img.shape[:2]
             self.writer = cv2.VideoWriter('./demoVideo/'+'tmp.avi', cv2.VideoWriter_fourcc(*"XVID"), 15,
 			(640 , 480 ), True)
- 
-            self.timer_record = QTimer()  
-            self.timer_record.timeout.connect(self.record); 
             self.timer_record.start(100)               
         else :
             print("recording")
-
             self.frame_2 = self.vs.read()
             self.frame_2 = imutils.resize(self.frame_2, width=640)
             self.writer.write(self.frame_2)
-
 
 #    def play(self):
 
