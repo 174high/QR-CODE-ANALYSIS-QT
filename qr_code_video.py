@@ -81,23 +81,21 @@ class Window(QWidget, Ui_QRCODE):
 
 #    def play(self):
 
-#    def request_will_be_sent(**kwargs):
-#        print("loading: %s" % kwargs.get('request').get('url'))
 
-    def on_timeout(self):
-        self.frame = self.vs.read()
-        self.frame = imutils.resize(self.frame, width=400)
+    def convertFrame(self,frame):
 
-        rgbImage = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
+        rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         h, w, ch = rgbImage.shape
         bytesPerLine = ch * w
         convertToQtFormat = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
         #p = convertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
-        self.camera.setPixmap(QtGui.QPixmap(convertToQtFormat)) 
 
+        return QtGui.QPixmap(convertToQtFormat)
+       
+    def qrcode_decode(self,frame):
 
-        # find the barcodes in the frame and decode each of the barcodes
-        barcodes = pyzbar.decode(self.frame)
+      # find the barcodes in the frame and decode each of the barcodes
+        barcodes = pyzbar.decode(frame)
 
     	# loop over the detected barcodes
         for barcode in barcodes:
@@ -124,17 +122,19 @@ class Window(QWidget, Ui_QRCODE):
                         self.csv.flush()
                         self.found.add(barcodeData)
 
-	# show the output frame
-        #cv2.imshow("Barcode Scanner", self.frame)
+        return frame 
 
-        rgbImage = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
-        h, w, ch = rgbImage.shape
-        bytesPerLine = ch * w
-        convertToQtFormat = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
-        #p = convertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
-        self.decode.setPixmap(QtGui.QPixmap(convertToQtFormat)) 
+#    def request_will_be_sent(**kwargs):
+#        print("loading: %s" % kwargs.get('request').get('url'))
 
-        self.detail.setPixmap(QtGui.QPixmap(convertToQtFormat))
+    def on_timeout(self):
+        self.frame = self.vs.read()
+        self.frame = imutils.resize(self.frame, width=400)
+
+        self.camera.setPixmap(self.convertFrame(self.frame)) 
+        self.frame=self.qrcode_decode(self.frame)      
+        self.decode.setPixmap(self.convertFrame(self.frame)) 
+        self.detail.setPixmap(self.convertFrame(self.frame)) 
 
 
 def signal_handler(signal,frame):
