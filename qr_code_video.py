@@ -18,6 +18,8 @@ import datetime
 import signal
 import os
 import cv2
+import numpy as np
+
 
 class Window(QWidget, Ui_QRCODE):
 
@@ -26,6 +28,11 @@ class Window(QWidget, Ui_QRCODE):
         self.setupUi(self)
 
         self.vs = VideoStream(src=0).start()
+
+        self.currentFrame = np.array([])
+        self.raw_img = np.array([])        
+        self.writer = None
+        (h, w) = (None, None)
 
         # construct the argument parser and parse the arguments
         ap = argparse.ArgumentParser()
@@ -38,7 +45,7 @@ class Window(QWidget, Ui_QRCODE):
   
         self.pushButton.clicked.connect(self.start)
         self.pushButton_2.clicked.connect(self.stop)
-#        self.pushButton_3.clicked.connect(self.record)
+        self.pushButton_3.clicked.connect(self.record)
 #        self.pushButton_4.clicked.connect(self.play)
 	
     def start(self):
@@ -52,8 +59,23 @@ class Window(QWidget, Ui_QRCODE):
         self.detail.setPixmap(QtGui.QPixmap("qr-code.jpg"))
         self.timer.stop()
 
-#    def start(self):
-        
+    def record(self):
+        if self.writer == None:
+            print("init")
+            # store the image dimensions, initialzie the video writer,
+            # and construct the zeros array
+            #(h, w) = self.raw_img.shape[:2]
+            self.writer = cv2.VideoWriter('./demoVideo/'+'tmp.avi', cv2.VideoWriter_fourcc(*'MJPG'), 15,
+			(640 , 480 ), True)
+ 
+            self.timer_record = QTimer()  
+            self.timer_record.timeout.connect(self.record); 
+            self.timer_record.start(100)               
+        else :
+            print("recording")
+            self.writer.write(self.raw_img)
+
+
 
 #    def play(self):
 
