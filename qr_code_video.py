@@ -65,7 +65,7 @@ class Window(QWidget, Ui_QRCODE):
             # store the image dimensions, initialzie the video writer,
             # and construct the zeros array
             #(h, w) = self.raw_img.shape[:2]
-            self.writer = cv2.VideoWriter('./demoVideo/'+'tmp.avi', cv2.VideoWriter_fourcc(*'MJPG'), 15,
+            self.writer = cv2.VideoWriter('./demoVideo/'+'tmp.avi', cv2.VideoWriter_fourcc(*"XVID"), 15,
 			(640 , 480 ), True)
  
             self.timer_record = QTimer()  
@@ -73,8 +73,10 @@ class Window(QWidget, Ui_QRCODE):
             self.timer_record.start(100)               
         else :
             print("recording")
-            self.writer.write(self.raw_img)
 
+            self.frame_2 = self.vs.read()
+            self.frame_2 = imutils.resize(self.frame_2, width=640)
+            self.writer.write(self.frame_2)
 
 
 #    def play(self):
