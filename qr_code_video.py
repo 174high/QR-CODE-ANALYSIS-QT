@@ -18,6 +18,8 @@ import datetime
 import signal
 import os
 import cv2
+import numpy as np
+
 
 class Window(QWidget, Ui_QRCODE):
 
@@ -25,7 +27,16 @@ class Window(QWidget, Ui_QRCODE):
         super(Window, self).__init__(*args, **kwargs)
         self.setupUi(self)
 
+        self.running = False
+        self.timer_record = QTimer()  
+        self.timer_record.timeout.connect(self.record); 
+
         self.vs = VideoStream(src=0).start()
+
+        self.currentFrame = np.array([])
+        self.raw_img = np.array([])        
+        self.writer = None
+        (h, w) = (None, None)
 
         # construct the argument parser and parse the arguments
         ap = argparse.ArgumentParser()
@@ -38,42 +49,59 @@ class Window(QWidget, Ui_QRCODE):
   
         self.pushButton.clicked.connect(self.start)
         self.pushButton_2.clicked.connect(self.stop)
-#        self.pushButton_3.clicked.connect(self.record)
+        self.pushButton_3.clicked.connect(self.record)
 #        self.pushButton_4.clicked.connect(self.play)
 	
     def start(self):
         self.timer = QTimer()
         self.timer.timeout.connect(self.on_timeout);
-        self.timer.start(100)        
+        self.timer.start(100)  
+        self.running = True       
 
     def stop(self):
         self.camera.setPixmap(QtGui.QPixmap("qr-code.jpg"))
         self.decode.setPixmap(QtGui.QPixmap("qr-code.jpg"))
         self.detail.setPixmap(QtGui.QPixmap("qr-code.jpg"))
         self.timer.stop()
+        self.running = False  
+        self.timer_record.stop()
 
-#    def start(self):
-        
+    def record(self):
+
+        if self.running == False :
+            return 
+
+        if self.writer == None:
+            print("init")
+            # store the image dimensions, initialzie the video writer,
+            # and construct the zeros array
+            #(h, w) = self.raw_img.shape[:2]
+            self.writer = cv2.VideoWriter('./demoVideo/'+'tmp.avi', cv2.VideoWriter_fourcc(*"XVID"), 15,
+			(640 , 480 ), True)
+            self.timer_record.start(100)               
+        else :
+            print("recording")
+            self.frame_2 = self.vs.read()
+            self.frame_2 = imutils.resize(self.frame_2, width=640)
+            self.writer.write(self.frame_2)
 
 #    def play(self):
 
-#    def request_will_be_sent(**kwargs):
-#        print("loading: %s" % kwargs.get('request').get('url'))
 
-    def on_timeout(self):
-        self.frame = self.vs.read()
-        self.frame = imutils.resize(self.frame, width=400)
+    def convertFrame(self,frame):
 
-        rgbImage = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
+        rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         h, w, ch = rgbImage.shape
         bytesPerLine = ch * w
         convertToQtFormat = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
         #p = convertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
-        self.camera.setPixmap(QtGui.QPixmap(convertToQtFormat)) 
 
+        return QtGui.QPixmap(convertToQtFormat)
+       
+    def qrcode_decode(self,frame):
 
-        # find the barcodes in the frame and decode each of the barcodes
-        barcodes = pyzbar.decode(self.frame)
+      # find the barcodes in the frame and decode each of the barcodes
+        barcodes = pyzbar.decode(frame)
 
     	# loop over the detected barcodes
         for barcode in barcodes:
@@ -100,17 +128,19 @@ class Window(QWidget, Ui_QRCODE):
                         self.csv.flush()
                         self.found.add(barcodeData)
 
-	# show the output frame
-        #cv2.imshow("Barcode Scanner", self.frame)
+        return frame 
 
-        rgbImage = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
-        h, w, ch = rgbImage.shape
-        bytesPerLine = ch * w
-        convertToQtFormat = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
-        #p = convertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
-        self.decode.setPixmap(QtGui.QPixmap(convertToQtFormat)) 
+#    def request_will_be_sent(**kwargs):
+#        print("loading: %s" % kwargs.get('request').get('url'))
 
-        self.detail.setPixmap(QtGui.QPixmap(convertToQtFormat))
+    def on_timeout(self):
+        self.frame = self.vs.read()
+        self.frame = imutils.resize(self.frame, width=400)
+
+        self.camera.setPixmap(self.convertFrame(self.frame)) 
+        self.frame=self.qrcode_decode(self.frame)      
+        self.decode.setPixmap(self.convertFrame(self.frame)) 
+        self.detail.setPixmap(self.convertFrame(self.frame)) 
 
 
 def signal_handler(signal,frame):
