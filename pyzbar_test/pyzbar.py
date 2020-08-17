@@ -1,0 +1,121 @@
+from collections import namedtuple
+from contextlib import contextmanager
+from ctypes import cast, c_void_p, string_at
+
+from .locations import bounding_box, convex_hull, Point, Rect
+from .pyzbar_error import PyZbarError
+
+from .wrapper import (
+#    zbar_image_scanner_set_config,
+    zbar_image_scanner_create, 
+#    zbar_image_scanner_destroy,
+#    zbar_image_create, zbar_image_destroy, zbar_image_set_format,
+#    zbar_image_set_size, zbar_image_set_data, zbar_scan_image,
+#    zbar_image_first_symbol, zbar_symbol_get_data,
+#    zbar_symbol_get_loc_size, zbar_symbol_get_loc_x, zbar_symbol_get_loc_y,
+#    zbar_symbol_next, ZBarConfig, ZBarSymbol, EXTERNAL_DEPENDENCIES
+)
+
+import time,datetime
+
+__all__ = [
+    'decode', 'Point', 'Rect', 'Decoded', 'ZBarSymbol', 'EXTERNAL_DEPENDENCIES'
+]
+
+# ZBar's magic 'fourcc' numbers that represent image formats
+_FOURCC = {
+    'L800': 808466521,
+    'GRAY': 1497715271
+}
+
+_RANGEFN = getattr(globals(), 'xrange', range)
+
+@contextmanager
+def _image_scanner():
+    """A context manager for `zbar_image_scanner`, created and destroyed by
+    `zbar_image_scanner_create` and `zbar_image_scanner_destroy`.
+
+    Yields:
+        POINTER(zbar_image_scanner): The created scanner
+
+    Raises:
+        PyZbarError: If the decoder could not be created.
+    """
+    scanner = zbar_image_scanner_create()
+#    if not scanner:
+#        raise PyZbarError('Could not create image scanner')
+#    else:
+#        try:
+#            yield scanner
+#        finally:
+#            zbar_image_scanner_destroy(scanner)
+
+
+def _pixel_data(image):
+    """Returns (pixels, width, height)
+
+    Returns:
+        :obj: `tuple` (pixels, width, height)
+    """
+    # Test for PIL.Image and numpy.ndarray without requiring that cv2 or PIL
+    # are installed.
+    if 'PIL.' in str(type(image)):
+        if 'L' != image.mode:
+            image = image.convert('L')
+        pixels = image.tobytes()
+        width, height = image.size
+    elif 'numpy.ndarray' in str(type(image)):
+        if 3 == len(image.shape):
+            # Take just the first channel
+            image = image[:, :, 0]
+        if 'uint8' != str(image.dtype):
+            image = image.astype('uint8')
+        try:
+            pixels = image.tobytes()
+        except AttributeError:
+            # `numpy.ndarray.tobytes()` introduced in `numpy` 1.9.0 - use the
+            # older `tostring` method.
+            pixels = image.tostring()
+        height, width = image.shape[:2]
+    else:
+        # image should be a tuple (pixels, width, height)
+        pixels, width, height = image
+
+        # Check dimensions
+        if 0 != len(pixels) % (width * height):
+            raise PyZbarError(
+                (
+                    'Inconsistent dimensions: image data of {0} bytes is not '
+                    'divisible by (width x height = {1})'
+                ).format(len(pixels), (width * height))
+            )
+
+    # Compute bits-per-pixel
+    bpp = 8 * len(pixels) // (width * height)
+    if 8 != bpp:
+        raise PyZbarError(
+            'Unsupported bits-per-pixel [{0}]. Only [8] is supported.'.format(
+                bpp
+            )
+        )
+
+    return pixels, width, height
+
+def decode(image, symbols=None):
+    """Decodes datamatrix barcodes in `image`.
+
+    Args:
+        image: `numpy.ndarray`, `PIL.Image` or tuple (pixels, width, height)
+        symbols: iter(ZBarSymbol) the symbol types to decode; if `None`, uses
+            `zbar`'s default behaviour, which is to decode all symbol types.
+
+    Returns:
+        :obj:`list` of :obj:`Decoded`: The values decoded from barcodes.
+    """
+    pixels, width, height = _pixel_data(image)
+
+    now = datetime.datetime.now()
+
+    print(now,"w:",width,"h:",height)
+
+
