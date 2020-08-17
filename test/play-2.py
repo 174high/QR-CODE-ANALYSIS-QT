@@ -1,0 +1,26 @@
+import numpy as np
+import cv2
+
+# Capture video from file
+cap = cv2.VideoCapture('./demoVideo/output22020-08-12-09-36-30.avi')
+
+while True:
+
+    ret, frame = cap.read()
+
+    if ret == True:
+
+#        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+        cv2.imshow('frame',frame)
+
+
+        if cv2.waitKey(30) & 0xFF == ord('q'):
+            break
+
+    else:
+        break
+
+cap.release()
+cv2.destroyAllWindows()
+

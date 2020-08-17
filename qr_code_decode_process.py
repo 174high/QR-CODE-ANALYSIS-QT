@@ -7,7 +7,7 @@ from PyQt5.QtWebEngineWidgets import *
 from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QImage
 
-from pyzbar import pyzbar
+from pyzbar_test import pyzbar
 import argparse
 from imutils.video import VideoStream
 import imutils
@@ -141,31 +141,7 @@ class Window(QWidget, Ui_QRCODE):
       # find the barcodes in the frame and decode each of the barcodes
         barcodes = pyzbar.decode(frame)
 
-        barcodeData=None ;
-    	# loop over the detected barcodes
-        for barcode in barcodes:
-		# extract the bounding box location of the barcode and draw
-		# the bounding box surrounding the barcode on the image
-                (x, y, w, h) = barcode.rect
-                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
-
-		# the barcode data is a bytes object so if we want to draw it
-		# on our output image we need to convert it to a string first
-                barcodeData = barcode.data.decode("utf-8")
-                barcodeType = barcode.type
-
-		# draw the barcode data and barcode type on the image
-                text = "{} ({})".format(barcodeData, barcodeType)
-                cv2.putText(frame, text, (x, y - 10),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
-
-		# if the barcode text is currently not in our CSV file, write
-		# the timestamp + barcode to disk and update the set
-                if barcodeData not in self.found:
-                        self.csv.write("{},{}\n".format(datetime.datetime.now(),
-				barcodeData))
-                        self.csv.flush()
-                        self.found.add(barcodeData)
+        barcodeData=None 
 
         return frame , barcodeData 
 
