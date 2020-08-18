@@ -1,2 +1,0 @@
-C:\Users\shijonn\Desktop\LOPLIP\innovation\二维码\source\zbar_library\ZBarWin64-new\zbar64-new\Debug\zbar64-new.dll
-C:\Users\shijonn\Desktop\LOPLIP\innovation\二维码\source\zbar_library\ZBarWin64-new\zbar64-new\Debug\zbar64-new.pdb

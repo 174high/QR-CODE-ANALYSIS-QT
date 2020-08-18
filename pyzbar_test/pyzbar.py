@@ -117,5 +117,5 @@ def decode(image, symbols=None):
     now = datetime.datetime.now()
 
     print(now,"w:",width,"h:",height)
-
-
+    
+    _image_scanner() 
