@@ -1,4 +1,5 @@
-
+#ifndef _DECODER_QR_FINDER_H_
+#define _DECODER_QR_FINDER_H_
 
 /* QR Code symbol finder state */
 typedef struct qr_finder_s {
@@ -7,3 +8,11 @@ typedef struct qr_finder_s {
 
     unsigned config;
 } qr_finder_t;
+
+/* reset QR finder specific state */
+static __inline void qr_finder_reset(qr_finder_t* qrf)
+{
+    qrf->s5 = 0;
+}
+
+#endif

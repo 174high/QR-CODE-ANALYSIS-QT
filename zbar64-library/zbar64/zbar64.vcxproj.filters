@@ -5,13 +5,20 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="include">
+      <UniqueIdentifier>{02875dd8-e4f6-4856-b67b-46a4fa34d052}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="include\zbar">
+      <UniqueIdentifier>{588a6c25-8670-4858-b539-80d39c65c6d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{0cf6908e-d646-4d44-b9a7-79af6ac214e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\decoder">
+      <UniqueIdentifier>{f5591893-d606-4436-917f-8a40079c1880}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\qrcode">
+      <UniqueIdentifier>{6aadf68c-63c6-4f86-9536-8b8e1ec8dd3b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -20,27 +27,39 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="framework.h">
+    <ClInclude Include="zbar\decoder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="zbar64.h">
+    <ClInclude Include="include\config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pch.h">
+    <ClInclude Include="zbar\decoder\qr_finder.h">
+      <Filter>Header Files\decoder</Filter>
+    </ClInclude>
+    <ClInclude Include="include\zbar.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="zbar\qrcode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zbar\error.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="zbar64.cpp">
+    <ClCompile Include="zbar\decoder.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="dllmain.cpp">
+    <ClCompile Include="zbar\img_scanner.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pch.cpp">
+    <ClCompile Include="zbar\scanner.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="img_scanner.c">
+    <ClCompile Include="zbar\decoder\qrdec.c">
+      <Filter>Source Files\qrcode</Filter>
+    </ClCompile>
+    <ClCompile Include="zbar\error.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

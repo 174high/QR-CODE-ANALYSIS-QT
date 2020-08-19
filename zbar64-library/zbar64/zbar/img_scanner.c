@@ -20,16 +20,20 @@
  *
  *  http://sourceforge.net/projects/zbar
  *------------------------------------------------------------------------*/
-
+#include <config.h>
 #include <stdio.h>
 
 #include <stdlib.h>     /* malloc, free */
 #include <zbar.h>
+#include "error.h"
 
+#ifdef ENABLE_QRCODE
+# include "qrcode.h"
+#endif
 
 /* image scanner state */
 struct zbar_image_scanner_s {
-    //zbar_scanner_t* scn;        /* associated linear intensity scanner */
+    zbar_scanner_t* scn;        /* associated linear intensity scanner */
     zbar_decoder_t* dcode;      /* associated symbol decoder */
 #ifdef ENABLE_QRCODE
     qr_reader* qr;              /* QR Code 2D reader */
@@ -71,8 +75,63 @@ zbar_image_scanner_t* zbar_image_scanner_create(void)
     if (!iscn)
         return(NULL);
     iscn->dcode = zbar_decoder_create();
-
-
+    iscn->scn = zbar_scanner_create(iscn->dcode);
+    if (!iscn->dcode || !iscn->scn) {
+        zbar_image_scanner_destroy(iscn);
+        return(NULL);
+    }
 
     return(iscn);
+}
+
+#ifndef NO_STATS
+static __inline void dump_stats(const zbar_image_scanner_t* iscn)
+{
+      int i;
+      zprintf(1, "symbol sets allocated   = %-4d\n", iscn->stat_syms_new);
+ /*   zprintf(1, "    scanner syms in use = %-4d\trecycled  = %-4d\n",
+        iscn->stat_iscn_syms_inuse, iscn->stat_iscn_syms_recycle);
+    zprintf(1, "    image syms in use   = %-4d\trecycled  = %-4d\n",
+        iscn->stat_img_syms_inuse, iscn->stat_img_syms_recycle);
+    zprintf(1, "symbols allocated       = %-4d\n", iscn->stat_sym_new);
+    for (i = 0; i < RECYCLE_BUCKETS; i++)
+        zprintf(1, "     recycled[%d]        = %-4d\n",
+            i, iscn->stat_sym_recycle[i]);
+  */
+}
+#endif
+
+void zbar_image_scanner_destroy (zbar_image_scanner_t *iscn)
+{
+    
+    int i;
+    dump_stats(iscn);
+  /*  if(iscn->syms) {
+        if(iscn->syms->refcnt)
+            zbar_symbol_set_ref(iscn->syms, -1);
+        else
+            _zbar_symbol_set_free(iscn->syms);
+        iscn->syms = NULL;
+    }
+    if(iscn->scn)
+        zbar_scanner_destroy(iscn->scn);
+    iscn->scn = NULL;
+    if(iscn->dcode)
+        zbar_decoder_destroy(iscn->dcode);
+    iscn->dcode = NULL;
+    for(i = 0; i < RECYCLE_BUCKETS; i++) {
+        zbar_symbol_t *sym, *next;
+        for(sym = iscn->recycle[i].head; sym; sym = next) {
+            next = sym->next;
+            _zbar_symbol_free(sym);
+        }
+    }
+#ifdef ENABLE_QRCODE
+    if(iscn->qr) {
+        _zbar_qr_destroy(iscn->qr);
+        iscn->qr = NULL;
+    }
+#endif
+    */
+    free(iscn);
 }
