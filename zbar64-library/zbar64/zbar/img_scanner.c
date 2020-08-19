@@ -31,6 +31,10 @@
 # include "qrcode.h"
 #endif
 
+#define RECYCLE_BUCKETS     5
+
+
+
 /* image scanner state */
 struct zbar_image_scanner_s {
     zbar_scanner_t* scn;        /* associated linear intensity scanner */
@@ -64,7 +68,7 @@ struct zbar_image_scanner_s {
     int stat_iscn_syms_inuse, stat_iscn_syms_recycle;
     int stat_img_syms_inuse, stat_img_syms_recycle;
     int stat_sym_new;
-    //int stat_sym_recycle[RECYCLE_BUCKETS];
+    int stat_sym_recycle[RECYCLE_BUCKETS];
 #endif
 };
 
@@ -89,15 +93,15 @@ static __inline void dump_stats(const zbar_image_scanner_t* iscn)
 {
       int i;
       zprintf(1, "symbol sets allocated   = %-4d\n", iscn->stat_syms_new);
- /*   zprintf(1, "    scanner syms in use = %-4d\trecycled  = %-4d\n",
+      zprintf(1, "    scanner syms in use = %-4d\trecycled  = %-4d\n",
         iscn->stat_iscn_syms_inuse, iscn->stat_iscn_syms_recycle);
-    zprintf(1, "    image syms in use   = %-4d\trecycled  = %-4d\n",
+      zprintf(1, "    image syms in use   = %-4d\trecycled  = %-4d\n",
         iscn->stat_img_syms_inuse, iscn->stat_img_syms_recycle);
-    zprintf(1, "symbols allocated       = %-4d\n", iscn->stat_sym_new);
-    for (i = 0; i < RECYCLE_BUCKETS; i++)
+      zprintf(1, "symbols allocated       = %-4d\n", iscn->stat_sym_new);
+      for (i = 0; i < RECYCLE_BUCKETS; i++)
         zprintf(1, "     recycled[%d]        = %-4d\n",
             i, iscn->stat_sym_recycle[i]);
-  */
+  
 }
 #endif
 
