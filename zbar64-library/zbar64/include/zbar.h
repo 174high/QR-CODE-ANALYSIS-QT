@@ -90,6 +90,17 @@ typedef enum zbar_config_e {
     ZBAR_CFG_Y_DENSITY,         /**< image scanner horizontal scan density */
 } zbar_config_t;
 
+
+/*@}*/
+
+struct zbar_symbol_s;
+typedef struct zbar_symbol_s zbar_symbol_t;
+
+struct zbar_symbol_set_s;
+typedef struct zbar_symbol_set_s zbar_symbol_set_t;
+
+
+
 /*------------------------------------------------------------*/
 /** @name Image Scanner interface
  * @anchor c-imagescanner

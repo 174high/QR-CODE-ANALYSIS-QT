@@ -50,7 +50,7 @@ struct zbar_image_scanner_s {
     unsigned long time;         /* scan start time */
     //zbar_image_t* img;          /* currently scanning image *root* */
     int dx, dy, du, umin, v;    /* current scan direction */
-    //zbar_symbol_set_t* syms;    /* previous decode results */
+    zbar_symbol_set_t* syms;    /* previous decode results */
     /* recycled symbols in 4^n size buckets */
     //recycle_bucket_t recycle[RECYCLE_BUCKETS];
 
@@ -110,11 +110,11 @@ void zbar_image_scanner_destroy (zbar_image_scanner_t *iscn)
     
     int i;
     dump_stats(iscn);
-  /*  if(iscn->syms) {
-        if(iscn->syms->refcnt)
-            zbar_symbol_set_ref(iscn->syms, -1);
-        else
-            _zbar_symbol_set_free(iscn->syms);
+    if(iscn->syms) {
+ //       if(iscn->syms->refcnt)
+ //           zbar_symbol_set_ref(iscn->syms, -1);
+ //       else
+ //           _zbar_symbol_set_free(iscn->syms);
         iscn->syms = NULL;
     }
     if(iscn->scn)
@@ -125,17 +125,17 @@ void zbar_image_scanner_destroy (zbar_image_scanner_t *iscn)
     iscn->dcode = NULL;
     for(i = 0; i < RECYCLE_BUCKETS; i++) {
         zbar_symbol_t *sym, *next;
-        for(sym = iscn->recycle[i].head; sym; sym = next) {
-            next = sym->next;
-            _zbar_symbol_free(sym);
-        }
+     //   for(sym = iscn->recycle[i].head; sym; sym = next) {
+     //       next = sym->next;
+     //       _zbar_symbol_free(sym);
+     //   }
     }
 #ifdef ENABLE_QRCODE
     if(iscn->qr) {
-        _zbar_qr_destroy(iscn->qr);
+    //    _zbar_qr_destroy(iscn->qr);
         iscn->qr = NULL;
     }
 #endif
-    */
+    
     free(iscn);
 }
