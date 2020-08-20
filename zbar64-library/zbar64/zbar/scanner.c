@@ -70,3 +70,9 @@ unsigned zbar_scanner_get_edge(const zbar_scanner_t* scn,
     else
         return(edge << -prec);
 }
+
+
+unsigned zbar_scanner_get_width(const zbar_scanner_t* scn)
+{
+    return(scn->width);
+}

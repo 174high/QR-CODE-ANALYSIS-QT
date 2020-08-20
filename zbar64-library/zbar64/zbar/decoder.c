@@ -86,3 +86,13 @@ zbar_symbol_type_t zbar_decoder_get_type(const zbar_decoder_t* dcode)
 {
 	return(dcode->type);
 }
+
+const char* zbar_decoder_get_data(const zbar_decoder_t* dcode)
+{
+	return((char*)dcode->buf);
+}
+
+unsigned int zbar_decoder_get_data_length(const zbar_decoder_t* dcode)
+{
+	return(dcode->buflen);
+}

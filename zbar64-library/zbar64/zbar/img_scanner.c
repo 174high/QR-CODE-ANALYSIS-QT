@@ -35,6 +35,16 @@
 
 #define RECYCLE_BUCKETS     5
 
+#define TEST_CFG(iscn, cfg) (((iscn)->config >> ((cfg) - ZBAR_CFG_POSITION)) & 1)
+
+#ifndef NO_STATS
+# define STAT(x) iscn->stat_##x++
+#else
+# define STAT(...)
+# define dump_stats(...)
+#endif
+
+
 typedef struct recycle_bucket_s {
     int nsyms;
     zbar_symbol_t* head;
@@ -117,6 +127,63 @@ static __inline void qr_handler(zbar_image_scanner_t* iscn)
 }
 #endif
 
+__inline zbar_symbol_t*
+_zbar_image_scanner_alloc_sym(zbar_image_scanner_t* iscn,
+    zbar_symbol_type_t type,
+    int datalen)
+{
+    /* recycle old or alloc new symbol */
+    zbar_symbol_t* sym = NULL;
+    int i;
+    for (i = 0; i < RECYCLE_BUCKETS - 1; i++)
+        if (datalen <= 1 << (i * 2))
+            break;
+    
+    for (; i > 0; i--)
+        if ((sym = iscn->recycle[i].head)) {
+            STAT(sym_recycle[i]);
+            break;
+        }
+
+    if (sym) {
+        iscn->recycle[i].head = sym->next;
+        sym->next = NULL;
+        assert(iscn->recycle[i].nsyms);
+        iscn->recycle[i].nsyms--;
+    }
+    else {
+        sym = calloc(1, sizeof(zbar_symbol_t));
+        STAT(sym_new);
+    }
+    
+    /* init new symbol */
+    sym->type = type;
+    sym->quality = 1;
+    sym->npts = 0;
+    sym->orient = ZBAR_ORIENT_UNKNOWN;
+    sym->cache_count = 0;
+    sym->time = iscn->time;
+    assert(!sym->syms);
+
+    if (datalen > 0) {
+        sym->datalen = datalen - 1;
+        if (sym->data_alloc < datalen) {
+            if (sym->data)
+                free(sym->data);
+            sym->data_alloc = datalen;
+            sym->data = malloc(datalen);
+        }
+    }
+    else {
+        if (sym->data)
+            free(sym->data);
+        sym->data = NULL;
+        sym->datalen = sym->data_alloc = 0;
+    }
+    return(sym); 
+}
+
+
 static void symbol_handler(zbar_decoder_t* dcode)
 {
       zbar_image_scanner_t* iscn = zbar_decoder_get_userdata(dcode);
@@ -134,10 +201,10 @@ static void symbol_handler(zbar_decoder_t* dcode)
   #else
       assert(type != ZBAR_QRCODE);
   #endif
-      
-   //   if (TEST_CFG(iscn, ZBAR_CFG_POSITION)) { 
+     
+      if (TEST_CFG(iscn, ZBAR_CFG_POSITION)) { 
       /* tmp position fixup */
-/*       int w = zbar_scanner_get_width(iscn->scn);
+       int w = zbar_scanner_get_width(iscn->scn);
        int u = iscn->umin + iscn->du * zbar_scanner_get_edge(iscn->scn, w, 0);
        if (iscn->dx) {
            x = u;
@@ -146,36 +213,39 @@ static void symbol_handler(zbar_decoder_t* dcode)
        else {
            x = iscn->v;
            y = u;
-       }
+       } 
    }
-   */
+   
+
    /* FIXME debug flag to save/display all PARTIALs */
-   /*if (type <= ZBAR_PARTIAL) {
+   if (type <= ZBAR_PARTIAL) {
        zprintf(256, "partial symbol @(%d,%d)\n", x, y);
        return;
    }
 
    data = zbar_decoder_get_data(dcode);
-   datalen = zbar_decoder_get_data_length(dcode); */
+   datalen = zbar_decoder_get_data_length(dcode); 
 
    /* FIXME need better symbol matching */
-   /*for (sym = iscn->syms->head; sym; sym = sym->next)
+   for (sym = iscn->syms->head; sym; sym = sym->next)
        if (sym->type == type &&
            sym->datalen == datalen &&
            !memcmp(sym->data, data, datalen)) {
            sym->quality++;
            zprintf(224, "dup symbol @(%d,%d): dup %s: %.20s\n",
                x, y, zbar_get_symbol_name(type), data);
-           if (TEST_CFG(iscn, ZBAR_CFG_POSITION)) */
+           if (TEST_CFG(iscn, ZBAR_CFG_POSITION))  
            /* add new point to existing set */
            /* FIXME should be polygon */
-/*             sym_add_point(sym, x, y);
-         return;
-     }
+             sym_add_point(sym, x, y);
+           return;
+    }
 
+   
  sym = _zbar_image_scanner_alloc_sym(iscn, type, datalen + 1);
- sym->configs = zbar_decoder_get_configs(dcode, type);
- sym->modifiers = zbar_decoder_get_modifiers(dcode); */
+ //sym->configs = zbar_decoder_get_configs(dcode, type);
+ //sym->modifiers = zbar_decoder_get_modifiers(dcode); 
+
  /* FIXME grab decoder buffer */
 // memcpy(sym->data, data, datalen + 1);
 

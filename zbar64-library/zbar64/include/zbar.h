@@ -90,6 +90,16 @@ typedef enum zbar_config_e {
     ZBAR_CFG_Y_DENSITY,         /**< image scanner horizontal scan density */
 } zbar_config_t;
 
+/** decoded symbol coarse orientation.
+ * @since 0.11
+ */
+typedef enum zbar_orientation_e {
+    ZBAR_ORIENT_UNKNOWN = -1,   /**< unable to determine orientation */
+    ZBAR_ORIENT_UP,             /**< upright, read left to right */
+    ZBAR_ORIENT_RIGHT,          /**< sideways, read top to bottom */
+    ZBAR_ORIENT_DOWN,           /**< upside-down, read right to left */
+    ZBAR_ORIENT_LEFT,           /**< sideways, read bottom to top */
+} zbar_orientation_t;
 
 /*@}*/
 
@@ -205,5 +215,37 @@ extern void *zbar_decoder_get_userdata(const zbar_decoder_t *decoder);
  */
 extern zbar_symbol_type_t
 zbar_decoder_get_type(const zbar_decoder_t* decoder);
+
+/** retrieve last scanned width. */
+extern unsigned zbar_scanner_get_width(const zbar_scanner_t* scanner);
+
+
+/** retrieve sample position of last edge.
+ * @since 0.10
+ */
+extern unsigned zbar_scanner_get_edge(const zbar_scanner_t* scn,
+    unsigned offset,
+    int prec);
+/** retrieve last decoded data.
+ * @returns the data string or NULL if no new data available.
+ * the returned data buffer is owned by library, contents are only
+ * valid between non-0 return from zbar_decode_width and next library
+ * call
+ */
+extern const char* zbar_decoder_get_data(const zbar_decoder_t* decoder);
+
+/** retrieve length of binary data.
+ * @returns the length of the decoded data or 0 if no new data
+ * available.
+ */
+extern unsigned int
+zbar_decoder_get_data_length(const zbar_decoder_t* decoder);
+
+/** retrieve string name for symbol encoding.
+ * @param sym symbol type encoding
+ * @returns the static string name for the specified symbol type,
+ * or "UNKNOWN" if the encoding is not recognized
+ */
+extern const char* zbar_get_symbol_name(zbar_symbol_type_t sym);
 
 #endif
