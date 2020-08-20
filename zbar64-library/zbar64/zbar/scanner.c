@@ -5,6 +5,12 @@
 
 #include <zbar.h>
 
+#ifndef ZBAR_FIXED
+# define ZBAR_FIXED 5
+#endif
+#define ROUND (1 << (ZBAR_FIXED - 1))
+
+
 /* FIXME add runtime config API for these */
 #ifndef ZBAR_SCANNER_THRESH_MIN
 # define ZBAR_SCANNER_THRESH_MIN  4
@@ -51,3 +57,16 @@ zbar_symbol_type_t zbar_scanner_reset(zbar_scanner_t* scn)
     return(ZBAR_NONE);
 }
 
+unsigned zbar_scanner_get_edge(const zbar_scanner_t* scn,
+    unsigned offset,
+    int prec)
+{
+    unsigned edge = scn->last_edge - offset - (1 << ZBAR_FIXED) - ROUND;
+    prec = ZBAR_FIXED - prec;
+    if (prec > 0)
+        return(edge >> prec);
+    else if (!prec)
+        return(edge);
+    else
+        return(edge << -prec);
+}

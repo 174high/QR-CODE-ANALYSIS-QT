@@ -41,4 +41,20 @@ void _zbar_qr_destroy(qr_reader* reader)
     
 }
 
+int _zbar_qr_found_line(qr_reader* reader,
+    int dir,
+    const qr_finder_line* line)
+{
+    /* minimally intrusive brute force version */
+    qr_finder_lines* lines = &reader->finder_lines[dir];
 
+    if (lines->nlines >= lines->clines) {
+        lines->clines *= 2;
+        lines->lines = realloc(lines->lines,
+            ++lines->clines * sizeof(*lines->lines));
+    }
+
+    memcpy(lines->lines + lines->nlines++, line, sizeof(*line));
+
+    return(0);
+}

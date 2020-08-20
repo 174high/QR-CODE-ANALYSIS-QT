@@ -91,7 +91,7 @@ static __inline void qr_handler(zbar_image_scanner_t* iscn)
     unsigned u;
     int vert;
     qr_finder_line* line = _zbar_decoder_get_qr_finder_line(iscn->dcode);
-  /*  assert(line);
+    assert(line);
     u = zbar_scanner_get_edge(iscn->scn, line->pos[0],
         QR_FINDER_SUBPREC);
     line->boffs = u - zbar_scanner_get_edge(iscn->scn, line->boffs,
@@ -112,8 +112,8 @@ static __inline void qr_handler(zbar_image_scanner_t* iscn)
     vert = !iscn->dx;
     line->pos[vert] = u;
     line->pos[!vert] = QR_FIXED(iscn->v, 1);
-
-    _zbar_qr_found_line(iscn->qr, vert, line); */
+    
+    _zbar_qr_found_line(iscn->qr, vert, line); 
 }
 #endif
 
