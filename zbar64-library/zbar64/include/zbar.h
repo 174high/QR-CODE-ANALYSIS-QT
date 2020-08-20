@@ -161,4 +161,16 @@ extern zbar_scanner_t* zbar_scanner_create(zbar_decoder_t* decoder);
 /** destructor. */
 extern void zbar_scanner_destroy(zbar_scanner_t* scanner);
 
+
+
+/** reference count manipulation.
+ * increment the reference count when you store a new reference.
+ * decrement when the reference is no longer used.  do not refer to
+ * the object any longer once references have been released.
+ * @since 0.10
+ */
+extern void zbar_symbol_set_ref(const zbar_symbol_set_t* symbols,
+    int refs);
+
+
 #endif

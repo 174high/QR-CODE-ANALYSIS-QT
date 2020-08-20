@@ -4,11 +4,13 @@
    Foundation; either version 2.1 of the License, or (at your option) any later
    version.*/
 #include <config.h>
+#include "qrcode.h"
+#include "error.h"
 
 
 /* collection of finder lines */
 typedef struct qr_finder_lines {
- //   qr_finder_line* lines;
+    qr_finder_line* lines;
     int nlines, clines;
 } qr_finder_lines;
 
@@ -21,3 +23,22 @@ struct qr_reader {
     /* current finder state, horizontal and vertical lines */
     qr_finder_lines finder_lines[2];
 };
+
+
+/*Frees a client reader handle.*/
+void _zbar_qr_destroy(qr_reader* reader)
+{
+    
+    zprintf(1, "max finder lines = %dx%d\n",
+        reader->finder_lines[0].clines,
+        reader->finder_lines[1].clines);
+    if (reader->finder_lines[0].lines)
+        free(reader->finder_lines[0].lines);
+    if (reader->finder_lines[1].lines)
+        free(reader->finder_lines[1].lines);
+    
+    free(reader);
+    
+}
+
+

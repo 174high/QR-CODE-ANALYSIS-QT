@@ -10,6 +10,40 @@
 
 typedef struct qr_reader qr_reader;
 
+typedef int qr_point[2];
+typedef struct qr_finder_line qr_finder_line;
 
+/*A line crossing a finder pattern.
+  Whether the line is horizontal or vertical is determined by context.
+  The offsts to various parts of the finder pattern are as follows:
+    |*****|     |*****|*****|*****|     |*****|
+    |*****|     |*****|*****|*****|     |*****|
+       ^        ^                 ^        ^
+       |        |                 |        |
+       |        |                 |       pos[v]+len+eoffs
+       |        |                pos[v]+len
+       |       pos[v]
+      pos[v]-boffs
+  Here v is 0 for horizontal and 1 for vertical lines.*/
+struct qr_finder_line {
+    /*The location of the upper/left endpoint of the line.
+      The left/upper edge of the center section is used, since other lines must
+       cross in this region.*/
+    qr_point pos;
+    /*The length of the center section.
+      This extends to the right/bottom of the center section, since other lines
+       must cross in this region.*/
+    int      len;
+    /*The offset to the midpoint of the upper/left section (part of the outside
+       ring), or 0 if we couldn't identify the edge of the beginning section.
+      We use the midpoint instead of the edge because it can be located more
+       reliably.*/
+    int      boffs;
+    /*The offset to the midpoint of the end section (part of the outside ring),
+       or 0 if we couldn't identify the edge of the end section.
+      We use the midpoint instead of the edge because it can be located more
+       reliably.*/
+    int      eoffs;
+};
 
 #endif

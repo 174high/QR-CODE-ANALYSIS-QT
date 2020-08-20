@@ -32,6 +32,19 @@
 
 typedef LONG refcnt_t;
 
+static __inline int _zbar_refcnt(refcnt_t* cnt,
+    int delta)
+{
+    int rc = -1;
+    if (delta > 0)
+        while (delta--)
+            rc = InterlockedIncrement(cnt);
+    else if (delta < 0)
+        while (delta++)
+            rc = InterlockedDecrement(cnt);
+    assert(rc >= 0);
+    return(rc);
+}
 
 #endif
 

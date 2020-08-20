@@ -116,11 +116,10 @@ void zbar_image_scanner_destroy (zbar_image_scanner_t *iscn)
     int i;
     dump_stats(iscn);
     if(iscn->syms) {
-         if (iscn->syms->refcnt)
-            ;
- //           zbar_symbol_set_ref(iscn->syms, -1);
- //       else
- //           _zbar_symbol_set_free(iscn->syms);
+        if (iscn->syms->refcnt)
+            zbar_symbol_set_ref(iscn->syms, -1);
+        else
+            _zbar_symbol_set_free(iscn->syms);
         iscn->syms = NULL;
     }
     if(iscn->scn)
@@ -133,12 +132,12 @@ void zbar_image_scanner_destroy (zbar_image_scanner_t *iscn)
         zbar_symbol_t *sym, *next;
         for(sym = iscn->recycle[i].head; sym; sym = next) {
             next = sym->next;
-        //    _zbar_symbol_free(sym);
+            _zbar_symbol_free(sym);
         }
     }
 #ifdef ENABLE_QRCODE
     if(iscn->qr) {
-    //    _zbar_qr_destroy(iscn->qr);
+        _zbar_qr_destroy(iscn->qr);
         iscn->qr = NULL;
     }
 #endif

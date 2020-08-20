@@ -23,6 +23,9 @@
 #ifndef _ERROR_H_
 #define _ERROR_H_
 
+#include <stdio.h>
+#include <stdlib.h>
+
 extern int _zbar_verbosity;
 
 #ifdef _WIN32

@@ -59,8 +59,17 @@ struct zbar_symbol_s {
     int quality;                /* relative symbol reliability metric */
 };
 
+extern void _zbar_symbol_set_free(zbar_symbol_set_t*);
 
 
+extern void _zbar_symbol_free(zbar_symbol_t*);
+
+static __inline void _zbar_symbol_refcnt(zbar_symbol_t* sym,
+    int delta)
+{
+    if (!_zbar_refcnt(&sym->refcnt, delta) && delta <= 0)
+        _zbar_symbol_free(sym);
+}
 
 
 #endif

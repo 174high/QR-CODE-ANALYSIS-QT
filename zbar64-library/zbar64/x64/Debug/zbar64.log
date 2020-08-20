@@ -5,6 +5,7 @@ C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zb
   qrdec.c
   error.c
   img_scanner.c
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(140,25): warning C4013: '_zbar_qr_destroy' undefined; assuming extern returning int
   scanner.c
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\scanner.c(35,23): warning C4013: 'zbar_scanner_reset' undefined; assuming extern returning int
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\scanner.c(49,27): warning C4013: 'zbar_decoder_reset' undefined; assuming extern returning int
