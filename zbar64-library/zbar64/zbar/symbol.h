@@ -32,10 +32,10 @@ typedef struct point_s {
 } point_t;
 
 struct zbar_symbol_set_s {
-   // refcnt_t refcnt;
+    refcnt_t refcnt;
     int nsyms;                  /* number of filtered symbols */
-   // zbar_symbol_t* head;        /* first of decoded symbol results */
-   // zbar_symbol_t* tail;        /* last of unfiltered symbol results */
+    zbar_symbol_t* head;        /* first of decoded symbol results */
+    zbar_symbol_t* tail;        /* last of unfiltered symbol results */
 };
 
 struct zbar_symbol_s {
@@ -52,12 +52,13 @@ struct zbar_symbol_s {
    // zbar_orientation_t orient;  /* coarse orientation */
 
     refcnt_t refcnt;            /* reference count */
-  //  zbar_symbol_t* next;        /* linked list of results (or siblings) */
-  //  zbar_symbol_set_t* syms;    /* components of composite result */
+    zbar_symbol_t* next;        /* linked list of results (or siblings) */
+    zbar_symbol_set_t* syms;    /* components of composite result */
     unsigned long time;         /* relative symbol capture time */
     int cache_count;            /* cache state */
     int quality;                /* relative symbol reliability metric */
 };
+
 
 
 

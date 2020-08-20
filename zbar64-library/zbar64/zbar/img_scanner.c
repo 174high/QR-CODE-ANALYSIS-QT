@@ -27,13 +27,18 @@
 #include <zbar.h>
 #include "error.h"
 
+#include "symbol.h"
+
 #ifdef ENABLE_QRCODE
 # include "qrcode.h"
 #endif
 
 #define RECYCLE_BUCKETS     5
 
-
+typedef struct recycle_bucket_s {
+    int nsyms;
+    zbar_symbol_t* head;
+} recycle_bucket_t;
 
 /* image scanner state */
 struct zbar_image_scanner_s {
@@ -52,7 +57,7 @@ struct zbar_image_scanner_s {
     int dx, dy, du, umin, v;    /* current scan direction */
     zbar_symbol_set_t* syms;    /* previous decode results */
     /* recycled symbols in 4^n size buckets */
-    //recycle_bucket_t recycle[RECYCLE_BUCKETS];
+    recycle_bucket_t recycle[RECYCLE_BUCKETS];
 
     int enable_cache;           /* current result cache state */
     //zbar_symbol_t* cache;       /* inter-image result cache entries */
@@ -111,7 +116,8 @@ void zbar_image_scanner_destroy (zbar_image_scanner_t *iscn)
     int i;
     dump_stats(iscn);
     if(iscn->syms) {
- //       if(iscn->syms->refcnt)
+         if (iscn->syms->refcnt)
+            ;
  //           zbar_symbol_set_ref(iscn->syms, -1);
  //       else
  //           _zbar_symbol_set_free(iscn->syms);
@@ -125,10 +131,10 @@ void zbar_image_scanner_destroy (zbar_image_scanner_t *iscn)
     iscn->dcode = NULL;
     for(i = 0; i < RECYCLE_BUCKETS; i++) {
         zbar_symbol_t *sym, *next;
-     //   for(sym = iscn->recycle[i].head; sym; sym = next) {
-     //       next = sym->next;
-     //       _zbar_symbol_free(sym);
-     //   }
+        for(sym = iscn->recycle[i].head; sym; sym = next) {
+            next = sym->next;
+        //    _zbar_symbol_free(sym);
+        }
     }
 #ifdef ENABLE_QRCODE
     if(iscn->qr) {

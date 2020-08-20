@@ -1,3 +1,6 @@
 EXPORTS
+zbar_decoder_create
+zbar_decoder_destroy
 zbar_image_scanner_create
+zbar_image_scanner_destroy
 zbar_decoder_create

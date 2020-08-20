@@ -33,7 +33,7 @@
 typedef LONG refcnt_t;
 
 
-
+#endif
 
 #endif
 
