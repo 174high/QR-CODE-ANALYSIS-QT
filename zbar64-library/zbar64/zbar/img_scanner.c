@@ -79,7 +79,7 @@ struct zbar_image_scanner_s {
 
 zbar_image_scanner_t* zbar_image_scanner_create(void)
 {
-	printf("testing .....\r\n");
+	printf("zbar_image_scanner_create  in\r\n");
     zbar_image_scanner_t* iscn = calloc(1, sizeof(zbar_image_scanner_t));
     if (!iscn)
         return(NULL);
@@ -90,6 +90,7 @@ zbar_image_scanner_t* zbar_image_scanner_create(void)
         return(NULL);
     }
 
+    printf("zbar_image_scanner_create  out\r\n");
     return(iscn);
 }
 

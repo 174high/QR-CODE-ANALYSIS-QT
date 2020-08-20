@@ -172,5 +172,9 @@ extern void zbar_scanner_destroy(zbar_scanner_t* scanner);
 extern void zbar_symbol_set_ref(const zbar_symbol_set_t* symbols,
     int refs);
 
+/** clear all decoder state.
+ * any partial symbols are flushed
+ */
+extern void zbar_decoder_reset(zbar_decoder_t* decoder);
 
 #endif

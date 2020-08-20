@@ -43,6 +43,7 @@ void zbar_scanner_destroy(zbar_scanner_t* scn)
 
 zbar_symbol_type_t zbar_scanner_reset(zbar_scanner_t* scn)
 {
+    //printf("zbar_scanner_reset size = 0x%x , offset = 0x%x result=0x%x \r\n", sizeof(zbar_scanner_t), offsetof(zbar_scanner_t, x), sizeof(zbar_scanner_t) - offsetof(zbar_scanner_t, x));
     memset(&scn->x, 0, sizeof(zbar_scanner_t) - offsetof(zbar_scanner_t, x));
     scn->y1_thresh = scn->y1_min_thresh;
     if (scn->decoder)
