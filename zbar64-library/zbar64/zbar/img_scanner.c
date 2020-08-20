@@ -77,6 +77,125 @@ struct zbar_image_scanner_s {
 #endif
 };
 
+
+#ifdef ENABLE_QRCODE
+extern qr_finder_line* _zbar_decoder_get_qr_finder_line(zbar_decoder_t*);
+
+# define QR_FIXED(v, rnd) ((((v) << 1) + (rnd)) << (QR_FINDER_SUBPREC - 1))
+# define PRINT_FIXED(val, prec) \
+    ((val) >> (prec)),         \
+        (1000 * ((val) & ((1 << (prec)) - 1)) / (1 << (prec)))
+
+static __inline void qr_handler(zbar_image_scanner_t* iscn)
+{
+    unsigned u;
+    int vert;
+    qr_finder_line* line = _zbar_decoder_get_qr_finder_line(iscn->dcode);
+  /*  assert(line);
+    u = zbar_scanner_get_edge(iscn->scn, line->pos[0],
+        QR_FINDER_SUBPREC);
+    line->boffs = u - zbar_scanner_get_edge(iscn->scn, line->boffs,
+        QR_FINDER_SUBPREC);
+    line->len = zbar_scanner_get_edge(iscn->scn, line->len,
+        QR_FINDER_SUBPREC);
+    line->eoffs = zbar_scanner_get_edge(iscn->scn, line->eoffs,
+        QR_FINDER_SUBPREC) - line->len;
+    line->len -= u;
+
+    u = QR_FIXED(iscn->umin, 0) + iscn->du * u;
+    if (iscn->du < 0) {
+        int tmp = line->boffs;
+        line->boffs = line->eoffs;
+        line->eoffs = tmp;
+        u -= line->len;
+    }
+    vert = !iscn->dx;
+    line->pos[vert] = u;
+    line->pos[!vert] = QR_FIXED(iscn->v, 1);
+
+    _zbar_qr_found_line(iscn->qr, vert, line); */
+}
+#endif
+
+static void symbol_handler(zbar_decoder_t* dcode)
+{
+      zbar_image_scanner_t* iscn = zbar_decoder_get_userdata(dcode);
+      zbar_symbol_type_t type = zbar_decoder_get_type(dcode);
+      int x = 0, y = 0, dir;
+      const char* data;
+      unsigned datalen;
+      zbar_symbol_t* sym;
+
+  #ifdef ENABLE_QRCODE
+      if (type == ZBAR_QRCODE) {
+          qr_handler(iscn);
+          return;
+      }
+  #else
+      assert(type != ZBAR_QRCODE);
+  #endif
+      
+   //   if (TEST_CFG(iscn, ZBAR_CFG_POSITION)) { 
+      /* tmp position fixup */
+/*       int w = zbar_scanner_get_width(iscn->scn);
+       int u = iscn->umin + iscn->du * zbar_scanner_get_edge(iscn->scn, w, 0);
+       if (iscn->dx) {
+           x = u;
+           y = iscn->v;
+       }
+       else {
+           x = iscn->v;
+           y = u;
+       }
+   }
+   */
+   /* FIXME debug flag to save/display all PARTIALs */
+   /*if (type <= ZBAR_PARTIAL) {
+       zprintf(256, "partial symbol @(%d,%d)\n", x, y);
+       return;
+   }
+
+   data = zbar_decoder_get_data(dcode);
+   datalen = zbar_decoder_get_data_length(dcode); */
+
+   /* FIXME need better symbol matching */
+   /*for (sym = iscn->syms->head; sym; sym = sym->next)
+       if (sym->type == type &&
+           sym->datalen == datalen &&
+           !memcmp(sym->data, data, datalen)) {
+           sym->quality++;
+           zprintf(224, "dup symbol @(%d,%d): dup %s: %.20s\n",
+               x, y, zbar_get_symbol_name(type), data);
+           if (TEST_CFG(iscn, ZBAR_CFG_POSITION)) */
+           /* add new point to existing set */
+           /* FIXME should be polygon */
+/*             sym_add_point(sym, x, y);
+         return;
+     }
+
+ sym = _zbar_image_scanner_alloc_sym(iscn, type, datalen + 1);
+ sym->configs = zbar_decoder_get_configs(dcode, type);
+ sym->modifiers = zbar_decoder_get_modifiers(dcode); */
+ /* FIXME grab decoder buffer */
+// memcpy(sym->data, data, datalen + 1);
+
+ /* initialize first point */
+/* if (TEST_CFG(iscn, ZBAR_CFG_POSITION)) {
+     zprintf(192, "new symbol @(%d,%d): %s: %.20s\n",
+         x, y, zbar_get_symbol_name(type), data);
+     sym_add_point(sym, x, y);
+ }
+
+ dir = zbar_decoder_get_direction(dcode);
+ if (dir)
+     sym->orient = (iscn->dy != 0) + ((iscn->du ^ dir) & 2);
+
+ _zbar_image_scanner_add_sym(iscn, sym);
+
+ */
+}
+
+
 zbar_image_scanner_t* zbar_image_scanner_create(void)
 {
 	printf("zbar_image_scanner_create  in\r\n");
@@ -89,6 +208,9 @@ zbar_image_scanner_t* zbar_image_scanner_create(void)
         zbar_image_scanner_destroy(iscn);
         return(NULL);
     }
+
+    zbar_decoder_set_userdata(iscn->dcode, iscn);
+    zbar_decoder_set_handler(iscn->dcode, symbol_handler);
 
     printf("zbar_image_scanner_create  out\r\n");
     return(iscn);
@@ -145,3 +267,4 @@ void zbar_image_scanner_destroy (zbar_image_scanner_t *iscn)
     
     free(iscn);
 }
+

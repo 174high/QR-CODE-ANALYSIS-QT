@@ -131,6 +131,11 @@ struct zbar_decoder_s;
 /** opaque decoder object. */
 typedef struct zbar_decoder_s zbar_decoder_t;
 
+/** decoder data handler callback function.
+ * called by decoder when new data has just been decoded
+ */
+typedef void (zbar_decoder_handler_t)(zbar_decoder_t* decoder);
+
 /** constructor. */
 extern zbar_decoder_t* zbar_decoder_create(void);
 
@@ -176,5 +181,29 @@ extern void zbar_symbol_set_ref(const zbar_symbol_set_t* symbols,
  * any partial symbols are flushed
  */
 extern void zbar_decoder_reset(zbar_decoder_t* decoder);
+
+/** setup data handler callback.
+ * the registered function will be called by the decoder
+ * just before zbar_decode_width() returns a non-zero value.
+ * pass a NULL value to disable callbacks.
+ * @returns the previously registered handler
+ */
+extern zbar_decoder_handler_t*
+zbar_decoder_set_handler(zbar_decoder_t* decoder,
+    zbar_decoder_handler_t* handler);
+
+/** associate user specified data value with the decoder. */
+extern void zbar_decoder_set_userdata(zbar_decoder_t* decoder,
+    void* userdata);
+
+/** return user specified data value associated with the decoder. */
+extern void *zbar_decoder_get_userdata(const zbar_decoder_t *decoder);
+
+
+/** retrieve last decoded symbol type.
+ * @returns the type or ::ZBAR_NONE if no new data available
+ */
+extern zbar_symbol_type_t
+zbar_decoder_get_type(const zbar_decoder_t* decoder);
 
 #endif

@@ -3,12 +3,18 @@ C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zb
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder.c(35,43): warning C4311: 'type cast': pointer truncation from 'unsigned int *' to 'long'
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder.c(35,56): warning C4311: 'type cast': pointer truncation from 'zbar_decoder_t *' to 'long'
   qrdec.c
+  qr_finder.c
   error.c
   img_scanner.c
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(140,25): warning C4013: '_zbar_qr_destroy' undefined; assuming extern returning int
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(92,9): warning C4101: 'vert': unreferenced local variable
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(91,14): warning C4101: 'u': unreferenced local variable
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(124,25): warning C4101: 'dir': unreferenced local variable
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(126,16): warning C4101: 'datalen': unreferenced local variable
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(127,22): warning C4101: 'sym': unreferenced local variable
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(125,19): warning C4101: 'data': unreferenced local variable
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(263,25): warning C4013: '_zbar_qr_destroy' undefined; assuming extern returning int
   scanner.c
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\scanner.c(35,23): warning C4013: 'zbar_scanner_reset' undefined; assuming extern returning int
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\scanner.c(49,27): warning C4013: 'zbar_decoder_reset' undefined; assuming extern returning int
   symbol.c
   Generating Code...
      Creating library C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\x64\Debug\libzbar-64.lib and object C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\x64\Debug\libzbar-64.exp

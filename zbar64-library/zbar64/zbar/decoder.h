@@ -38,7 +38,7 @@
 struct zbar_decoder_s {
     unsigned char idx;                  /* current width index */
 //    unsigned w[DECODE_WINDOW];          /* window of last N bar widths */
-//    zbar_symbol_type_t type;            /* type of last decoded data */
+    zbar_symbol_type_t type;            /* type of last decoded data */
 //    zbar_symbol_type_t lock;            /* buffer lock */
     unsigned modifiers;                 /* symbology modifier */
     int direction;                      /* direction of last decoded data */
@@ -49,7 +49,7 @@ struct zbar_decoder_s {
     unsigned buflen;                    /* binary data length */
     unsigned char* buf;                 /* decoded characters */
     void* userdata;                     /* application data */
-//    zbar_decoder_handler_t* handler;    /* application callback */
+    zbar_decoder_handler_t* handler;    /* application callback */
 
     /* symbology specific state */
 #ifdef ENABLE_EAN

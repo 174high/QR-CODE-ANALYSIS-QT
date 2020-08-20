@@ -176,6 +176,7 @@
   <ItemGroup>
     <ClCompile Include="zbar\decoder.c" />
     <ClCompile Include="zbar\decoder\qrdec.c" />
+    <ClCompile Include="zbar\decoder\qr_finder.c" />
     <ClCompile Include="zbar\error.c" />
     <ClCompile Include="zbar\img_scanner.c" />
     <ClCompile Include="zbar\scanner.c" />

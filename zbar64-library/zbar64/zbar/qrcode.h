@@ -13,6 +13,12 @@ typedef struct qr_reader qr_reader;
 typedef int qr_point[2];
 typedef struct qr_finder_line qr_finder_line;
 
+/*The number of bits of subpel precision to store image coordinates in.
+  This helps when estimating positions in low-resolution images, which may have
+   a module pitch only a pixel or two wide, making rounding errors matter a
+   great deal.*/
+#define QR_FINDER_SUBPREC (2)
+
 /*A line crossing a finder pattern.
   Whether the line is horizontal or vertical is determined by context.
   The offsts to various parts of the finder pattern are as follows:

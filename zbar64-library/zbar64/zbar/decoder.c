@@ -62,3 +62,27 @@ void zbar_decoder_reset(zbar_decoder_t* dcode)
 #endif
 }
 
+void zbar_decoder_set_userdata(zbar_decoder_t* dcode,
+	void* userdata)
+{
+	dcode->userdata = userdata;
+}
+
+zbar_decoder_handler_t*
+zbar_decoder_set_handler(zbar_decoder_t* dcode,
+	zbar_decoder_handler_t* handler)
+{
+	zbar_decoder_handler_t* result = dcode->handler;
+	dcode->handler = handler;
+	return(result);
+}
+
+void* zbar_decoder_get_userdata(const zbar_decoder_t* dcode)
+{
+	return(dcode->userdata);
+}
+
+zbar_symbol_type_t zbar_decoder_get_type(const zbar_decoder_t* dcode)
+{
+	return(dcode->type);
+}
