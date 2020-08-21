@@ -20,6 +20,9 @@
     <Filter Include="Source Files\qrcode">
       <UniqueIdentifier>{6aadf68c-63c6-4f86-9536-8b8e1ec8dd3b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\qrcode">
+      <UniqueIdentifier>{733194e3-6538-4fa1-9705-578239fd7e8a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="libzbar-0.def">
@@ -51,6 +54,12 @@
     <ClInclude Include="zbar\symbol.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="zbar\qrcode\isaac.h">
+      <Filter>Header Files\qrcode</Filter>
+    </ClInclude>
+    <ClInclude Include="zbar\qrcode\rs.h">
+      <Filter>Header Files\qrcode</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="zbar\decoder.c">
@@ -72,6 +81,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="zbar\decoder\qr_finder.c">
+      <Filter>Source Files\qrcode</Filter>
+    </ClCompile>
+    <ClCompile Include="zbar\decoder\isaac.c">
+      <Filter>Source Files\qrcode</Filter>
+    </ClCompile>
+    <ClCompile Include="zbar\qrcode\rs.c">
       <Filter>Source Files\qrcode</Filter>
     </ClCompile>
   </ItemGroup>

@@ -52,4 +52,6 @@ struct qr_finder_line {
     int      eoffs;
 };
 
+qr_reader* _zbar_qr_create(void);
+
 #endif

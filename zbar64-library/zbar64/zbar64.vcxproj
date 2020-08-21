@@ -126,12 +126,15 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>
+      </SDLCheck>
       <PreprocessorDefinitions>_DEBUG;ZBAR64_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)include/zbar;$(ProjectDir)zbar;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)include/zbar;$(ProjectDir)zbar;$(ProjectDir)zbar/qrcode;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>
+      </AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -170,15 +173,19 @@
     <ClInclude Include="zbar\decoder\qr_finder.h" />
     <ClInclude Include="zbar\error.h" />
     <ClInclude Include="zbar\qrcode.h" />
+    <ClInclude Include="zbar\qrcode\isaac.h" />
+    <ClInclude Include="zbar\qrcode\rs.h" />
     <ClInclude Include="zbar\refcnt.h" />
     <ClInclude Include="zbar\symbol.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="zbar\decoder.c" />
+    <ClCompile Include="zbar\decoder\isaac.c" />
     <ClCompile Include="zbar\decoder\qrdec.c" />
     <ClCompile Include="zbar\decoder\qr_finder.c" />
     <ClCompile Include="zbar\error.c" />
     <ClCompile Include="zbar\img_scanner.c" />
+    <ClCompile Include="zbar\qrcode\rs.c" />
     <ClCompile Include="zbar\scanner.c" />
     <ClCompile Include="zbar\symbol.c" />
   </ItemGroup>

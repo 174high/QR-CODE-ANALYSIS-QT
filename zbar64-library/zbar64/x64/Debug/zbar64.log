@@ -1,6 +1,19 @@
-﻿  img_scanner.c
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(148,24): warning C4013: '_zbar_qr_found_line' undefined; assuming extern returning int
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(192,29): warning C4018: '<': signed/unsigned mismatch
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(238,37): warning C4018: '<': signed/unsigned mismatch
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(494,25): warning C4013: '_zbar_qr_destroy' undefined; assuming extern returning int
+﻿  decoder.c
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder.c(35,8): warning C4013: 'memset' undefined; assuming extern returning int
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder.c(35,43): warning C4311: 'type cast': pointer truncation from 'unsigned int *' to 'long'
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder.c(35,56): warning C4311: 'type cast': pointer truncation from 'zbar_decoder_t *' to 'long'
+  qr_finder.c
+  qrdec.c
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(58,11): warning C4013: 'memcpy' undefined; assuming extern returning int
+  img_scanner.c
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(151,24): warning C4013: '_zbar_qr_found_line' undefined; assuming extern returning int
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(195,29): warning C4018: '<': signed/unsigned mismatch
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(241,37): warning C4018: '<': signed/unsigned mismatch
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(498,39): warning C4013: 'zbar_decoder_set_config' undefined; assuming extern returning int
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(566,25): warning C4013: '_zbar_qr_destroy' undefined; assuming extern returning int
+  scanner.c
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\scanner.c(41,23): warning C4013: 'zbar_scanner_reset' undefined; assuming extern returning int
+  symbol.c
+  Generating Code...
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder.c(245): warning C4716: 'zbar_decoder_set_config': must return a value
   zbar64.vcxproj -> C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\x64\Debug\libzbar-64.dll
