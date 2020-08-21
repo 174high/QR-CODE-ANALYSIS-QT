@@ -2,18 +2,37 @@
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder.c(35,8): warning C4013: 'memset' undefined; assuming extern returning int
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder.c(35,43): warning C4311: 'type cast': pointer truncation from 'unsigned int *' to 'long'
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder.c(35,56): warning C4311: 'type cast': pointer truncation from 'zbar_decoder_t *' to 'long'
-  qr_finder.c
+  isaac.c
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(27,44): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(28,44): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(31,44): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(32,44): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(35,44): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(36,44): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(39,44): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(40,44): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(45,44): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(46,44): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(49,44): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(50,44): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(53,44): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(54,44): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(57,44): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(58,44): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
   qrdec.c
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(58,11): warning C4013: 'memcpy' undefined; assuming extern returning int
+  qr_finder.c
+  error.c
   img_scanner.c
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(151,24): warning C4013: '_zbar_qr_found_line' undefined; assuming extern returning int
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(195,29): warning C4018: '<': signed/unsigned mismatch
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(241,37): warning C4018: '<': signed/unsigned mismatch
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(498,39): warning C4013: 'zbar_decoder_set_config' undefined; assuming extern returning int
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(566,25): warning C4013: '_zbar_qr_destroy' undefined; assuming extern returning int
+  rs.c
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\qrcode\rs.c(38,38): warning C4146: unary minus operator applied to unsigned type, result still unsigned
   scanner.c
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\scanner.c(41,23): warning C4013: 'zbar_scanner_reset' undefined; assuming extern returning int
   symbol.c
   Generating Code...
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder.c(245): warning C4716: 'zbar_decoder_set_config': must return a value
+     Creating library C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\x64\Debug\libzbar-64.lib and object C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\x64\Debug\libzbar-64.exp
   zbar64.vcxproj -> C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\x64\Debug\libzbar-64.dll

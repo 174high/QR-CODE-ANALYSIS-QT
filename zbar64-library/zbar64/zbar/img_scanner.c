@@ -454,13 +454,13 @@ zbar_image_scanner_t* zbar_image_scanner_create(void)
     CFG(iscn, ZBAR_CFG_X_DENSITY) = 1;
     CFG(iscn, ZBAR_CFG_Y_DENSITY) = 1;
     zbar_image_scanner_set_config(iscn, 0, ZBAR_CFG_POSITION, 1);
-  /*  zbar_image_scanner_set_config(iscn, 0, ZBAR_CFG_UNCERTAINTY, 2);
+    zbar_image_scanner_set_config(iscn, 0, ZBAR_CFG_UNCERTAINTY, 2);
     zbar_image_scanner_set_config(iscn, ZBAR_QRCODE, ZBAR_CFG_UNCERTAINTY, 0);
     zbar_image_scanner_set_config(iscn, ZBAR_CODE128, ZBAR_CFG_UNCERTAINTY, 0);
     zbar_image_scanner_set_config(iscn, ZBAR_CODE93, ZBAR_CFG_UNCERTAINTY, 0);
     zbar_image_scanner_set_config(iscn, ZBAR_CODE39, ZBAR_CFG_UNCERTAINTY, 0);
     zbar_image_scanner_set_config(iscn, ZBAR_CODABAR, ZBAR_CFG_UNCERTAINTY, 1);
-    zbar_image_scanner_set_config(iscn, ZBAR_COMPOSITE, ZBAR_CFG_UNCERTAINTY, 0);  */
+    zbar_image_scanner_set_config(iscn, ZBAR_COMPOSITE, ZBAR_CFG_UNCERTAINTY, 0);  
 
     printf("zbar_image_scanner_create  out\r\n");
     return(iscn);
@@ -496,7 +496,7 @@ int zbar_image_scanner_set_config(zbar_image_scanner_t* iscn,
     
     if (cfg < ZBAR_CFG_UNCERTAINTY)
         return(zbar_decoder_set_config(iscn->dcode, sym, cfg, val));
-    /*
+    
     if (cfg < ZBAR_CFG_POSITION) {
         int c, i;
         if (cfg > ZBAR_CFG_UNCERTAINTY)
@@ -530,7 +530,7 @@ int zbar_image_scanner_set_config(zbar_image_scanner_t* iscn,
         iscn->config |= (1 << cfg);
     else
         return(1);
-        */
+        
     return(0);
 }
 

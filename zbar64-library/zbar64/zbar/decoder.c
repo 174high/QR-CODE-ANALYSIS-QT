@@ -214,6 +214,80 @@ int zbar_decoder_get_direction(const zbar_decoder_t* dcode)
     return(dcode->direction);
 }
 
+static __inline int decoder_set_config_bool(zbar_decoder_t* dcode,
+    zbar_symbol_type_t sym,
+    zbar_config_t cfg,
+    int val)
+{
+    unsigned* config = (void*)decoder_get_configp(dcode, sym);
+    if (!config || cfg >= ZBAR_CFG_NUM)
+        return(1);
+
+    if (!val)
+        *config &= ~(1 << cfg);
+    else if (val == 1)
+        *config |= (1 << cfg);
+    else
+        return(1);
+
+#ifdef ENABLE_EAN
+    dcode->ean.enable = TEST_CFG(dcode->ean.ean13_config |
+        dcode->ean.ean2_config |
+        dcode->ean.ean5_config |
+        dcode->ean.ean8_config |
+        dcode->ean.upca_config |
+        dcode->ean.upce_config |
+        dcode->ean.isbn10_config |
+        dcode->ean.isbn13_config,
+        ZBAR_CFG_ENABLE);
+#endif
+
+    return(0);
+}
+
+static __inline int decoder_set_config_int(zbar_decoder_t* dcode,
+    zbar_symbol_type_t sym,
+    zbar_config_t cfg,
+    int val)
+{
+    switch (sym) {
+
+#ifdef ENABLE_I25
+    case ZBAR_I25:
+        CFG(dcode->i25, cfg) = val;
+        break;
+#endif
+#ifdef ENABLE_CODABAR
+    case ZBAR_CODABAR:
+        CFG(dcode->codabar, cfg) = val;
+        break;
+#endif
+#ifdef ENABLE_CODE39
+    case ZBAR_CODE39:
+        CFG(dcode->code39, cfg) = val;
+        break;
+#endif
+#ifdef ENABLE_CODE93
+    case ZBAR_CODE93:
+        CFG(dcode->code93, cfg) = val;
+        break;
+#endif
+#ifdef ENABLE_CODE128
+    case ZBAR_CODE128:
+        CFG(dcode->code128, cfg) = val;
+        break;
+#endif
+#ifdef ENABLE_PDF417
+    case ZBAR_PDF417:
+        CFG(dcode->pdf417, cfg) = val;
+        break;
+#endif
+
+    default:
+        return(1);
+    }
+    return(0);
+}
 
 
 int zbar_decoder_set_config(zbar_decoder_t* dcode,
@@ -221,7 +295,7 @@ int zbar_decoder_set_config(zbar_decoder_t* dcode,
     zbar_config_t cfg,
     int val)
 {
-  /*  if (sym == ZBAR_NONE) {
+    if (sym == ZBAR_NONE) {
         static const zbar_symbol_type_t all[] = {
         ZBAR_EAN13, ZBAR_EAN2, ZBAR_EAN5, ZBAR_EAN8,
             ZBAR_UPCA, ZBAR_UPCE, ZBAR_ISBN10, ZBAR_ISBN13,
@@ -234,12 +308,12 @@ int zbar_decoder_set_config(zbar_decoder_t* dcode,
             zbar_decoder_set_config(dcode, *symp, cfg, val);
         return(0);
     }
-
+    
     if (cfg >= 0 && cfg < ZBAR_CFG_NUM)
         return(decoder_set_config_bool(dcode, sym, cfg, val));
     else if (cfg >= ZBAR_CFG_MIN_LEN && cfg <= ZBAR_CFG_MAX_LEN)
         return(decoder_set_config_int(dcode, sym, cfg, val));
     else
         return(1);
-        */
+       
 }

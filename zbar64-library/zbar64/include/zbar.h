@@ -281,5 +281,15 @@ extern int zbar_image_scanner_set_config(zbar_image_scanner_t* scanner,
     zbar_config_t config,
     int value);
 
+/** set config for indicated symbology (0 for all) to specified value.
+ * @returns 0 for success, non-0 for failure (config does not apply to
+ * specified symbology, or value out of range)
+ * @since 0.4
+ */
+extern int zbar_decoder_set_config(zbar_decoder_t* decoder,
+    zbar_symbol_type_t symbology,
+    zbar_config_t config,
+    int value);
+
 
 #endif
