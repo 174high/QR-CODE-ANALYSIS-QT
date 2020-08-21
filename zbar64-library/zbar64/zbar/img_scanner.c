@@ -23,7 +23,17 @@
 #include <config.h>
 #include <stdio.h>
 
+#include <stdint.h>
+#ifdef HAVE_UNISTD_H
+# include <unistd.h>
+#endif
+#ifdef HAVE_INTTYPES_H
+# include <inttypes.h>
+#endif
 #include <stdlib.h>     /* malloc, free */
+#include <string.h>     /* memcmp, memset, memcpy */
+#include <assert.h>
+
 #include <zbar.h>
 #include "error.h"
 
@@ -44,6 +54,18 @@
 # define dump_stats(...)
 #endif
 
+ /* time interval for which two images are considered "nearby"
+  */
+#define CACHE_PROXIMITY   1000 /* ms */
+
+ /* time that a result must *not* be detected before
+  * it will be reported again
+  */
+#define CACHE_HYSTERESIS  2000 /* ms */
+
+ /* time after which cache entries are invalidated
+  */
+#define CACHE_TIMEOUT     (CACHE_HYSTERESIS * 2) /* ms */
 
 typedef struct recycle_bucket_s {
     int nsyms;
@@ -70,13 +92,13 @@ struct zbar_image_scanner_s {
     recycle_bucket_t recycle[RECYCLE_BUCKETS];
 
     int enable_cache;           /* current result cache state */
-    //zbar_symbol_t* cache;       /* inter-image result cache entries */
+    zbar_symbol_t* cache;       /* inter-image result cache entries */
 
     /* configuration settings */
     unsigned config;            /* config flags */
     unsigned ean_config;
     //int configs[NUM_SCN_CFGS];  /* int valued configurations */
-    //int sym_configs[1][NUM_SYMS]; /* per-symbology configurations */
+    int sym_configs[1][NUM_SYMS]; /* per-symbology configurations */
 
 #ifndef NO_STATS
     int stat_syms_new;
@@ -183,6 +205,145 @@ _zbar_image_scanner_alloc_sym(zbar_image_scanner_t* iscn,
     return(sym); 
 }
 
+void _zbar_image_scanner_recycle_syms(zbar_image_scanner_t* iscn,
+    zbar_symbol_t* sym)
+{
+    zbar_symbol_t* next = NULL;
+    for (; sym; sym = next) {
+        next = sym->next;
+        if (sym->refcnt && _zbar_refcnt(&sym->refcnt, -1)) {
+            /* unlink referenced symbol */
+            /* FIXME handle outstanding component refs (currently unsupported)
+             */
+            assert(sym->data_alloc);
+            sym->next = NULL;
+        }
+        else {
+            int i;
+            recycle_bucket_t* bucket;
+            /* recycle unreferenced symbol */
+            if (!sym->data_alloc) {
+                sym->data = NULL;
+                sym->datalen = 0;
+            }
+            if (sym->syms) {
+                if (_zbar_refcnt(&sym->syms->refcnt, -1))
+                    assert(0);
+                _zbar_image_scanner_recycle_syms(iscn, sym->syms->head);
+                sym->syms->head = NULL;
+                _zbar_symbol_set_free(sym->syms);
+                sym->syms = NULL;
+            }
+            for (i = 0; i < RECYCLE_BUCKETS; i++)
+                if (sym->data_alloc < 1 << (i * 2))
+                    break;
+            if (i == RECYCLE_BUCKETS) {
+                assert(sym->data);
+                free(sym->data);
+                sym->data = NULL;
+                sym->data_alloc = 0;
+                i = 0;
+            }
+            bucket = &iscn->recycle[i];
+            /* FIXME cap bucket fill */
+            bucket->nsyms++;
+            sym->next = bucket->head;
+            bucket->head = sym;
+        }
+    }
+}
+
+
+static __inline zbar_symbol_t* cache_lookup(zbar_image_scanner_t* iscn,
+    zbar_symbol_t* sym)
+{
+    /* search for matching entry in cache */
+    zbar_symbol_t** entry = &iscn->cache;
+    while (*entry) {
+        if ((*entry)->type == sym->type &&
+            (*entry)->datalen == sym->datalen &&
+            !memcmp((*entry)->data, sym->data, sym->datalen))
+            break;
+        if ((sym->time - (*entry)->time) > CACHE_TIMEOUT) {  
+            /* recycle stale cache entry */
+            zbar_symbol_t* next = (*entry)->next;
+            (*entry)->next = NULL;
+            _zbar_image_scanner_recycle_syms(iscn, *entry);
+            *entry = next;
+        }
+        else
+            entry = &(*entry)->next; 
+    }
+    return(*entry); 
+}
+
+
+static __inline void cache_sym(zbar_image_scanner_t* iscn,
+    zbar_symbol_t* sym)
+{
+    
+    if (iscn->enable_cache) {
+          uint32_t age, near_thresh, far_thresh, dup;
+          zbar_symbol_t* entry = cache_lookup(iscn, sym);
+          if (!entry) {  
+            /* FIXME reuse sym */
+            entry = _zbar_image_scanner_alloc_sym(iscn, sym->type,
+                sym->datalen + 1);
+            entry->configs = sym->configs;
+            entry->modifiers = sym->modifiers;
+            memcpy(entry->data, sym->data, sym->datalen);
+            entry->time = sym->time - CACHE_HYSTERESIS;
+            entry->cache_count = 0;  
+            /* add to cache */
+            entry->next = iscn->cache;
+            iscn->cache = entry;
+        }
+         
+        /* consistency check and hysteresis */
+       age = sym->time - entry->time;
+        entry->time = sym->time;
+        near_thresh = (age < CACHE_PROXIMITY);
+        far_thresh = (age >= CACHE_HYSTERESIS); 
+        dup = (entry->cache_count >= 0);
+        if ((!dup && !near_thresh) || far_thresh) {
+            int type = sym->type;
+            int h = _zbar_get_symbol_hash(type);
+            entry->cache_count = -iscn->sym_configs[0][h];
+        }
+        else if (dup || near_thresh)
+            entry->cache_count++;
+            
+        sym->cache_count = entry->cache_count; 
+    }
+    else
+        sym->cache_count = 0;  
+}
+
+
+void _zbar_image_scanner_add_sym(zbar_image_scanner_t* iscn,
+    zbar_symbol_t* sym)
+{
+    zbar_symbol_set_t* syms;
+    cache_sym(iscn, sym);
+
+    syms = iscn->syms;
+    if (sym->cache_count || !syms->tail) {
+        sym->next = syms->head;
+        syms->head = sym;
+    }
+    else {
+        sym->next = syms->tail->next;
+        syms->tail->next = sym;
+    }
+
+    if (!sym->cache_count)
+        syms->nsyms++;
+    else if (!syms->tail)
+        syms->tail = sym;
+
+    _zbar_symbol_refcnt(sym, 1);
+}
+
 
 static void symbol_handler(zbar_decoder_t* dcode)
 {
@@ -242,27 +403,27 @@ static void symbol_handler(zbar_decoder_t* dcode)
     }
 
    
- sym = _zbar_image_scanner_alloc_sym(iscn, type, datalen + 1);
- //sym->configs = zbar_decoder_get_configs(dcode, type);
- //sym->modifiers = zbar_decoder_get_modifiers(dcode); 
+  sym = _zbar_image_scanner_alloc_sym(iscn, type, datalen + 1);
+  sym->configs = zbar_decoder_get_configs(dcode, type);
+  sym->modifiers = zbar_decoder_get_modifiers(dcode); 
 
  /* FIXME grab decoder buffer */
-// memcpy(sym->data, data, datalen + 1);
+  memcpy(sym->data, data, datalen + 1);
 
  /* initialize first point */
-/* if (TEST_CFG(iscn, ZBAR_CFG_POSITION)) {
+ if (TEST_CFG(iscn, ZBAR_CFG_POSITION)) {
      zprintf(192, "new symbol @(%d,%d): %s: %.20s\n",
          x, y, zbar_get_symbol_name(type), data);
      sym_add_point(sym, x, y);
  }
-
+ 
  dir = zbar_decoder_get_direction(dcode);
  if (dir)
      sym->orient = (iscn->dy != 0) + ((iscn->du ^ dir) & 2);
 
  _zbar_image_scanner_add_sym(iscn, sym);
 
- */
+ 
 }
 
 

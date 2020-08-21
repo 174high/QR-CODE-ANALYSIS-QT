@@ -27,6 +27,9 @@
 #include <zbar.h>
 #include "refcnt.h"
 
+#define NUM_SYMS  20
+
+
 typedef struct point_s {
     int x, y;
 } point_t;
@@ -61,6 +64,7 @@ struct zbar_symbol_s {
 
 extern void _zbar_symbol_set_free(zbar_symbol_set_t*);
 
+extern int _zbar_get_symbol_hash(zbar_symbol_type_t);
 
 extern void _zbar_symbol_free(zbar_symbol_t*);
 

@@ -1,10 +1,6 @@
 ﻿  img_scanner.c
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(126,24): warning C4013: '_zbar_qr_found_line' undefined; assuming extern returning int
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(170,29): warning C4018: '<': signed/unsigned mismatch
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(191,25): warning C4101: 'dir': unreferenced local variable
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(333,25): warning C4013: '_zbar_qr_destroy' undefined; assuming extern returning int
-  scanner.c
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\scanner.c(41,23): warning C4013: 'zbar_scanner_reset' undefined; assuming extern returning int
-  symbol.c
-  Generating Code...
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(148,24): warning C4013: '_zbar_qr_found_line' undefined; assuming extern returning int
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(192,29): warning C4018: '<': signed/unsigned mismatch
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(238,37): warning C4018: '<': signed/unsigned mismatch
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(494,25): warning C4013: '_zbar_qr_destroy' undefined; assuming extern returning int
   zbar64.vcxproj -> C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\x64\Debug\libzbar-64.dll

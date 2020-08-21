@@ -248,4 +248,27 @@ zbar_decoder_get_data_length(const zbar_decoder_t* decoder);
  */
 extern const char* zbar_get_symbol_name(zbar_symbol_type_t sym);
 
+/** retrieve symbology boolean config settings.
+ * @returns a bitmask indicating which configs are currently set for the
+ * specified symbology.
+ * @since 0.11
+ */
+extern unsigned int zbar_decoder_get_configs(const zbar_decoder_t* decoder,
+    zbar_symbol_type_t symbology);
+
+/** retrieve modifier flags for the last decoded symbol.
+ * @returns a bitmask indicating which characteristics were detected
+ * during decoding.
+ * @since 0.11
+ */
+extern unsigned int zbar_decoder_get_modifiers(const zbar_decoder_t* decoder);
+
+/** retrieve last decode direction.
+ * @returns 1 for forward and -1 for reverse
+ * @returns 0 if the decode direction is unknown or does not apply
+ * @since 0.11
+ */
+extern int zbar_decoder_get_direction(const zbar_decoder_t* decoder);
+
+
 #endif
