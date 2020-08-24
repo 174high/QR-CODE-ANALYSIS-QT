@@ -78,6 +78,9 @@
     <ClInclude Include="zbar\debug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="zbar\qrcode\qrdec.h">
+      <Filter>Header Files\qrcode</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="zbar\decoder.c">

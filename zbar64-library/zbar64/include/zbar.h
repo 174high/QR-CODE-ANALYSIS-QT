@@ -390,4 +390,13 @@ extern zbar_symbol_type_t zbar_scanner_flush(zbar_scanner_t* scanner);
  */
 extern void zbar_decoder_new_scan(zbar_decoder_t* decoder);
 
+/** process next sample intensity value.
+ * intensity (y) is in arbitrary relative units.
+ * @returns result of zbar_decode_width() if a decoder is attached,
+ * otherwise @returns (::ZBAR_PARTIAL) when new edge is detected
+ * or 0 (::ZBAR_NONE) if no new edge is detected
+ */
+extern zbar_symbol_type_t zbar_scan_y(zbar_scanner_t* scanner,
+    int y);
+
 #endif

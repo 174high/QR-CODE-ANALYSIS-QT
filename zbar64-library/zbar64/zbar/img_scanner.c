@@ -46,6 +46,13 @@
 
 #include "svg.h"
 
+#if 1
+# define ASSERT_POS \
+    assert(p == data + x + y * (intptr_t)w)
+#else
+# define ASSERT_POS
+#endif
+
 #define RECYCLE_BUCKETS     5
 
 #define NUM_SCN_CFGS (ZBAR_CFG_Y_DENSITY - ZBAR_CFG_X_DENSITY + 1)
@@ -618,6 +625,16 @@ __inline void zbar_image_scanner_recycle_image(zbar_image_scanner_t* iscn,
     }
 }
 
+static __inline void quiet_border(zbar_image_scanner_t* iscn)
+{
+    /* flush scanner pipeline */
+    zbar_scanner_t* scn = iscn->scn;
+    zbar_scanner_flush(scn);
+    zbar_scanner_flush(scn);
+    zbar_scanner_new_scan(scn);
+}
+
+
 #define movedelta(dx, dy) do {                  \
         x += (dx);                              \
         y += (dy);                              \
@@ -701,7 +718,7 @@ int zbar_scan_image(zbar_image_scanner_t* iscn,
                 movedelta(1, 0);
                 zbar_scan_y(scn, d);
             }
-     /*       ASSERT_POS;
+            ASSERT_POS;
             quiet_border(iscn);
             svg_path_end();
 
@@ -724,14 +741,156 @@ int zbar_scan_image(zbar_image_scanner_t* iscn,
             svg_path_end();
 
             movedelta(1, density);
-            iscn->v = y;  */
+            iscn->v = y;  
         }
-       // svg_group_end(); 
+        svg_group_end(); 
     }
     iscn->dx = 0;
 
-   // svg_close();
-     return(syms->nsyms);
+    density = CFG(iscn, ZBAR_CFG_X_DENSITY);
+    if (density > 0) {
+        const uint8_t* p = data;
+        int x = 0, y = 0;
+
+        int border = (((img->crop_w - 1) % density) + 1) / 2;
+        if (border > img->crop_w / 2)
+            border = img->crop_w / 2;
+        border += img->crop_x;
+        assert(border <= w);
+        svg_group_start("scanner", 90, 1, -1, 0, 0);
+        movedelta(border, img->crop_y);
+        iscn->v = x;
+
+        while (x < cx1) {
+            int cy0 = img->crop_y;
+            zprintf(128, "img_y+: %04d,%04d @%p\n", x, y, p);
+            svg_path_start("vedge", 1. / 32, 0, x + 0.5);
+            iscn->dy = iscn->du = 1;
+            iscn->umin = cy0;
+            while (y < cy1) {
+                uint8_t d = *p;
+                movedelta(0, 1);
+                zbar_scan_y(scn, d);
+            }
+            ASSERT_POS;
+            quiet_border(iscn);
+            svg_path_end();
+
+            movedelta(density, -1);
+            iscn->v = x;
+            if (x >= cx1)
+                break;
+
+            zprintf(128, "img_y-: %04d,%04d @%p\n", x, y, p);
+            svg_path_start("vedge", -1. / 32, h, x + 0.5);
+            iscn->dy = iscn->du = -1;
+            iscn->umin = cy1;
+            while (y >= cy0) {
+                uint8_t d = *p;
+                movedelta(0, -1);
+                zbar_scan_y(scn, d);
+            }
+            ASSERT_POS;
+            quiet_border(iscn);
+            svg_path_end();
+
+            movedelta(density, 1);
+            iscn->v = x;
+        }
+        svg_group_end();
+    }
+    iscn->dy = 0;
+    iscn->img = NULL;
+
+#ifdef ENABLE_QRCODE
+    _zbar_qr_decode(iscn->qr, iscn, img);
+#endif
+
+    /* FIXME tmp hack to filter bad EAN results */
+    /* FIXME tmp hack to merge simple case EAN add-ons */
+ /*  char filter = (!iscn->enable_cache &&
+        (density == 1 || CFG(iscn, ZBAR_CFG_Y_DENSITY) == 1));
+    int nean = 0, naddon = 0;
+    if (syms->nsyms) {
+        zbar_symbol_t** symp;
+        for (symp = &syms->head; *symp; ) {
+            zbar_symbol_t* sym = *symp;
+            if (sym->cache_count <= 0 &&
+                ((sym->type < ZBAR_COMPOSITE && sym->type > ZBAR_PARTIAL) ||
+                    sym->type == ZBAR_DATABAR ||
+                    sym->type == ZBAR_DATABAR_EXP ||
+                    sym->type == ZBAR_CODABAR))
+            {
+                if ((sym->type == ZBAR_CODABAR || filter) && sym->quality < 4) {
+                    if (iscn->enable_cache) {
+  */                      /* revert cache update */
+  /*                      zbar_symbol_t* entry = cache_lookup(iscn, sym);
+                        if (entry)
+                            entry->cache_count--;
+                        else
+                            assert(0);
+                    }
+
+     */               /* recycle */
+   /*                 *symp = sym->next;
+                    syms->nsyms--;
+                    sym->next = NULL;
+                    _zbar_image_scanner_recycle_syms(iscn, sym);
+                    continue;
+                }
+                else if (sym->type < ZBAR_COMPOSITE &&
+                    sym->type != ZBAR_ISBN10)
+                {
+                    if (sym->type > ZBAR_EAN5)
+                        nean++;
+                    else
+                        naddon++;
+                }
+            }
+            symp = &sym->next;
+        }
+
+        if (nean == 1 && naddon == 1 && iscn->ean_config) {
+   */         /* create container symbol for composite result */
+   /*         zbar_symbol_t* ean = NULL, * addon = NULL;
+            for (symp = &syms->head; *symp; ) {
+                zbar_symbol_t* sym = *symp;
+                if (sym->type < ZBAR_COMPOSITE && sym->type > ZBAR_PARTIAL) {
+  */                  /* move to composite */
+  /*                  *symp = sym->next;
+                    syms->nsyms--;
+                    sym->next = NULL;
+                    if (sym->type <= ZBAR_EAN5)
+                        addon = sym;
+                    else
+                        ean = sym;
+                }
+                else
+                    symp = &sym->next;
+            }
+            assert(ean);
+            assert(addon);
+
+            int datalen = ean->datalen + addon->datalen + 1;
+            zbar_symbol_t* ean_sym =
+                _zbar_image_scanner_alloc_sym(iscn, ZBAR_COMPOSITE, datalen);
+            ean_sym->orient = ean->orient;
+            ean_sym->syms = _zbar_symbol_set_create();
+            memcpy(ean_sym->data, ean->data, ean->datalen);
+            memcpy(ean_sym->data + ean->datalen,
+                addon->data, addon->datalen + 1);
+            ean_sym->syms->head = ean;
+            ean->next = addon;
+            ean_sym->syms->nsyms = 2;
+            _zbar_image_scanner_add_sym(iscn, ean_sym);
+        }
+    }
+
+    if (syms->nsyms && iscn->handler)
+        iscn->handler(img, iscn->userdata);
+       */
+    //svg_close();
+    return(syms->nsyms);
 }
 
 #ifdef DEBUG_SVG

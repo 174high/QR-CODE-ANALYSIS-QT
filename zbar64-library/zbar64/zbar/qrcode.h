@@ -59,4 +59,8 @@ int _zbar_qr_found_line(qr_reader* reader,
 
 void _zbar_qr_destroy(qr_reader* reader);
 void _zbar_qr_reset(qr_reader* reader);
+int _zbar_qr_decode(qr_reader* reader,
+    zbar_image_scanner_t* iscn,
+    zbar_image_t* img);
+
 #endif

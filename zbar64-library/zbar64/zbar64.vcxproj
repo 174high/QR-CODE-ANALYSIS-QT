@@ -178,6 +178,7 @@
     <ClInclude Include="zbar\mutex.h" />
     <ClInclude Include="zbar\qrcode.h" />
     <ClInclude Include="zbar\qrcode\isaac.h" />
+    <ClInclude Include="zbar\qrcode\qrdec.h" />
     <ClInclude Include="zbar\qrcode\rs.h" />
     <ClInclude Include="zbar\refcnt.h" />
     <ClInclude Include="zbar\svg.h" />
