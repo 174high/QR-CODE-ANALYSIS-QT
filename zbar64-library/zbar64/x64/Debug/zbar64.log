@@ -25,21 +25,20 @@ C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zb
   error.c
   image.c
   img_scanner.c
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(195,29): warning C4018: '<': signed/unsigned mismatch
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(241,37): warning C4018: '<': signed/unsigned mismatch
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(570,25): warning C4013: '_zbar_qr_destroy' undefined; assuming extern returning int
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(585,9): warning C4101: 'density': unreferenced local variable
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(584,25): warning C4101: 'cy1': unreferenced local variable
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(582,20): warning C4101: 'data': unreferenced local variable
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(584,17): warning C4101: 'h': unreferenced local variable
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(584,14): warning C4101: 'w': unreferenced local variable
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(584,20): warning C4101: 'cx1': unreferenced local variable
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(196,29): warning C4018: '<': signed/unsigned mismatch
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(242,37): warning C4018: '<': signed/unsigned mismatch
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(626,9): warning C4101: 'density': unreferenced local variable
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(625,25): warning C4101: 'cy1': unreferenced local variable
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(623,20): warning C4101: 'data': unreferenced local variable
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(625,17): warning C4101: 'h': unreferenced local variable
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(625,14): warning C4101: 'w': unreferenced local variable
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(625,20): warning C4101: 'cx1': unreferenced local variable
   rs.c
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\qrcode\rs.c(38,38): warning C4146: unary minus operator applied to unsigned type, result still unsigned
   refcnt.c
   scanner.c
   symbol.c
   Generating Code...
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(593): warning C4700: uninitialized local variable 'syms' used
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(648): warning C4700: uninitialized local variable 'syms' used
      Creating library C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\x64\Debug\libzbar-64.lib and object C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\x64\Debug\libzbar-64.exp
   zbar64.vcxproj -> C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\x64\Debug\libzbar-64.dll

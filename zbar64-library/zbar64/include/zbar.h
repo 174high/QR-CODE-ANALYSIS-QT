@@ -110,6 +110,16 @@ struct zbar_symbol_set_s;
 typedef struct zbar_symbol_set_s zbar_symbol_set_t;
 
 
+/** consistently compute fourcc values across architectures
+ * (adapted from v4l2 specification)
+ * @since 0.11
+ */
+#define zbar_fourcc(a, b, c, d)                 \
+        ((unsigned long)(a) |                   \
+         ((unsigned long)(b) << 8) |            \
+         ((unsigned long)(c) << 16) |           \
+         ((unsigned long)(d) << 24))
+
 
 /*------------------------------------------------------------*/
 /** @name Image Scanner interface

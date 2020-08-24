@@ -57,4 +57,6 @@ int _zbar_qr_found_line(qr_reader* reader,
     int direction,
     const qr_finder_line* line);
 
+void _zbar_qr_destroy(qr_reader* reader);
+void _zbar_qr_reset(qr_reader* reader);
 #endif

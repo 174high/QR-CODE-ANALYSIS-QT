@@ -27,6 +27,8 @@
 #include "refcnt.h"
 #include <stdint.h>
 
+#define fourcc zbar_fourcc
+
 struct zbar_image_s {
     uint32_t format;            /* fourcc image format code */
     unsigned width, height;     /* image size */

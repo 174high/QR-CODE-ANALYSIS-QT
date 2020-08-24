@@ -36,6 +36,7 @@
 
 #include <zbar.h>
 #include "error.h"
+#include "image.h"
 #include "timer.h"
 #include "symbol.h"
 
@@ -88,7 +89,7 @@ struct zbar_image_scanner_s {
     //zbar_image_data_handler_t* handler;
 
     unsigned long time;         /* scan start time */
-    //zbar_image_t* img;          /* currently scanning image *root* */
+    zbar_image_t* img;          /* currently scanning image *root* */
     int dx, dy, du, umin, v;    /* current scan direction */
     zbar_symbol_set_t* syms;    /* previous decode results */
     /* recycled symbols in 4^n size buckets */
@@ -575,6 +576,46 @@ void zbar_image_scanner_destroy (zbar_image_scanner_t *iscn)
     free(iscn);
 }
 
+static __inline int recycle_syms(zbar_image_scanner_t* iscn,
+    zbar_symbol_set_t* syms)
+{
+    if (_zbar_refcnt(&syms->refcnt, -1))
+        return(1);
+
+    _zbar_image_scanner_recycle_syms(iscn, syms->head);
+    syms->head = syms->tail = NULL;
+    syms->nsyms = 0;
+    return(0);
+}
+
+__inline void zbar_image_scanner_recycle_image(zbar_image_scanner_t* iscn,
+    zbar_image_t* img)
+{
+    zbar_symbol_set_t* syms = iscn->syms;
+    if (syms && syms->refcnt) {
+        if (recycle_syms(iscn, syms)) {
+            STAT(iscn_syms_inuse);
+            iscn->syms = NULL;
+        }
+        else
+            STAT(iscn_syms_recycle);
+    }
+
+    syms = img->syms;
+    img->syms = NULL;
+    if (syms && recycle_syms(iscn, syms))
+        STAT(img_syms_inuse);
+    else if (syms) {
+        STAT(img_syms_recycle);
+        
+        /* select one set to resurrect, destroy the other */
+        if (iscn->syms)
+            _zbar_symbol_set_free(syms);
+        else
+            iscn->syms = syms;
+    }
+}
+
 int zbar_scan_image(zbar_image_scanner_t* iscn,
     zbar_image_t* img)
 {
@@ -588,6 +629,20 @@ int zbar_scan_image(zbar_image_scanner_t* iscn,
      * FIXME prefer video timestamp
      */
     iscn->time = _zbar_timer_now();
+
+#ifdef ENABLE_QRCODE
+    _zbar_qr_reset(iscn->qr);
+#endif
+
+    /* image must be in grayscale format */
+    if (img->format != fourcc('Y', '8', '0', '0') &&
+        img->format != fourcc('G', 'R', 'E', 'Y'))
+        return(-1);
+    iscn->img = img;
+
+    /* recycle previous scanner and image results */
+    zbar_image_scanner_recycle_image(iscn, img);
+
 
    // svg_close();
      return(syms->nsyms);

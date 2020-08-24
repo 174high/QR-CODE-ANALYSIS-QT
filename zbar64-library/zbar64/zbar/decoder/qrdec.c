@@ -78,3 +78,10 @@ qr_reader* _zbar_qr_create(void)
     qr_reader_init(reader);
     return(reader);
 }
+
+/* reset finder state between scans */
+void _zbar_qr_reset(qr_reader* reader)
+{
+    reader->finder_lines[0].nlines = 0;
+    reader->finder_lines[1].nlines = 0;
+}
