@@ -34,6 +34,12 @@ class zbar_image_scanner(Structure):
     pass
 
 
+class zbar_image(Structure):
+    """Opaque C++ class with private implementation
+    """
+    pass
+
+
 def load_libzbar():
     """Loads the zbar shared library and its dependencies.
 
@@ -74,5 +80,40 @@ zbar_image_scanner_destroy = zbar_function(
     'zbar_image_scanner_destroy',
     None,
     POINTER(zbar_image_scanner)
+)
+
+zbar_image_create = zbar_function(
+    'zbar_image_create',
+    POINTER(zbar_image)
+)
+
+zbar_image_destroy = zbar_function(
+    'zbar_image_destroy',
+    None,
+    POINTER(zbar_image)
+)
+
+zbar_image_set_format = zbar_function(
+    'zbar_image_set_format',
+    None,
+    POINTER(zbar_image),
+    c_uint
+)
+
+zbar_image_set_size = zbar_function(
+    'zbar_image_set_size',
+    None,
+    POINTER(zbar_image),
+    c_uint,     # width
+    c_uint      # height
+)
+
+zbar_image_set_data = zbar_function(
+    'zbar_image_set_data',
+    None,
+    POINTER(zbar_image),
+    c_void_p,   # data
+    c_ulong,    # raw_image_data_length
+    c_void_p    # A function pointer(!)
 )
 

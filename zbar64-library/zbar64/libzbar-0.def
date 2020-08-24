@@ -4,3 +4,8 @@ zbar_decoder_destroy
 zbar_image_scanner_create
 zbar_image_scanner_destroy
 zbar_decoder_create
+zbar_image_create
+zbar_image_destroy
+zbar_image_set_format
+zbar_image_set_size
+zbar_image_set_data

@@ -7,10 +7,10 @@ from .pyzbar_error import PyZbarError
 
 from .wrapper import (
 #    zbar_image_scanner_set_config,
-    zbar_image_scanner_create, 
-    zbar_image_scanner_destroy,
-#    zbar_image_create, zbar_image_destroy, zbar_image_set_format,
-#    zbar_image_set_size, zbar_image_set_data, zbar_scan_image,
+    zbar_image_scanner_create, zbar_image_scanner_destroy,
+    zbar_image_create, zbar_image_destroy,
+    zbar_image_set_format,zbar_image_set_size, zbar_image_set_data,
+#    zbar_scan_image,
 #    zbar_image_first_symbol, zbar_symbol_get_data,
 #    zbar_symbol_get_loc_size, zbar_symbol_get_loc_x, zbar_symbol_get_loc_y,
 #    zbar_symbol_next, ZBarConfig, ZBarSymbol, EXTERNAL_DEPENDENCIES
@@ -29,6 +29,28 @@ _FOURCC = {
 }
 
 _RANGEFN = getattr(globals(), 'xrange', range)
+
+
+@contextmanager
+def _image():
+    """A context manager for `zbar_image`, created and destoyed by
+    `zbar_image_create` and `zbar_image_destroy`.
+
+    Yields:
+        POINTER(zbar_image): The created image
+
+    Raises:
+        PyZbarError: If the image could not be created.
+    """
+    image = zbar_image_create()
+    if not image:
+        raise PyZbarError('Could not create zbar image')
+    else:
+        try:
+            yield image
+        finally:
+            zbar_image_destroy(image)
+
 
 @contextmanager
 def _image_scanner():
@@ -123,8 +145,11 @@ def decode(image, symbols=None):
     with _image_scanner() as scanner:
         if symbols:
             pass 
-#        with _image() as img:    
-#            pass 
+        with _image() as img:    
+            zbar_image_set_format(img, _FOURCC['L800'])
+            zbar_image_set_size(img, width, height)
+            zbar_image_set_data(img, cast(pixels, c_void_p), len(pixels), None)
+
 
 
 

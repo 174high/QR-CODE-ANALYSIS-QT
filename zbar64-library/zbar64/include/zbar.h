@@ -165,6 +165,16 @@ struct zbar_scanner_s;
 /** opaque scanner object. */
 typedef struct zbar_scanner_s zbar_scanner_t;
 
+/*------------------------------------------------------------*/
+/** @name Image interface
+ * stores image data samples along with associated format and size
+ * metadata
+ */
+ /*@{*/
+
+struct zbar_image_s;
+/** opaque image object. */
+typedef struct zbar_image_s zbar_image_t;
 
 
 /** constructor.
@@ -212,6 +222,18 @@ extern void zbar_decoder_set_userdata(zbar_decoder_t* decoder,
 extern void *zbar_decoder_get_userdata(const zbar_decoder_t *decoder);
 
 
+/** cleanup handler callback function.
+ * called to free sample data when an image is destroyed.
+ */
+typedef void (zbar_image_cleanup_handler_t)(zbar_image_t* image);
+
+/** data handler callback function.
+ * called when decoded symbol results are available for an image
+ */
+typedef void (zbar_image_data_handler_t)(zbar_image_t* image,
+    const void* userdata);
+
+
 /** retrieve last decoded symbol type.
  * @returns the type or ::ZBAR_NONE if no new data available
  */
@@ -221,6 +243,21 @@ zbar_decoder_get_type(const zbar_decoder_t* decoder);
 /** retrieve last scanned width. */
 extern unsigned zbar_scanner_get_width(const zbar_scanner_t* scanner);
 
+
+/** specify image sample data.  when image data is no longer needed by
+ * the library the specific data cleanup handler will be called
+ * (unless NULL)
+ * @note application image data will not be modified by the library
+ */
+extern void zbar_image_set_data(zbar_image_t* image,
+    const void* data,
+    unsigned long data_byte_length,
+    zbar_image_cleanup_handler_t* cleanup_hndlr);
+
+/** built-in cleanup handler.
+ * passes the image data buffer to free()
+ */
+extern void zbar_image_free_data(zbar_image_t* image);
 
 /** retrieve sample position of last edge.
  * @since 0.10
@@ -295,27 +332,6 @@ extern int zbar_decoder_set_config(zbar_decoder_t* decoder,
 
 /*@}*/
 
-/*------------------------------------------------------------*/
-/** @name Image interface
- * stores image data samples along with associated format and size
- * metadata
- */
- /*@{*/
-
-struct zbar_image_s;
-/** opaque image object. */
-typedef struct zbar_image_s zbar_image_t;
-
-/** cleanup handler callback function.
- * called to free sample data when an image is destroyed.
- */
-typedef void (zbar_image_cleanup_handler_t)(zbar_image_t* image);
-
-/** data handler callback function.
- * called when decoded symbol results are available for an image
- */
-typedef void (zbar_image_data_handler_t)(zbar_image_t* image,
-    const void* userdata);
 
 /*------------------------------------------------------------*/
 /** @name Video interface

@@ -43,3 +43,67 @@ void _zbar_image_free(zbar_image_t* img)
     }
     free(img);
 }
+
+void zbar_image_destroy(zbar_image_t* img)
+{
+    _zbar_image_refcnt(img, -1);
+}
+
+void zbar_image_set_format(zbar_image_t* img,
+    unsigned long fmt)
+{
+    img->format = fmt;
+}
+
+void zbar_image_set_size(zbar_image_t* img,
+    unsigned w,
+    unsigned h)
+{
+    img->crop_x = img->crop_y = 0;
+    img->width = img->crop_w = w;
+    img->height = img->crop_h = h;
+}
+
+void zbar_image_set_data(zbar_image_t* img,
+    const void* data,
+    unsigned long len,
+    zbar_image_cleanup_handler_t* cleanup)
+{
+    zbar_image_free_data(img);
+    img->data = data;
+    img->datalen = len;
+    img->cleanup = cleanup;
+}
+
+__inline void zbar_image_free_data(zbar_image_t* img)
+{
+    if (!img)
+        return;
+    if (img->src) {
+        zbar_image_t* newimg;
+        /* replace video image w/new copy */
+        assert(img->refcnt); /* FIXME needs lock */
+        newimg = zbar_image_create();
+        memcpy(newimg, img, sizeof(zbar_image_t));
+        /* recycle video image */
+        newimg->cleanup(newimg);
+        /* detach old image from src */
+        img->cleanup = NULL;
+        img->src = NULL;
+        img->srcidx = -1;
+    }
+    else if (img->cleanup && img->data) {
+        if (img->cleanup != zbar_image_free_data) {
+            /* using function address to detect this case is a bad idea;
+             * windows link libraries add an extra layer of indirection...
+             * this works around that problem (bug #2796277)
+             */
+            zbar_image_cleanup_handler_t* cleanup = img->cleanup;
+            img->cleanup = zbar_image_free_data;
+            cleanup(img);
+        }
+        else
+            free((void*)img->data);
+    }
+    img->data = NULL;
+}
