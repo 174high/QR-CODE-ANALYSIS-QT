@@ -72,6 +72,12 @@
     <ClInclude Include="zbar\timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="zbar\svg.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zbar\debug.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="zbar\decoder.c">

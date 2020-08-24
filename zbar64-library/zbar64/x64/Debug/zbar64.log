@@ -25,20 +25,20 @@ C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zb
   error.c
   image.c
   img_scanner.c
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(196,29): warning C4018: '<': signed/unsigned mismatch
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(242,37): warning C4018: '<': signed/unsigned mismatch
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(626,9): warning C4101: 'density': unreferenced local variable
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(625,25): warning C4101: 'cy1': unreferenced local variable
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(623,20): warning C4101: 'data': unreferenced local variable
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(625,17): warning C4101: 'h': unreferenced local variable
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(625,14): warning C4101: 'w': unreferenced local variable
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(625,20): warning C4101: 'cx1': unreferenced local variable
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(198,29): warning C4018: '<': signed/unsigned mismatch
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(244,37): warning C4018: '<': signed/unsigned mismatch
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(683,20): warning C4018: '>': signed/unsigned mismatch
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(686,9): warning C4018: '<=': signed/unsigned mismatch
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(693,18): warning C4018: '<': signed/unsigned mismatch
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(699,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(702,28): warning C4013: 'zbar_scan_y' undefined; assuming extern returning int
   rs.c
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\qrcode\rs.c(38,38): warning C4146: unary minus operator applied to unsigned type, result still unsigned
   refcnt.c
   scanner.c
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\scanner.c(301,27): warning C4018: '<=': signed/unsigned mismatch
   symbol.c
   Generating Code...
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(648): warning C4700: uninitialized local variable 'syms' used
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qr_finder.c(100): warning C4716: '_zbar_find_qr': must return a value
      Creating library C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\x64\Debug\libzbar-64.lib and object C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\x64\Debug\libzbar-64.exp
   zbar64.vcxproj -> C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\x64\Debug\libzbar-64.dll

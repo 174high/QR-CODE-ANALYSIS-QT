@@ -25,8 +25,17 @@
 
 #include <config.h>
 
+#include <zbar.h>
+
+#include "debug.h"
+
 #ifdef ENABLE_QRCODE
 # include "decoder/qr_finder.h"
+#endif
+
+ /* size of bar width history (implementation assumes power of two) */
+#ifndef DECODE_WINDOW
+# define DECODE_WINDOW  16
 #endif
 
  /* initial data buffer allocation */
@@ -34,12 +43,16 @@
 # define BUFFER_MIN   0x20
 #endif
 
+#define CFG(dcode, cfg) ((dcode).configs[(cfg) - ZBAR_CFG_MIN_LEN])
+#define TEST_CFG(config, cfg) (((config) >> (cfg)) & 1)
+#define MOD(mod) (1 << (mod))
+
 /* symbology independent decoder state */
 struct zbar_decoder_s {
     unsigned char idx;                  /* current width index */
-//    unsigned w[DECODE_WINDOW];          /* window of last N bar widths */
+    unsigned w[DECODE_WINDOW];          /* window of last N bar widths */
     zbar_symbol_type_t type;            /* type of last decoded data */
-//    zbar_symbol_type_t lock;            /* buffer lock */
+    zbar_symbol_type_t lock;            /* buffer lock */
     unsigned modifiers;                 /* symbology modifier */
     int direction;                      /* direction of last decoded data */
     unsigned s6;                        /* 6-element character width */
@@ -81,5 +94,21 @@ struct zbar_decoder_s {
 #endif
 };
 
+/* retrieve i-th previous element width */
+static __inline unsigned get_width(const zbar_decoder_t* dcode,
+    unsigned char offset)
+{
+    return(dcode->w[(dcode->idx - offset) & (DECODE_WINDOW - 1)]);
+}
+
+/* check and release shared state lock */
+static __inline char release_lock(zbar_decoder_t* dcode,
+    zbar_symbol_type_t req)
+{
+    zassert(dcode->lock == req, 1, "lock=%d req=%d\n",
+        dcode->lock, req);
+    dcode->lock = 0;
+    return(0);
+}
 
 #endif

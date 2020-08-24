@@ -17,4 +17,7 @@ static __inline void qr_finder_reset(qr_finder_t* qrf)
     qrf->s5 = 0;
 }
 
+/* find QR Code symbols */
+zbar_symbol_type_t _zbar_find_qr(zbar_decoder_t* dcode);
+
 #endif

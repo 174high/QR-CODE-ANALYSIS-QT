@@ -364,7 +364,30 @@ extern zbar_video_t* zbar_video_create(void);
 /** destructor. */
 extern void zbar_video_destroy(zbar_video_t* video);
 
+/** mark start of a new scan pass. resets color to ::ZBAR_SPACE.
+ * also updates an associated decoder.
+ * @returns any decode results flushed from the pipeline
+ * @note when not using callback handlers, the return value should
+ * be checked the same as zbar_scan_y()
+ * @note call zbar_scanner_flush() at least twice before calling this
+ * method to ensure no decode results are lost
+ */
+extern zbar_symbol_type_t zbar_scanner_new_scan(zbar_scanner_t* scanner);
 
+/** flush scanner processing pipeline.
+ * forces current scanner position to be a scan boundary.
+ * call multiple times (max 3) to completely flush decoder.
+ * @returns any decode/scan results flushed from the pipeline
+ * @note when not using callback handlers, the return value should
+ * be checked the same as zbar_scan_y()
+ * @since 0.9
+ */
+extern zbar_symbol_type_t zbar_scanner_flush(zbar_scanner_t* scanner);
 
+/** mark start of a new scan pass.
+ * clears any intra-symbol state and resets color to ::ZBAR_SPACE.
+ * any partially decoded symbol state is retained
+ */
+extern void zbar_decoder_new_scan(zbar_decoder_t* decoder);
 
 #endif

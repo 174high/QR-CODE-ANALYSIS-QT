@@ -194,6 +194,41 @@ decoder_get_configp(const zbar_decoder_t* dcode,
     return(config);
 }
 
+void zbar_decoder_new_scan(zbar_decoder_t* dcode)
+{
+    /* soft reset decoder */
+    memset(dcode->w, 0, sizeof(dcode->w));
+    dcode->lock = 0;
+    dcode->idx = 0;
+    dcode->s6 = 0;
+#ifdef ENABLE_EAN
+    ean_new_scan(&dcode->ean);
+#endif
+#ifdef ENABLE_I25
+    i25_reset(&dcode->i25);
+#endif
+#ifdef ENABLE_DATABAR
+    databar_new_scan(&dcode->databar);
+#endif
+#ifdef ENABLE_CODABAR
+    codabar_reset(&dcode->codabar);
+#endif
+#ifdef ENABLE_CODE39
+    code39_reset(&dcode->code39);
+#endif
+#ifdef ENABLE_CODE93
+    code93_reset(&dcode->code93);
+#endif
+#ifdef ENABLE_CODE128
+    code128_reset(&dcode->code128);
+#endif
+#ifdef ENABLE_PDF417
+    pdf417_reset(&dcode->pdf417);
+#endif
+#ifdef ENABLE_QRCODE
+    qr_finder_reset(&dcode->qrf);
+#endif
+}
 
 unsigned int zbar_decoder_get_configs(const zbar_decoder_t* dcode,
 	zbar_symbol_type_t sym)

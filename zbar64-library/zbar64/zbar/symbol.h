@@ -68,6 +68,8 @@ extern int _zbar_get_symbol_hash(zbar_symbol_type_t);
 
 extern void _zbar_symbol_free(zbar_symbol_t*);
 
+extern zbar_symbol_set_t* _zbar_symbol_set_create(void);
+
 static __inline void _zbar_symbol_refcnt(zbar_symbol_t* sym,
     int delta)
 {

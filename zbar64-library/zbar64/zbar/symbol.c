@@ -77,3 +77,9 @@ void _zbar_symbol_free(zbar_symbol_t* sym)
     free(sym);
 }
 
+zbar_symbol_set_t* _zbar_symbol_set_create()
+{
+    zbar_symbol_set_t* syms = calloc(1, sizeof(*syms));
+    _zbar_refcnt(&syms->refcnt, 1);
+    return(syms);
+}
