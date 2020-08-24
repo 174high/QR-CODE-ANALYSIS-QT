@@ -47,8 +47,19 @@ struct zbar_image_s {
     zbar_symbol_set_t* syms;    /* decoded result set */
 };
 
+extern void _zbar_image_free(zbar_image_t*);
 
 
+static __inline void _zbar_image_refcnt(zbar_image_t* img,
+    int delta)
+{
+    if (!_zbar_refcnt(&img->refcnt, delta) && delta <= 0) {
+        if (img->cleanup)
+            img->cleanup(img);
+        if (!img->src)
+            _zbar_image_free(img);
+    }
+}
 
 
 

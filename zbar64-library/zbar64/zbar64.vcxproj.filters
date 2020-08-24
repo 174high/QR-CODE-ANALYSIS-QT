@@ -66,6 +66,9 @@
     <ClInclude Include="zbar\video.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="zbar\mutex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="zbar\decoder.c">

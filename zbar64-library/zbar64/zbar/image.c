@@ -29,8 +29,17 @@
 zbar_image_t* zbar_image_create()
 {
     zbar_image_t* img = calloc(1, sizeof(zbar_image_t));
- //   _zbar_refcnt_init();
- //   _zbar_image_refcnt(img, 1);
-//    img->srcidx = -1;
+    _zbar_refcnt_init();
+    _zbar_image_refcnt(img, 1);
+    img->srcidx = -1;
     return(img);
+}
+
+void _zbar_image_free(zbar_image_t* img)
+{
+    if (img->syms) {
+        zbar_symbol_set_ref(img->syms, -1);
+        img->syms = NULL;
+    }
+    free(img);
 }

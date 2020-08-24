@@ -25,6 +25,7 @@
 
 #include "error.h"
 #include <stdint.h>
+#include "mutex.h"
 
  /* number of images to preallocate */
 #define ZBAR_VIDEO_IMAGES_MAX  4
@@ -37,6 +38,13 @@ typedef enum video_interface_e {
     VIDEO_VFW,                  /* video for windows */
 } video_interface_t;
 
+typedef enum video_iomode_e {
+    VIDEO_READWRITE = 1,        /* standard system calls */
+    VIDEO_MMAP,                 /* mmap interface */
+    VIDEO_USERPTR,              /* userspace buffers */
+} video_iomode_t;
+
+typedef struct video_state_s video_state_t;
 
 struct zbar_video_s {
     errinfo_t err;              /* error reporting */

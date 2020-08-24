@@ -173,6 +173,7 @@
     <ClInclude Include="zbar\decoder\qr_finder.h" />
     <ClInclude Include="zbar\error.h" />
     <ClInclude Include="zbar\image.h" />
+    <ClInclude Include="zbar\mutex.h" />
     <ClInclude Include="zbar\qrcode.h" />
     <ClInclude Include="zbar\qrcode\isaac.h" />
     <ClInclude Include="zbar\qrcode\rs.h" />
