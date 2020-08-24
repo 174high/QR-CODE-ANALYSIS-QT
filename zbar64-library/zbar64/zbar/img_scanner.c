@@ -36,7 +36,7 @@
 
 #include <zbar.h>
 #include "error.h"
-
+#include "timer.h"
 #include "symbol.h"
 
 #ifdef ENABLE_QRCODE
@@ -575,3 +575,25 @@ void zbar_image_scanner_destroy (zbar_image_scanner_t *iscn)
     free(iscn);
 }
 
+int zbar_scan_image(zbar_image_scanner_t* iscn,
+    zbar_image_t* img)
+{
+    zbar_symbol_set_t* syms;
+    const uint8_t* data;
+    zbar_scanner_t* scn = iscn->scn;
+    unsigned w, h, cx1, cy1;
+    int density;
+
+    /* timestamp image
+     * FIXME prefer video timestamp
+     */
+    iscn->time = _zbar_timer_now();
+
+   // svg_close();
+     return(syms->nsyms);
+}
+
+#ifdef DEBUG_SVG
+/* FIXME lame...*/
+# include "svg.c"
+#endif

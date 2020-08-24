@@ -10,7 +10,7 @@ from .wrapper import (
     zbar_image_scanner_create, zbar_image_scanner_destroy,
     zbar_image_create, zbar_image_destroy,
     zbar_image_set_format,zbar_image_set_size, zbar_image_set_data,
-#    zbar_scan_image,
+    zbar_scan_image,
 #    zbar_image_first_symbol, zbar_symbol_get_data,
 #    zbar_symbol_get_loc_size, zbar_symbol_get_loc_x, zbar_symbol_get_loc_y,
 #    zbar_symbol_next, ZBarConfig, ZBarSymbol, EXTERNAL_DEPENDENCIES
@@ -149,7 +149,7 @@ def decode(image, symbols=None):
             zbar_image_set_format(img, _FOURCC['L800'])
             zbar_image_set_size(img, width, height)
             zbar_image_set_data(img, cast(pixels, c_void_p), len(pixels), None)
-
+            decoded = zbar_scan_image(scanner, img)
 
 
 

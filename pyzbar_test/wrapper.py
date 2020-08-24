@@ -117,3 +117,10 @@ zbar_image_set_data = zbar_function(
     c_void_p    # A function pointer(!)
 )
 
+zbar_scan_image = zbar_function(
+    'zbar_scan_image',
+    c_int,
+    POINTER(zbar_image_scanner),
+    POINTER(zbar_image)
+)
+

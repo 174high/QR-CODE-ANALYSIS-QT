@@ -9,3 +9,5 @@ zbar_image_destroy
 zbar_image_set_format
 zbar_image_set_size
 zbar_image_set_data
+zbar_scan_image
+zbar_scanner_reset

@@ -53,5 +53,8 @@ struct qr_finder_line {
 };
 
 qr_reader* _zbar_qr_create(void);
+int _zbar_qr_found_line(qr_reader* reader,
+    int direction,
+    const qr_finder_line* line);
 
 #endif

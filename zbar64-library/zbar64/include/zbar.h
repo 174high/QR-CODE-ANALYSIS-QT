@@ -188,7 +188,10 @@ extern zbar_scanner_t* zbar_scanner_create(zbar_decoder_t* decoder);
 /** destructor. */
 extern void zbar_scanner_destroy(zbar_scanner_t* scanner);
 
-
+/** clear all scanner state.
+ * also resets an associated decoder
+ */
+extern zbar_symbol_type_t zbar_scanner_reset(zbar_scanner_t* scanner);
 
 /** reference count manipulation.
  * increment the reference count when you store a new reference.
