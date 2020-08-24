@@ -165,6 +165,8 @@ struct zbar_scanner_s;
 /** opaque scanner object. */
 typedef struct zbar_scanner_s zbar_scanner_t;
 
+
+
 /** constructor.
  * if decoder is non-NULL it will be attached to scanner
  * and called automatically at each new edge
@@ -290,6 +292,50 @@ extern int zbar_decoder_set_config(zbar_decoder_t* decoder,
     zbar_symbol_type_t symbology,
     zbar_config_t config,
     int value);
+
+/*@}*/
+
+/*------------------------------------------------------------*/
+/** @name Image interface
+ * stores image data samples along with associated format and size
+ * metadata
+ */
+ /*@{*/
+
+struct zbar_image_s;
+/** opaque image object. */
+typedef struct zbar_image_s zbar_image_t;
+
+/** cleanup handler callback function.
+ * called to free sample data when an image is destroyed.
+ */
+typedef void (zbar_image_cleanup_handler_t)(zbar_image_t* image);
+
+/** data handler callback function.
+ * called when decoded symbol results are available for an image
+ */
+typedef void (zbar_image_data_handler_t)(zbar_image_t* image,
+    const void* userdata);
+
+/*------------------------------------------------------------*/
+/** @name Video interface
+ * @anchor c-video
+ * mid-level video source abstraction.
+ * captures images from a video device
+ */
+ /*@{*/
+
+struct zbar_video_s;
+/** opaque video object. */
+typedef struct zbar_video_s zbar_video_t;
+
+/** constructor. */
+extern zbar_video_t* zbar_video_create(void);
+
+/** destructor. */
+extern void zbar_video_destroy(zbar_video_t* video);
+
+
 
 
 #endif

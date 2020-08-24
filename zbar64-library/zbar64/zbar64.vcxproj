@@ -172,11 +172,13 @@
     <ClInclude Include="zbar\decoder.h" />
     <ClInclude Include="zbar\decoder\qr_finder.h" />
     <ClInclude Include="zbar\error.h" />
+    <ClInclude Include="zbar\image.h" />
     <ClInclude Include="zbar\qrcode.h" />
     <ClInclude Include="zbar\qrcode\isaac.h" />
     <ClInclude Include="zbar\qrcode\rs.h" />
     <ClInclude Include="zbar\refcnt.h" />
     <ClInclude Include="zbar\symbol.h" />
+    <ClInclude Include="zbar\video.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="zbar\decoder.c" />
@@ -184,8 +186,10 @@
     <ClCompile Include="zbar\decoder\qrdec.c" />
     <ClCompile Include="zbar\decoder\qr_finder.c" />
     <ClCompile Include="zbar\error.c" />
+    <ClCompile Include="zbar\image.c" />
     <ClCompile Include="zbar\img_scanner.c" />
     <ClCompile Include="zbar\qrcode\rs.c" />
+    <ClCompile Include="zbar\refcnt.c" />
     <ClCompile Include="zbar\scanner.c" />
     <ClCompile Include="zbar\symbol.c" />
   </ItemGroup>

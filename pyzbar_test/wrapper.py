@@ -70,4 +70,9 @@ zbar_image_scanner_create = zbar_function(
     POINTER(zbar_image_scanner)
 )
 
+zbar_image_scanner_destroy = zbar_function(
+    'zbar_image_scanner_destroy',
+    None,
+    POINTER(zbar_image_scanner)
+)
 

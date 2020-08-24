@@ -453,6 +453,8 @@ zbar_image_scanner_t* zbar_image_scanner_create(void)
     /* apply default configuration */
     CFG(iscn, ZBAR_CFG_X_DENSITY) = 1;
     CFG(iscn, ZBAR_CFG_Y_DENSITY) = 1;
+    
+    printf("set_config \r\n");
     zbar_image_scanner_set_config(iscn, 0, ZBAR_CFG_POSITION, 1);
     zbar_image_scanner_set_config(iscn, 0, ZBAR_CFG_UNCERTAINTY, 2);
     zbar_image_scanner_set_config(iscn, ZBAR_QRCODE, ZBAR_CFG_UNCERTAINTY, 0);
@@ -503,7 +505,9 @@ int zbar_image_scanner_set_config(zbar_image_scanner_t* iscn,
             return(1);
         c = cfg - ZBAR_CFG_UNCERTAINTY;
         if (sym > ZBAR_PARTIAL) {
+          //  printf("sym= 0x%x \r\n",sym);
             i = _zbar_get_symbol_hash(sym);
+          //  printf("result= 0x%x \r\n", i);
             iscn->sym_configs[c][i] = val;
         }
         else

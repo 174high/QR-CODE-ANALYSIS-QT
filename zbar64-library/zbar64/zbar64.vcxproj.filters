@@ -60,6 +60,12 @@
     <ClInclude Include="zbar\qrcode\rs.h">
       <Filter>Header Files\qrcode</Filter>
     </ClInclude>
+    <ClInclude Include="zbar\image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zbar\video.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="zbar\decoder.c">
@@ -88,6 +94,12 @@
     </ClCompile>
     <ClCompile Include="zbar\qrcode\rs.c">
       <Filter>Source Files\qrcode</Filter>
+    </ClCompile>
+    <ClCompile Include="zbar\image.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="zbar\refcnt.c">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

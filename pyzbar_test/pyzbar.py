@@ -8,7 +8,7 @@ from .pyzbar_error import PyZbarError
 from .wrapper import (
 #    zbar_image_scanner_set_config,
     zbar_image_scanner_create, 
-#    zbar_image_scanner_destroy,
+    zbar_image_scanner_destroy,
 #    zbar_image_create, zbar_image_destroy, zbar_image_set_format,
 #    zbar_image_set_size, zbar_image_set_data, zbar_scan_image,
 #    zbar_image_first_symbol, zbar_symbol_get_data,
@@ -42,13 +42,13 @@ def _image_scanner():
         PyZbarError: If the decoder could not be created.
     """
     scanner = zbar_image_scanner_create()
-#    if not scanner:
-#        raise PyZbarError('Could not create image scanner')
-#    else:
-#        try:
-#            yield scanner
-#        finally:
-#            zbar_image_scanner_destroy(scanner)
+    if not scanner:
+        raise PyZbarError('Could not create image scanner')
+    else:
+        try:
+            yield scanner
+        finally:
+            zbar_image_scanner_destroy(scanner)
 
 
 def _pixel_data(image):
@@ -118,4 +118,13 @@ def decode(image, symbols=None):
 
     print(now,"w:",width,"h:",height)
     
-    _image_scanner() 
+    results = []
+    
+    with _image_scanner() as scanner:
+        if symbols:
+            pass 
+#        with _image() as img:    
+#            pass 
+
+
+

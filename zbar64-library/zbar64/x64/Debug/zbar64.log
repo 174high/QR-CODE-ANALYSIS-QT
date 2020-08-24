@@ -23,13 +23,15 @@ C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zb
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(58,11): warning C4013: 'memcpy' undefined; assuming extern returning int
   qr_finder.c
   error.c
+  image.c
   img_scanner.c
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(151,24): warning C4013: '_zbar_qr_found_line' undefined; assuming extern returning int
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(195,29): warning C4018: '<': signed/unsigned mismatch
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(241,37): warning C4018: '<': signed/unsigned mismatch
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(566,25): warning C4013: '_zbar_qr_destroy' undefined; assuming extern returning int
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(570,25): warning C4013: '_zbar_qr_destroy' undefined; assuming extern returning int
   rs.c
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\qrcode\rs.c(38,38): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+  refcnt.c
   scanner.c
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\scanner.c(41,23): warning C4013: 'zbar_scanner_reset' undefined; assuming extern returning int
   symbol.c

@@ -25,6 +25,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
+#include <zbar.h>
+
 
 extern int _zbar_verbosity;
 
@@ -64,9 +67,54 @@ extern int _zbar_verbosity;
 
 #endif
 
+typedef enum errsev_e {
+    SEV_FATAL = -2,           /* application must terminate */
+    SEV_ERROR = -1,           /* might be able to recover and continue */
+    SEV_OK = 0,
+    SEV_WARNING = 1,           /* unexpected condition */
+    SEV_NOTE = 2,           /* fyi */
+} errsev_t;
 
 
+typedef enum errmodule_e {
+    ZBAR_MOD_PROCESSOR,
+    ZBAR_MOD_VIDEO,
+    ZBAR_MOD_WINDOW,
+    ZBAR_MOD_IMAGE_SCANNER,
+    ZBAR_MOD_UNKNOWN,
+} errmodule_t;
 
+/** error codes. */
+typedef enum zbar_error_e {
+    ZBAR_OK = 0,                /**< no error */
+    ZBAR_ERR_NOMEM,             /**< out of memory */
+    ZBAR_ERR_INTERNAL,          /**< internal library error */
+    ZBAR_ERR_UNSUPPORTED,       /**< unsupported request */
+    ZBAR_ERR_INVALID,           /**< invalid request */
+    ZBAR_ERR_SYSTEM,            /**< system error */
+    ZBAR_ERR_LOCKING,           /**< locking error */
+    ZBAR_ERR_BUSY,              /**< all resources busy */
+    ZBAR_ERR_XDISPLAY,          /**< X11 display error */
+    ZBAR_ERR_XPROTO,            /**< X11 protocol error */
+    ZBAR_ERR_CLOSED,            /**< output window is closed */
+    ZBAR_ERR_WINAPI,            /**< windows system error */
+    ZBAR_ERR_NUM                /**< number of error codes */
+} zbar_error_t;
+
+
+typedef struct errinfo_s {
+    uint32_t magic;             /* just in case */
+    errmodule_t module;         /* reporting module */
+    char* buf;                  /* formatted and passed to application */
+    int errnum;                 /* errno for system errors */
+
+    errsev_t sev;
+    zbar_error_t type;
+    const char* func;           /* reporting function */
+    const char* detail;         /* description */
+    char* arg_str;              /* single string argument */
+    int arg_int;                /* single integer argument */
+} errinfo_t;
 
 
 
