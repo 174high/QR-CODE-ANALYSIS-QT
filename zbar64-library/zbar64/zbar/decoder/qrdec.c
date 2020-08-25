@@ -1862,7 +1862,388 @@ static void qr_sampling_grid_init(qr_sampling_grid* _grid, int _version,
         free(q);
         free(p);
     }
+    /*Set the limits over which each cell is used.*/
+    memcpy(_grid->cell_limits, align_pos + 1,
+        (_grid->ncells - 1) * sizeof(*_grid->cell_limits));
+    _grid->cell_limits[_grid->ncells - 1] = dim;
+    /*Produce a bounding square for the code (to mark finder centers with).
+      Because of non-linear distortion, this might not actually bound the code,
+       but it should be good enough.
+      I don't think it's worth computing a convex hull or anything silly like
+       that.*/
+    qr_hom_cell_project(_p[0], _grid->cells[0] + 0, -1, -1, 1);
+    qr_hom_cell_project(_p[1], _grid->cells[0] + _grid->ncells - 1, (dim << 1) - 1, -1, 1);
+    qr_hom_cell_project(_p[2], _grid->cells[_grid->ncells - 1] + 0, -1, (dim << 1) - 1, 1);
+    qr_hom_cell_project(_p[3], _grid->cells[_grid->ncells - 1] + _grid->ncells - 1,
+        (dim << 1) - 1, (dim << 1) - 1, 1);
+    /*Clamp the points somewhere near the image (this is really just in case a
+       corner is near the plane at infinity).*/
+    for (i = 0; i < 4; i++) {
+        _p[i][0] = QR_CLAMPI(-_width << QR_FINDER_SUBPREC, _p[i][0],
+            _width << QR_FINDER_SUBPREC + 1);
+        _p[i][1] = QR_CLAMPI(-_height << QR_FINDER_SUBPREC, _p[i][1],
+            _height << QR_FINDER_SUBPREC + 1);
+    }
+    /*TODO: Make fine adjustments using the timing patterns.
+      Possible strategy: scan the timing pattern at QR_ALIGN_SUBPREC (or finer)
+       resolution, use dynamic programming to match midpoints between
+       transitions to the ideal grid locations.*/
 }
+
+/*Generate the data mask corresponding to the given mask pattern.*/
+static void qr_data_mask_fill(unsigned* _mask, int _dim, int _pattern) {
+    int stride;
+    int i;
+    int j;
+    stride = _dim + QR_INT_BITS - 1 >> QR_INT_LOGBITS;
+    /*Note that we store bits column-wise, since that's how they're read out of
+       the grid.*/
+    switch (_pattern) {
+        /*10101010 i+j+1&1
+          01010101
+          10101010
+          01010101*/
+    case 0: {
+        int m;
+        m = 0x55;
+        for (j = 0; j < _dim; j++) {
+            memset(_mask + j * stride, m, stride * sizeof(*_mask));
+            m ^= 0xFF;
+        }
+    }break;
+        /*11111111 i+1&1
+          00000000
+          11111111
+          00000000*/
+    case 1:memset(_mask, 0x55, _dim * stride * sizeof(*_mask)); break;
+        /*10010010 (j+1)%3&1
+          10010010
+          10010010
+          10010010*/
+    case 2: {
+        unsigned m;
+        m = 0xFF;
+        for (j = 0; j < _dim; j++) {
+            memset(_mask + j * stride, m & 0xFF, stride * sizeof(*_mask));
+            m = m << 8 | m >> 16;
+        }
+    }break;
+        /*10010010 (i+j+1)%3&1
+          00100100
+          01001001
+          10010010*/
+    case 3: {
+        unsigned mi;
+        unsigned mj;
+        mj = 0;
+        for (i = 0; i < (QR_INT_BITS + 2) / 3; i++)mj |= 1 << 3 * i;
+        for (j = 0; j < _dim; j++) {
+            mi = mj;
+            for (i = 0; i < stride; i++) {
+                _mask[j * stride + i] = mi;
+                mi = mi >> QR_INT_BITS % 3 | mi << 3 - QR_INT_BITS % 3;
+            }
+            mj = mj >> 1 | mj << 2;
+        }
+    }break;
+        /*11100011 (i>>1)+(j/3)+1&1
+          11100011
+          00011100
+          00011100*/
+    case 4: {
+        unsigned m;
+        m = 7;
+        for (j = 0; j < _dim; j++) {
+            memset(_mask + j * stride, (0xCC ^ -(m & 1)) & 0xFF, stride * sizeof(*_mask));
+            m = m >> 1 | m << 5;
+        }
+    }break;
+        /*11111111 !((i*j)%6)
+          10000010
+          10010010
+          10101010*/
+    case 5: {
+        for (j = 0; j < _dim; j++) {
+            unsigned m;
+            m = 0;
+            for (i = 0; i < 6; i++)m |= !((i * j) % 6) << i;
+            for (i = 6; i < QR_INT_BITS; i <<= 1)m |= m << i;
+            for (i = 0; i < stride; i++) {
+                _mask[j * stride + i] = m;
+                m = m >> QR_INT_BITS % 6 | m << 6 - QR_INT_BITS % 6;
+            }
+        }
+    }break;
+        /*11111111 (i*j)%3+i*j+1&1
+          11100011
+          11011011
+          10101010*/
+    case 6: {
+        for (j = 0; j < _dim; j++) {
+            unsigned m;
+            m = 0;
+            for (i = 0; i < 6; i++)m |= ((i * j) % 3 + i * j + 1 & 1) << i;
+            for (i = 6; i < QR_INT_BITS; i <<= 1)m |= m << i;
+            for (i = 0; i < stride; i++) {
+                _mask[j * stride + i] = m;
+                m = m >> QR_INT_BITS % 6 | m << 6 - QR_INT_BITS % 6;
+            }
+        }
+    }break;
+        /*10101010 (i*j)%3+i+j+1&1
+          00011100
+          10001110
+          01010101*/
+    default: {
+        for (j = 0; j < _dim; j++) {
+            unsigned m;
+            m = 0;
+            for (i = 0; i < 6; i++)m |= ((i * j) % 3 + i + j + 1 & 1) << i;
+            for (i = 6; i < QR_INT_BITS; i <<= 1)m |= m << i;
+            for (i = 0; i < stride; i++) {
+                _mask[j * stride + i] = m;
+                m = m >> QR_INT_BITS % 6 | m << 6 - QR_INT_BITS % 6;
+            }
+        }
+    }break;
+    }
+}
+
+/*Determine if a given grid location is inside the function pattern.*/
+static int qr_sampling_grid_is_in_fp(const qr_sampling_grid* _grid, int _dim,
+    int _u, int _v) {
+    return _grid->fpmask[_u * (_dim + QR_INT_BITS - 1 >> QR_INT_LOGBITS)
+        + (_v >> QR_INT_LOGBITS)] >> (_v & QR_INT_BITS - 1) & 1;
+}
+
+
+static void qr_sampling_grid_sample(const qr_sampling_grid* _grid,
+    unsigned* _data_bits, int _dim, int _fmt_info,
+    const unsigned char* _img, int _width, int _height) {
+    int stride;
+    int u0;
+    int u1;
+    int j;
+    /*We initialize the buffer with the data mask and XOR bits into it as we read
+       them out of the image instead of unmasking in a separate step.*/
+    qr_data_mask_fill(_data_bits, _dim, _fmt_info & 7);
+    stride = _dim + QR_INT_BITS - 1 >> QR_INT_LOGBITS;
+    u0 = 0;
+    svg_path_start("sampling-grid", 1, 0, 0);
+    /*We read data cell-by-cell to avoid having to constantly change which
+       projection we're using as we read each bit.
+      This (and the position-dependent data mask) is the reason we buffer the
+       bits we read instead of converting them directly to codewords here.
+      Note that bits are stored column-wise, since that's how we'll scan them.*/
+    for (j = 0; j < _grid->ncells; j++) {
+        int i;
+        int v0;
+        int v1;
+        u1 = _grid->cell_limits[j];
+        v0 = 0;
+        for (i = 0; i < _grid->ncells; i++) {
+            qr_hom_cell* cell;
+            int          x0;
+            int          y0;
+            int          w0;
+            int          u;
+            int          du;
+            int          dv;
+            v1 = _grid->cell_limits[i];
+            cell = _grid->cells[i] + j;
+            du = u0 - cell->u0;
+            dv = v0 - cell->v0;
+            x0 = cell->fwd[0][0] * du + cell->fwd[0][1] * dv + cell->fwd[0][2];
+            y0 = cell->fwd[1][0] * du + cell->fwd[1][1] * dv + cell->fwd[1][2];
+            w0 = cell->fwd[2][0] * du + cell->fwd[2][1] * dv + cell->fwd[2][2];
+            for (u = u0; u < u1; u++) {
+                int x;
+                int y;
+                int w;
+                int v;
+                x = x0;
+                y = y0;
+                w = w0;
+                for (v = v0; v < v1; v++) {
+                    /*Skip doing all the divisions and bounds checks if the bit is in the
+                       function pattern.*/
+                    if (!qr_sampling_grid_is_in_fp(_grid, _dim, u, v)) {
+                        qr_point p;
+                        qr_hom_cell_fproject(p, cell, x, y, w);
+                        _data_bits[u * stride + (v >> QR_INT_LOGBITS)] ^=
+                            qr_img_get_bit(_img, _width, _height, p[0], p[1]) << (v & QR_INT_BITS - 1);
+                        svg_path_moveto(SVG_ABS, p[0], p[1]);
+                    }
+                    x += cell->fwd[0][1];
+                    y += cell->fwd[1][1];
+                    w += cell->fwd[2][1];
+                }
+                x0 += cell->fwd[0][0];
+                y0 += cell->fwd[1][0];
+                w0 += cell->fwd[2][0];
+            }
+            v0 = v1;
+        }
+        u0 = u1;
+    }
+    svg_path_end();
+}
+
+/*Bulk data for the number of parity bytes per Reed-Solomon block.*/
+static const unsigned char QR_RS_NPAR_VALS[71] = {
+    /*[ 0]*/ 7,10,13,17,
+    /*[ 4]*/10,16,22, 28,26,26, 26,22, 24,22,22, 26,24,18,22,
+    /*[19]*/15,26,18, 22,24, 30,24,20,24,
+    /*[28]*/18,16,24, 28, 28, 28,28,30,24,
+    /*[37]*/20,18, 18,26, 24,28,24, 30,26,28, 28, 26,28,30, 30,22,20,24,
+    /*[55]*/20,18,26,16,
+    /*[59]*/20,30,28, 24,22,26, 28,26, 30,28,30,30
+};
+
+/*An offset into QR_RS_NPAR_DATA for each version that gives the number of
+   parity bytes per Reed-Solomon block for each error correction level.*/
+static const unsigned char QR_RS_NPAR_OFFS[40] = {
+   0, 4,19,55,15,28,37,12,51,39,
+  59,62,10,24,22,41,31,44, 7,65,
+  47,33,67,67,48,32,67,67,67,67,
+  67,67,67,67,67,67,67,67,67,67
+};
+
+/*The number of Reed-Solomon blocks for each version and error correction
+   level.*/
+static const unsigned char QR_RS_NBLOCKS[40][4] = {
+  { 1, 1, 1, 1},{ 1, 1, 1, 1},{ 1, 1, 2, 2},{ 1, 2, 2, 4},
+  { 1, 2, 4, 4},{ 2, 4, 4, 4},{ 2, 4, 6, 5},{ 2, 4, 6, 6},
+  { 2, 5, 8, 8},{ 4, 5, 8, 8},{ 4, 5, 8,11},{ 4, 8,10,11},
+  { 4, 9,12,16},{ 4, 9,16,16},{ 6,10,12,18},{ 6,10,17,16},
+  { 6,11,16,19},{ 6,13,18,21},{ 7,14,21,25},{ 8,16,20,25},
+  { 8,17,23,25},{ 9,17,23,34},{ 9,18,25,30},{10,20,27,32},
+  {12,21,29,35},{12,23,34,37},{12,25,34,40},{13,26,35,42},
+  {14,28,38,45},{15,29,40,48},{16,31,43,51},{17,33,45,54},
+  {18,35,48,57},{19,37,51,60},{19,38,53,63},{20,40,56,66},
+  {21,43,59,70},{22,45,62,74},{24,47,65,77},{25,49,68,81}
+};
+
+
+/*The total number of codewords in a QR code.*/
+static int qr_code_ncodewords(unsigned _version) {
+    unsigned nalign;
+    /*This is 24-27 instructions on ARM in thumb mode, or a 26-32 byte savings
+       over just using a table (not counting the instructions that would be
+       needed to do the table lookup).*/
+    if (_version == 1)return 26;
+    nalign = (_version / 7) + 2;
+    return (_version << 4) * (_version + 8)
+        - (5 * nalign) * (5 * nalign - 2) + 36 * (_version < 7) + 83 >> 3;
+}
+
+/*Arranges the sample bits read by qr_sampling_grid_sample() into bytes and
+   groups those bytes into Reed-Solomon blocks.
+  The individual block pointers are destroyed by this routine.*/
+static void qr_samples_unpack(unsigned char** _blocks, int _nblocks,
+    int _nshort_data, int _nshort_blocks, const unsigned* _data_bits,
+    const unsigned* _fp_mask, int _dim) {
+    unsigned bits;
+    int      biti;
+    int      stride;
+    int      blocki;
+    int      blockj;
+    int      i;
+    int      j;
+    stride = _dim + QR_INT_BITS - 1 >> QR_INT_LOGBITS;
+    /*If _all_ the blocks are short, don't skip anything (see below).*/
+    if (_nshort_blocks >= _nblocks)_nshort_blocks = 0;
+    /*Scan columns in pairs from right to left.*/
+    bits = 0;
+    for (blocki = blockj = biti = 0, j = _dim - 1; j > 0; j -= 2) {
+        unsigned data1;
+        unsigned data2;
+        unsigned fp_mask1;
+        unsigned fp_mask2;
+        int      nbits;
+        int      l;
+        /*Scan up a pair of columns.*/
+        nbits = (_dim - 1 & QR_INT_BITS - 1) + 1;
+        l = j * stride;
+        for (i = stride; i-- > 0;) {
+            data1 = _data_bits[l + i];
+            fp_mask1 = _fp_mask[l + i];
+            data2 = _data_bits[l + i - stride];
+            fp_mask2 = _fp_mask[l + i - stride];
+            while (nbits-- > 0) {
+                /*Pull a bit from the right column.*/
+                if (!(fp_mask1 >> nbits & 1)) {
+                    bits = bits << 1 | data1 >> nbits & 1;
+                    biti++;
+                }
+                /*Pull a bit from the left column.*/
+                if (!(fp_mask2 >> nbits & 1)) {
+                    bits = bits << 1 | data2 >> nbits & 1;
+                    biti++;
+                }
+                /*If we finished a byte, drop it in a block.*/
+                if (biti >= 8) {
+                    biti -= 8;
+                    *_blocks[blocki++]++ = (unsigned char)(bits >> biti);
+                    /*For whatever reason, the long blocks are at the _end_ of the list,
+                       instead of the beginning.
+                      Even worse, the extra bytes they get come at the end of the data
+                       bytes, before the parity bytes.
+                      Hence the logic here: when we've filled up the data portion of the
+                       short blocks, skip directly to the long blocks for the next byte.
+                      It's also the reason we increment _blocks[blocki] on each store,
+                       instead of just indexing with blockj (after this iteration the
+                       number of bytes in each block differs).*/
+                    if (blocki >= _nblocks)blocki = ++blockj == _nshort_data ? _nshort_blocks : 0;
+                }
+            }
+            nbits = QR_INT_BITS;
+        }
+        j -= 2;
+        /*Skip the column with the vertical timing pattern.*/
+        if (j == 6)j--;
+        /*Scan down a pair of columns.*/
+        l = j * stride;
+        for (i = 0; i < stride; i++) {
+            data1 = _data_bits[l + i];
+            fp_mask1 = _fp_mask[l + i];
+            data2 = _data_bits[l + i - stride];
+            fp_mask2 = _fp_mask[l + i - stride];
+            nbits = QR_MINI(_dim - (i << QR_INT_LOGBITS), QR_INT_BITS);
+            while (nbits-- > 0) {
+                /*Pull a bit from the right column.*/
+                if (!(fp_mask1 & 1)) {
+                    bits = bits << 1 | data1 & 1;
+                    biti++;
+                }
+                data1 >>= 1;
+                fp_mask1 >>= 1;
+                /*Pull a bit from the left column.*/
+                if (!(fp_mask2 & 1)) {
+                    bits = bits << 1 | data2 & 1;
+                    biti++;
+                }
+                data2 >>= 1;
+                fp_mask2 >>= 1;
+                /*If we finished a byte, drop it in a block.*/
+                if (biti >= 8) {
+                    biti -= 8;
+                    *_blocks[blocki++]++ = (unsigned char)(bits >> biti);
+                    /*See comments on the "up" loop for the reason behind this mess.*/
+                    if (blocki >= _nblocks)blocki = ++blockj == _nshort_data ? _nshort_blocks : 0;
+                }
+            }
+        }
+    }
+}
+
+static void qr_sampling_grid_clear(qr_sampling_grid* _grid) {
+    free(_grid->fpmask);
+    free(_grid->cells[0]);
+}
+
+
+
 
 /*Attempts to fully decode a QR code.
   _qrdata:   Returns the parsed code data.
@@ -1901,8 +2282,63 @@ static int qr_code_decode(qr_code_data* _qrdata, const rs_gf256* _gf,
 #if defined(QR_DEBUG)
     qr_sampling_grid_dump(&grid, _version, _img, _width, _height);
 #endif
-
-
+    dim = 17 + (_version << 2);
+    data_bits = (unsigned*)malloc(
+        dim * (dim + QR_INT_BITS - 1 >> QR_INT_LOGBITS) * sizeof(*data_bits));
+    qr_sampling_grid_sample(&grid, data_bits, dim, _fmt_info, _img, _width, _height);
+    /*Group those bits into Reed-Solomon codewords.*/
+    ecc_level = (_fmt_info >> 3) ^ 1;
+    nblocks = QR_RS_NBLOCKS[_version - 1][ecc_level];
+    npar = *(QR_RS_NPAR_VALS + QR_RS_NPAR_OFFS[_version - 1] + ecc_level);
+    ncodewords = qr_code_ncodewords(_version);
+    block_sz = ncodewords / nblocks;
+    nshort_blocks = nblocks - (ncodewords % nblocks);
+    blocks = (unsigned char**)malloc(nblocks * sizeof(*blocks));
+    block_data = (unsigned char*)malloc(ncodewords * sizeof(*block_data));
+    blocks[0] = block_data;
+    for (i = 1; i < nblocks; i++)blocks[i] = blocks[i - 1] + block_sz + (i > nshort_blocks);
+    qr_samples_unpack(blocks, nblocks, block_sz - npar, nshort_blocks,
+        data_bits, grid.fpmask, dim);
+    qr_sampling_grid_clear(&grid);
+    free(blocks);
+    free(data_bits);
+    /*Perform the error correction.*/
+    ndata = 0;
+    ncodewords = 0;
+    ret = 0;
+    for (i = 0; i < nblocks; i++) {
+        int block_szi;
+        int ndatai;
+        block_szi = block_sz + (i >= nshort_blocks);
+  //      ret = rs_correct(_gf, QR_M0, block_data + ncodewords, block_szi, npar, NULL, 0);
+        /*For version 1 symbols and version 2-L and 3-L symbols, we aren't allowed
+           to use all the parity bytes for correction.
+          They are instead used to improve detection.
+          Version 1-L reserves 3 parity bytes for detection.
+          Versions 1-M and 2-L reserve 2 parity bytes for detection.
+          Versions 1-Q, 1-H, and 3-L reserve 1 parity byte for detection.
+          We can ignore the version 3-L restriction because it has an odd number of
+           parity bytes, and we don't support erasure detection.*/
+        if (ret<0 || _version == 1 && ret>ecc_level + 1 << 1 ||
+            _version == 2 && ecc_level == 0 && ret > 4) {
+            ret = -1;
+            break;
+        }
+        ndatai = block_szi - npar;
+        memmove(block_data + ndata, block_data + ncodewords, ndatai * sizeof(*block_data));
+        ncodewords += block_szi;
+        ndata += ndatai;
+    }
+    /*Parse the corrected bitstream.*/
+    if (ret >= 0) {
+   //     ret = qr_code_data_parse(_qrdata, _version, block_data, ndata);
+        /*We could return any partially decoded data, but then we'd have to have
+           API support for that; a mode ignoring ECC errors might also be useful.*/
+   //     if (ret < 0)qr_code_data_clear(_qrdata);
+        _qrdata->version = _version;
+        _qrdata->ecc_level = ecc_level;
+    }
+    free(block_data);
     return ret;
 }
 
