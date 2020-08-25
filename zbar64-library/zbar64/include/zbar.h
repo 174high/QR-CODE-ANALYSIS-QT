@@ -186,6 +186,24 @@ struct zbar_image_s;
 /** opaque image object. */
 typedef struct zbar_image_s zbar_image_t;
 
+/** decoder symbology modifier flags.
+ * @since 0.11
+ */
+typedef enum zbar_modifier_e {
+    /** barcode tagged as GS1 (EAN.UCC) reserved
+     * (eg, FNC1 before first data character).
+     * data may be parsed as a sequence of GS1 AIs
+     */
+    ZBAR_MOD_GS1 = 0,
+
+    /** barcode tagged as AIM reserved
+     * (eg, FNC1 after first character or digit pair)
+     */
+     ZBAR_MOD_AIM,
+
+     /** number of modifiers */
+     ZBAR_MOD_NUM,
+} zbar_modifier_t;
 
 /** constructor.
  * if decoder is non-NULL it will be attached to scanner
