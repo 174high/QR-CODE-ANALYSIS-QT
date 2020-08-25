@@ -591,6 +591,154 @@ static void qr_aff_unproject(qr_point _q, const qr_aff* _aff,
         + (1 << _aff->ires >> 1) >> _aff->ires;
 }
 
+static int qr_cmp_edge_pt(const void* _a, const void* _b) {
+    const qr_finder_edge_pt* a;
+    const qr_finder_edge_pt* b;
+    a = (const qr_finder_edge_pt*)_a;
+    b = (const qr_finder_edge_pt*)_b;
+    return ((a->edge > b->edge) - (a->edge < b->edge) << 1) +
+        (a->extent > b->extent) - (a->extent < b->extent);
+}
+
+static void qr_point_translate(qr_point _point, int _dx, int _dy) {
+    _point[0] += _dx;
+    _point[1] += _dy;
+}
+
+/*Computes the index of the edge each edge point belongs to, and its (signed)
+   distance along the corresponding axis from the center of the finder pattern
+   (in the square domain).
+  The resulting list of edge points is sorted by edge index, with ties broken
+   by extent.*/
+static void qr_finder_edge_pts_aff_classify(qr_finder* _f, const qr_aff* _aff) {
+    qr_finder_center* c;
+    int               i;
+    int               e;
+    c = _f->c;
+    for (e = 0; e < 4; e++)_f->nedge_pts[e] = 0;
+    for (i = 0; i < c->nedge_pts; i++) {
+        qr_point q;
+        int      d;
+        qr_aff_unproject(q, _aff, c->edge_pts[i].pos[0], c->edge_pts[i].pos[1]);
+        qr_point_translate(q, -_f->o[0], -_f->o[1]);
+        d = abs(q[1]) > abs(q[0]);
+        e = d << 1 | (q[d] >= 0);
+        _f->nedge_pts[e]++;
+        c->edge_pts[i].edge = e;
+        c->edge_pts[i].extent = q[d];
+    }
+    qsort(c->edge_pts, c->nedge_pts, sizeof(*c->edge_pts), qr_cmp_edge_pt);
+    _f->edge_pts[0] = c->edge_pts;
+    for (e = 1; e < 4; e++)_f->edge_pts[e] = _f->edge_pts[e - 1] + _f->nedge_pts[e - 1];
+}
+
+/*TODO: Perhaps these thresholds should be on the module size instead?
+  Unfortunately, I'd need real-world images of codes with larger versions to
+   see if these thresholds are still effective, but such versions aren't used
+   often.*/
+
+   /*The amount that the estimated version numbers are allowed to differ from the
+      real version number and still be considered valid.*/
+#define QR_SMALL_VERSION_SLACK (1)
+      /*Since cell phone cameras can have severe radial distortion, the estimated
+         version for larger versions can be off by larger amounts.*/
+#define QR_LARGE_VERSION_SLACK (3)
+
+         /*Estimates the size of a module after classifying the edge points.
+           _width:  The distance between UL and UR in the square domain.
+           _height: The distance between UL and DL in the square domain.*/
+static int qr_finder_estimate_module_size_and_version(qr_finder* _f,
+    int _width, int _height) {
+    qr_point offs;
+    int      sums[4];
+    int      nsums[4];
+    int      usize;
+    int      nusize;
+    int      vsize;
+    int      nvsize;
+    int      uversion;
+    int      vversion;
+    int      e;
+    offs[0] = offs[1] = 0;
+    for (e = 0; e < 4; e++)if (_f->nedge_pts[e] > 0) {
+        qr_finder_edge_pt* edge_pts;
+        int                sum;
+        int                mean;
+        int                n;
+        int                i;
+        /*Average the samples for this edge, dropping the top and bottom 25%.*/
+        edge_pts = _f->edge_pts[e];
+        n = _f->nedge_pts[e];
+        sum = 0;
+        for (i = (n >> 2); i < n - (n >> 2); i++)sum += edge_pts[i].extent;
+        n = n - ((n >> 2) << 1);
+        mean = QR_DIVROUND(sum, n);
+        offs[e >> 1] += mean;
+        sums[e] = sum;
+        nsums[e] = n;
+    }
+    else nsums[e] = sums[e] = 0;
+    /*If we have samples on both sides of an axis, refine our idea of where the
+       unprojected finder center is located.*/
+    if (_f->nedge_pts[0] > 0 && _f->nedge_pts[1] > 0) {
+        _f->o[0] -= offs[0] >> 1;
+        sums[0] -= offs[0] * nsums[0] >> 1;
+        sums[1] -= offs[0] * nsums[1] >> 1;
+    }
+    if (_f->nedge_pts[2] > 0 && _f->nedge_pts[3] > 0) {
+        _f->o[1] -= offs[1] >> 1;
+        sums[2] -= offs[1] * nsums[2] >> 1;
+        sums[3] -= offs[1] * nsums[3] >> 1;
+    }
+    /*We must have _some_ samples along each axis... if we don't, our transform
+       must be pretty severely distorting the original square (e.g., with
+       coordinates so large as to cause overflow).*/
+    nusize = nsums[0] + nsums[1];
+    if (nusize <= 0)return -1;
+    /*The module size is 1/3 the average edge extent.*/
+    nusize *= 3;
+    usize = sums[1] - sums[0];
+    usize = ((usize << 1) + nusize) / (nusize << 1);
+    if (usize <= 0)return -1;
+    /*Now estimate the version directly from the module size and the distance
+       between the finder patterns.
+      This is done independently using the extents along each axis.
+      If either falls significantly outside the valid range (1 to 40), reject the
+       configuration.*/
+    uversion = (_width - 8 * usize) / (usize << 2);
+    if (uversion < 1 || uversion>40 + QR_LARGE_VERSION_SLACK)return -1;
+    /*Now do the same for the other axis.*/
+    nvsize = nsums[2] + nsums[3];
+    if (nvsize <= 0)return -1;
+    nvsize *= 3;
+    vsize = sums[3] - sums[2];
+    vsize = ((vsize << 1) + nvsize) / (nvsize << 1);
+    if (vsize <= 0)return -1;
+    vversion = (_height - 8 * vsize) / (vsize << 2);
+    if (vversion < 1 || vversion>40 + QR_LARGE_VERSION_SLACK)return -1;
+    /*If the estimated version using extents along one axis is significantly
+       different than the estimated version along the other axis, then the axes
+       have significantly different scalings (relative to the grid).
+      This can happen, e.g., when we have multiple adjacent QR codes, and we've
+       picked two finder patterns from one and the third finder pattern from
+       another, e.g.:
+        X---DL UL---X
+        |....   |....
+        X....  UR....
+      Such a configuration might even pass any other geometric checks if we
+       didn't reject it here.*/
+    if (abs(uversion - vversion) > QR_LARGE_VERSION_SLACK)return -1;
+    _f->size[0] = usize;
+    _f->size[1] = vsize;
+    /*We intentionally do not compute an average version from the sizes along
+       both axes.
+      In the presence of projective distortion, one of them will be much more
+       accurate than the other.*/
+    _f->eversion[0] = uversion;
+    _f->eversion[1] = vversion;
+    return 0;
+}
+
 
 /*Searches for an arrangement of these three finder centers that yields a valid
    configuration.
@@ -651,20 +799,26 @@ static int qr_reader_try_configuration(qr_reader* _reader,
         res = QR_INT_BITS - 2 - QR_FINDER_SUBPREC - qr_ilog(QR_MAXI(_width, _height) - 1);
         qr_aff_init(&aff, ul.c->pos, ur.c->pos, dl.c->pos, res);
         qr_aff_unproject(ur.o, &aff, ur.c->pos[0], ur.c->pos[1]);
- /*       qr_finder_edge_pts_aff_classify(&ur, &aff);
+        qr_finder_edge_pts_aff_classify(&ur, &aff);
         if (qr_finder_estimate_module_size_and_version(&ur, 1 << res, 1 << res) < 0)continue;
         qr_aff_unproject(dl.o, &aff, dl.c->pos[0], dl.c->pos[1]);
         qr_finder_edge_pts_aff_classify(&dl, &aff);
-        if (qr_finder_estimate_module_size_and_version(&dl, 1 << res, 1 << res) < 0)continue;  */
+        if (qr_finder_estimate_module_size_and_version(&dl, 1 << res, 1 << res) < 0)continue;  
         /*If the estimated versions are significantly different, reject the
            configuration.*/
- /*       if (abs(ur.eversion[1] - dl.eversion[0]) > QR_LARGE_VERSION_SLACK)continue;
+        if (abs(ur.eversion[1] - dl.eversion[0]) > QR_LARGE_VERSION_SLACK)continue;
         qr_aff_unproject(ul.o, &aff, ul.c->pos[0], ul.c->pos[1]);
         qr_finder_edge_pts_aff_classify(&ul, &aff);
         if (qr_finder_estimate_module_size_and_version(&ul, 1 << res, 1 << res) < 0 ||
             abs(ul.eversion[1] - ur.eversion[1]) > QR_LARGE_VERSION_SLACK ||
             abs(ul.eversion[0] - dl.eversion[0]) > QR_LARGE_VERSION_SLACK) {
-            continue;*/
+            continue;
+        }
+
+
+
+
+
     }
 
     return -1;
