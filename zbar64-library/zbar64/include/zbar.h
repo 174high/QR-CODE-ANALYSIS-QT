@@ -68,6 +68,11 @@ typedef enum zbar_symbol_type_e {
         ZBAR_ADDON = 0x0700,
 } zbar_symbol_type_t;
 
+/** "color" of element: bar or space. */
+typedef enum zbar_color_e {
+    ZBAR_SPACE = 0,    /**< light area or space between bars */
+    ZBAR_BAR = 1,      /**< dark area or colored bar segment */
+} zbar_color_t;
 
  /** decoder configuration options.
   * @since 0.4

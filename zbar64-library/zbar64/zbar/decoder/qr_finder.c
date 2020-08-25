@@ -35,20 +35,20 @@ qr_finder_line* _zbar_decoder_get_qr_finder_line(zbar_decoder_t* dcode)
 
 zbar_symbol_type_t _zbar_find_qr(zbar_decoder_t* dcode)
 {
- /*   qr_finder_t* qrf = &dcode->qrf;
+    qr_finder_t* qrf = &dcode->qrf;
     unsigned s, qz, w;
     int ei;
-*/
+
     /* update latest finder pattern width */
-//    qrf->s5 -= get_width(dcode, 6);
- //   qrf->s5 += get_width(dcode, 1);
-//    s = qrf->s5;
+    qrf->s5 -= get_width(dcode, 6);
+    qrf->s5 += get_width(dcode, 1);
+    s = qrf->s5;
 
     /*TODO: The 2005 standard allows reflectance-reversed codes (light on dark
        instead of dark on light).
       If we find finder patterns with the opposite polarity, we should invert
        the final binarized image and use them to search for QR codes in that.*/
-/*    if (get_color(dcode) != ZBAR_SPACE || s < 7)
+    if (get_color(dcode) != ZBAR_SPACE || s < 7)
         return(0);
 
     dbprintf(2, "    qrf: s=%d", s);
@@ -72,11 +72,11 @@ zbar_symbol_type_t _zbar_find_qr(zbar_decoder_t* dcode)
     dbprintf(2, "%d", ei);
     if (ei)
         goto invalid;
- */
+ 
     /* valid QR finder symbol
      * mark positions needed by decoder
      */
- /*   qz = get_width(dcode, 0);
+    qz = get_width(dcode, 0);
     w = get_width(dcode, 1);
     qrf->line.eoffs = qz + (w + 1) / 2;
     qrf->line.len = qz + w + get_width(dcode, 2);
@@ -96,5 +96,5 @@ zbar_symbol_type_t _zbar_find_qr(zbar_decoder_t* dcode)
 invalid:
     dbprintf(2, " [invalid]\n");
     return(0);
-    */
+    
 }

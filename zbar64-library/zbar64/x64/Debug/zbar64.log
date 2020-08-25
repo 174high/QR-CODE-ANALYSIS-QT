@@ -184,6 +184,5 @@ C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zb
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\scanner.c(301,27): warning C4018: '<=': signed/unsigned mismatch
   symbol.c
   Generating Code...
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qr_finder.c(100): warning C4716: '_zbar_find_qr': must return a value
      Creating library C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\x64\Debug\libzbar-64.lib and object C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\x64\Debug\libzbar-64.exp
   zbar64.vcxproj -> C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\x64\Debug\libzbar-64.dll
