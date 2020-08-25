@@ -30,6 +30,11 @@ typedef struct qr_hom_cell      qr_hom_cell;
 typedef struct qr_sampling_grid qr_sampling_grid;
 typedef struct qr_pack_buf      qr_pack_buf;
 
+/*The number of bits in an int.
+  Note the cast to (int): this prevents this value from "promoting" whole
+   expressions to an (unsigned) size_t.*/
+#define QR_INT_BITS    ((int)sizeof(int)*CHAR_BIT)
+#define QR_INT_LOGBITS (QR_ILOG(QR_INT_BITS))
 
 /*A cluster of lines crossing a finder pattern (all in the same direction).*/
 struct qr_finder_cluster {
@@ -488,6 +493,105 @@ void qr_code_data_list_init(qr_code_data_list* _qrlist) {
     _qrlist->nqrdata = _qrlist->cqrdata = 0;
 }
 
+/*Returns the cross product of the three points, which is positive if they are
+   in CCW order (in a right-handed coordinate system), and 0 if they're
+   colinear.*/
+static int qr_point_ccw(const qr_point _p0,
+    const qr_point _p1, const qr_point _p2) {
+    return (_p1[0] - _p0[0]) * (_p2[1] - _p0[1]) - (_p1[1] - _p0[1]) * (_p2[0] - _p0[0]);
+}
+
+static unsigned qr_point_distance2(const qr_point _p1, const qr_point _p2) {
+    return (_p1[0] - _p2[0]) * (_p1[0] - _p2[0]) + (_p1[1] - _p2[1]) * (_p1[1] - _p2[1]);
+}
+
+
+
+/*An affine homography.
+  This maps from the image (at subpel resolution) to a square domain with
+   power-of-two sides (of res bits) and back.*/
+struct qr_aff {
+    int fwd[2][2];
+    int inv[2][2];
+    int x0;
+    int y0;
+    int res;
+    int ires;
+};
+
+
+/*A full homography.
+  Like the affine homography, this maps from the image (at subpel resolution)
+   to a square domain with power-of-two sides (of res bits) and back.*/
+struct qr_hom {
+    int fwd[3][2];
+    int inv[3][2];
+    int fwd22;
+    int inv22;
+    int x0;
+    int y0;
+    int res;
+};
+
+
+/*All the information we've collected about a finder pattern in the current
+   configuration.*/
+struct qr_finder {
+    /*The module size along each axis (in the square domain).*/
+    int                size[2];
+    /*The version estimated from the module size along each axis.*/
+    int                eversion[2];
+    /*The list of classified edge points for each edge.*/
+    qr_finder_edge_pt* edge_pts[4];
+    /*The number of edge points classified as belonging to each edge.*/
+    int                nedge_pts[4];
+    /*The number of inliers found after running RANSAC on each edge.*/
+    int                ninliers[4];
+    /*The center of the finder pattern (in the square domain).*/
+    qr_point           o;
+    /*The finder center information from the original image.*/
+    qr_finder_center* c;
+};
+
+static void qr_aff_init(qr_aff* _aff,
+    const qr_point _p0, const qr_point _p1, const qr_point _p2, int _res) {
+    int det;
+    int ires;
+    int dx1;
+    int dy1;
+    int dx2;
+    int dy2;
+    /*det is ensured to be positive by our caller.*/
+    dx1 = _p1[0] - _p0[0];
+    dx2 = _p2[0] - _p0[0];
+    dy1 = _p1[1] - _p0[1];
+    dy2 = _p2[1] - _p0[1];
+    det = dx1 * dy2 - dy1 * dx2;
+    ires = QR_MAXI((qr_ilog(abs(det)) >> 1) - 2, 0);
+    _aff->fwd[0][0] = dx1;
+    _aff->fwd[0][1] = dx2;
+    _aff->fwd[1][0] = dy1;
+    _aff->fwd[1][1] = dy2;
+    _aff->inv[0][0] = QR_DIVROUND(dy2 << _res, det >> ires);
+    _aff->inv[0][1] = QR_DIVROUND(-dx2 << _res, det >> ires);
+    _aff->inv[1][0] = QR_DIVROUND(-dy1 << _res, det >> ires);
+    _aff->inv[1][1] = QR_DIVROUND(dx1 << _res, det >> ires);
+    _aff->x0 = _p0[0];
+    _aff->y0 = _p0[1];
+    _aff->res = _res;
+    _aff->ires = ires;
+}
+
+/*Map from the image (at subpel resolution) into the square domain.*/
+static void qr_aff_unproject(qr_point _q, const qr_aff* _aff,
+    int _x, int _y) {
+    _q[0] = _aff->inv[0][0] * (_x - _aff->x0) + _aff->inv[0][1] * (_y - _aff->y0)
+        + (1 << _aff->ires >> 1) >> _aff->ires;
+    _q[1] = _aff->inv[1][0] * (_x - _aff->x0) + _aff->inv[1][1] * (_y - _aff->y0)
+        + (1 << _aff->ires >> 1) >> _aff->ires;
+}
+
+
 /*Searches for an arrangement of these three finder centers that yields a valid
    configuration.
   _c: On input, the three finder centers to consider in any order.
@@ -501,6 +605,68 @@ static int qr_reader_try_configuration(qr_reader* _reader,
     int      i0;
     int      i;
   
+    /*Sort the points in counter-clockwise order.*/
+    ccw = qr_point_ccw(_c[0]->pos, _c[1]->pos, _c[2]->pos);
+    /*Colinear points can't be the corners of a quadrilateral.*/
+    if (!ccw)return -1;
+    /*Include a few extra copies of the cyclical list to avoid mods.*/
+    ci[6] = ci[3] = ci[0] = 0;
+    ci[4] = ci[1] = 1 + (ccw < 0);
+    ci[5] = ci[2] = 2 - (ccw < 0);
+    /*Assume the points farthest from each other are the opposite corners, and
+       find the top-left point.*/
+    maxd = qr_point_distance2(_c[1]->pos, _c[2]->pos);
+    i0 = 0;
+    for (i = 1; i < 3; i++) {
+        unsigned d;
+        d = qr_point_distance2(_c[ci[i + 1]]->pos, _c[ci[i + 2]]->pos);
+        if (d > maxd) {
+            i0 = i;
+            maxd = d;
+        }
+    }
+
+    /*However, try all three possible orderings, just to be sure (a severely
+         skewed projection could move opposite corners closer than adjacent).*/
+    for (i = i0; i < i0 + 3; i++) {
+        qr_aff    aff;
+        qr_hom    hom;
+        qr_finder ul;
+        qr_finder ur;
+        qr_finder dl;
+        qr_point  bbox[4];
+        int       res;
+        int       ur_version;
+        int       dl_version;
+        int       fmt_info;
+        ul.c = _c[ci[i]];
+        ur.c = _c[ci[i + 1]];
+        dl.c = _c[ci[i + 2]]; 
+        /*Estimate the module size and version number from the two opposite corners.
+          The module size is not constant in the image, so we compute an affine
+           projection from the three points we have to a square domain, and
+           estimate it there.
+          Although it should be the same along both axes, we keep separate
+           estimates to account for any remaining projective distortion.*/
+        res = QR_INT_BITS - 2 - QR_FINDER_SUBPREC - qr_ilog(QR_MAXI(_width, _height) - 1);
+        qr_aff_init(&aff, ul.c->pos, ur.c->pos, dl.c->pos, res);
+        qr_aff_unproject(ur.o, &aff, ur.c->pos[0], ur.c->pos[1]);
+ /*       qr_finder_edge_pts_aff_classify(&ur, &aff);
+        if (qr_finder_estimate_module_size_and_version(&ur, 1 << res, 1 << res) < 0)continue;
+        qr_aff_unproject(dl.o, &aff, dl.c->pos[0], dl.c->pos[1]);
+        qr_finder_edge_pts_aff_classify(&dl, &aff);
+        if (qr_finder_estimate_module_size_and_version(&dl, 1 << res, 1 << res) < 0)continue;  */
+        /*If the estimated versions are significantly different, reject the
+           configuration.*/
+ /*       if (abs(ur.eversion[1] - dl.eversion[0]) > QR_LARGE_VERSION_SLACK)continue;
+        qr_aff_unproject(ul.o, &aff, ul.c->pos[0], ul.c->pos[1]);
+        qr_finder_edge_pts_aff_classify(&ul, &aff);
+        if (qr_finder_estimate_module_size_and_version(&ul, 1 << res, 1 << res) < 0 ||
+            abs(ul.eversion[1] - ur.eversion[1]) > QR_LARGE_VERSION_SLACK ||
+            abs(ul.eversion[0] - dl.eversion[0]) > QR_LARGE_VERSION_SLACK) {
+            continue;*/
+    }
+
     return -1;
 }
 

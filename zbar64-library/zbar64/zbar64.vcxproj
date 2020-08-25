@@ -198,6 +198,7 @@
     <ClCompile Include="zbar\img_scanner.c" />
     <ClCompile Include="zbar\qrcode\binarize.c" />
     <ClCompile Include="zbar\qrcode\rs.c" />
+    <ClCompile Include="zbar\qrcode\util.c" />
     <ClCompile Include="zbar\refcnt.c" />
     <ClCompile Include="zbar\scanner.c" />
     <ClCompile Include="zbar\symbol.c" />

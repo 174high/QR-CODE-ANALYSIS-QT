@@ -125,5 +125,8 @@
     <ClCompile Include="zbar\qrcode\binarize.c">
       <Filter>Header Files\qrcode</Filter>
     </ClCompile>
+    <ClCompile Include="zbar\qrcode\util.c">
+      <Filter>Source Files\qrcode</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
