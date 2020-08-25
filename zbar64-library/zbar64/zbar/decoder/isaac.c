@@ -111,3 +111,26 @@ void isaac_init(isaac_ctx* _ctx, const void* _seed, int _nseed) {
     }
     isaac_update(_ctx);   
 }
+
+
+unsigned isaac_next_uint32(isaac_ctx* _ctx) {
+    if (!_ctx->n)isaac_update(_ctx);
+    return _ctx->r[--_ctx->n];
+}
+
+/*Returns a uniform random integer less than the given maximum value.
+  _n: The upper bound on the range of numbers returned (not inclusive).
+      This must be strictly less than 2**32.
+  Return: An integer uniformly distributed between 0 (inclusive) and _n
+           (exclusive).*/
+unsigned isaac_next_uint(isaac_ctx* _ctx, unsigned _n) {
+    unsigned r;
+    unsigned v;
+    unsigned d;
+    do {
+        r = isaac_next_uint32(_ctx);
+        v = r % _n;
+        d = r - v;
+    } while ((d + _n - 1 & ISAAC_MASK) < d);
+    return v;
+}

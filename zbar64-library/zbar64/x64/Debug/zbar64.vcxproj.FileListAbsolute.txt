@@ -1,0 +1,2 @@
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\x64\Debug\libzbar-64.dll
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\x64\Debug\libzbar-64.pdb
