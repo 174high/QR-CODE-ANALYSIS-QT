@@ -23,6 +23,15 @@
     <Filter Include="Header Files\qrcode">
       <UniqueIdentifier>{733194e3-6538-4fa1-9705-578239fd7e8a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="libiconv">
+      <UniqueIdentifier>{0c3b5018-b683-4655-a071-9926b9c48c15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libiconv\x64">
+      <UniqueIdentifier>{664742bc-7df4-449b-a1d0-2c8cb2659f1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libiconv\Wn32">
+      <UniqueIdentifier>{b602a2c9-c8c9-4834-8f5d-9d425e0cbdbf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="libzbar-0.def">
@@ -87,6 +96,15 @@
     <ClInclude Include="zbar\qrcode\binarize.h">
       <Filter>Header Files\qrcode</Filter>
     </ClInclude>
+    <ClInclude Include="zbar\qrcode\bch15_5.h">
+      <Filter>Header Files\qrcode</Filter>
+    </ClInclude>
+    <ClInclude Include="zbar\libiconv\Include\iconv.h">
+      <Filter>libiconv</Filter>
+    </ClInclude>
+    <ClInclude Include="zbar\img_scanner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="zbar\decoder.c">
@@ -128,5 +146,19 @@
     <ClCompile Include="zbar\qrcode\util.c">
       <Filter>Source Files\qrcode</Filter>
     </ClCompile>
+    <ClCompile Include="zbar\qrcode\bch15_5.c">
+      <Filter>Source Files\qrcode</Filter>
+    </ClCompile>
+    <ClCompile Include="zbar\qrcode\qrdectxt.c">
+      <Filter>Source Files\qrcode</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="zbar\libiconv\lib_x64\libiconv.lib">
+      <Filter>libiconv\x64</Filter>
+    </Library>
+    <Library Include="zbar\libiconv\lib_win32\libiconv.lib">
+      <Filter>libiconv\Wn32</Filter>
+    </Library>
   </ItemGroup>
 </Project>

@@ -24,8 +24,10 @@
      }*/
 #define QR_PPOLY (0x1D)
 
-typedef struct rs_gf256 rs_gf256;
+     /*The index to start the generator polynomial from (0...254).*/
+#define QR_M0 (0)
 
+typedef struct rs_gf256 rs_gf256;
 
 struct rs_gf256 {
     /*A logarithm table in GF(2**8).*/
@@ -37,10 +39,28 @@ struct rs_gf256 {
     unsigned char exp[511];
 };
 
-
-
 /*Initialize discrete logarithm tables for GF(2**8) using a given primitive
    irreducible polynomial.*/
 void rs_gf256_init(rs_gf256* _gf, unsigned _ppoly);
+
+/*Corrects a codeword with _ndata<256 bytes, of which the last _npar are parity
+   bytes.
+  Known locations of errors can be passed in the _erasures array.
+  Twice as many (up to _npar) errors with a known location can be corrected
+   compared to errors with an unknown location.
+  Returns the number of errors corrected if successful, or a negative number if
+   the message could not be corrected because too many errors were detected.*/
+int rs_correct(const rs_gf256* _gf, int _m0, unsigned char* _data, int _ndata,
+    int _npar, const unsigned char* _erasures, int _nerasures);
+
+/*Create an _npar-coefficient generator polynomial for a Reed-Solomon code with
+   _npar<256 parity bytes.*/
+void rs_compute_genpoly(const rs_gf256* _gf, int _m0,
+    unsigned char* _genpoly, int _npar);
+
+/*Adds _npar<=_ndata parity bytes to an _ndata-_npar byte message.
+  _data must contain room for _ndata<256 bytes.*/
+void rs_encode(const rs_gf256* _gf, unsigned char* _data, int _ndata,
+    const unsigned char* _genpoly, int _npar);
 
 #endif

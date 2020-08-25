@@ -132,7 +132,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)include/zbar;$(ProjectDir)zbar;$(ProjectDir)zbar/qrcode;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)zbar/libiconv/include;$(ProjectDir)include;$(ProjectDir)include/zbar;$(ProjectDir)zbar;$(ProjectDir)zbar/qrcode;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>
       </AdditionalOptions>
     </ClCompile>
@@ -175,8 +175,11 @@
     <ClInclude Include="zbar\decoder\qr_finder.h" />
     <ClInclude Include="zbar\error.h" />
     <ClInclude Include="zbar\image.h" />
+    <ClInclude Include="zbar\img_scanner.h" />
+    <ClInclude Include="zbar\libiconv\Include\iconv.h" />
     <ClInclude Include="zbar\mutex.h" />
     <ClInclude Include="zbar\qrcode.h" />
+    <ClInclude Include="zbar\qrcode\bch15_5.h" />
     <ClInclude Include="zbar\qrcode\binarize.h" />
     <ClInclude Include="zbar\qrcode\isaac.h" />
     <ClInclude Include="zbar\qrcode\qrdec.h" />
@@ -196,12 +199,18 @@
     <ClCompile Include="zbar\error.c" />
     <ClCompile Include="zbar\image.c" />
     <ClCompile Include="zbar\img_scanner.c" />
+    <ClCompile Include="zbar\qrcode\bch15_5.c" />
     <ClCompile Include="zbar\qrcode\binarize.c" />
+    <ClCompile Include="zbar\qrcode\qrdectxt.c" />
     <ClCompile Include="zbar\qrcode\rs.c" />
     <ClCompile Include="zbar\qrcode\util.c" />
     <ClCompile Include="zbar\refcnt.c" />
     <ClCompile Include="zbar\scanner.c" />
     <ClCompile Include="zbar\symbol.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="zbar\libiconv\lib_win32\libiconv.lib" />
+    <Library Include="zbar\libiconv\lib_x64\libiconv.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
