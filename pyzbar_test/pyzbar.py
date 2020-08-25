@@ -22,6 +22,8 @@ __all__ = [
     'decode', 'Point', 'Rect', 'Decoded', 'ZBarSymbol', 'EXTERNAL_DEPENDENCIES'
 ]
 
+Decoded = namedtuple('Decoded', ['data', 'type', 'rect', 'polygon'])
+
 # ZBar's magic 'fourcc' numbers that represent image formats
 _FOURCC = {
     'L800': 808466521,
