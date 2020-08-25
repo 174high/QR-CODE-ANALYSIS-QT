@@ -81,6 +81,12 @@
     <ClInclude Include="zbar\qrcode\qrdec.h">
       <Filter>Header Files\qrcode</Filter>
     </ClInclude>
+    <ClInclude Include="zbar\qrcode\util.h">
+      <Filter>Header Files\qrcode</Filter>
+    </ClInclude>
+    <ClInclude Include="zbar\qrcode\binarize.h">
+      <Filter>Header Files\qrcode</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="zbar\decoder.c">
@@ -115,6 +121,9 @@
     </ClCompile>
     <ClCompile Include="zbar\refcnt.c">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="zbar\qrcode\binarize.c">
+      <Filter>Header Files\qrcode</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -177,9 +177,11 @@
     <ClInclude Include="zbar\image.h" />
     <ClInclude Include="zbar\mutex.h" />
     <ClInclude Include="zbar\qrcode.h" />
+    <ClInclude Include="zbar\qrcode\binarize.h" />
     <ClInclude Include="zbar\qrcode\isaac.h" />
     <ClInclude Include="zbar\qrcode\qrdec.h" />
     <ClInclude Include="zbar\qrcode\rs.h" />
+    <ClInclude Include="zbar\qrcode\util.h" />
     <ClInclude Include="zbar\refcnt.h" />
     <ClInclude Include="zbar\svg.h" />
     <ClInclude Include="zbar\symbol.h" />
@@ -194,6 +196,7 @@
     <ClCompile Include="zbar\error.c" />
     <ClCompile Include="zbar\image.c" />
     <ClCompile Include="zbar\img_scanner.c" />
+    <ClCompile Include="zbar\qrcode\binarize.c" />
     <ClCompile Include="zbar\qrcode\rs.c" />
     <ClCompile Include="zbar\refcnt.c" />
     <ClCompile Include="zbar\scanner.c" />

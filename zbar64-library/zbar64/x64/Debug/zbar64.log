@@ -1,1 +1,7 @@
-﻿
+﻿  qrdec.c
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(176,37): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(217,67): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(227,79): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(228,64): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(512,29): warning C4101: 'qrlist': unreferenced local variable
+  zbar64.vcxproj -> C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\x64\Debug\libzbar-64.dll
