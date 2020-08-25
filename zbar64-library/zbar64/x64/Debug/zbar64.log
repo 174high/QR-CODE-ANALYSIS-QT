@@ -1,25 +1,4 @@
-﻿  decoder.c
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder.c(35,8): warning C4013: 'memset' undefined; assuming extern returning int
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder.c(35,43): warning C4311: 'type cast': pointer truncation from 'unsigned int *' to 'long'
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder.c(35,56): warning C4311: 'type cast': pointer truncation from 'zbar_decoder_t *' to 'long'
-  isaac.c
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(27,44): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(28,44): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(31,44): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(32,44): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(35,44): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(36,44): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(39,44): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(40,44): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(45,44): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(46,44): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(49,44): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(50,44): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(53,44): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(54,44): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(57,44): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(58,44): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
-  qrdec.c
+﻿  qrdec.c
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(225,37): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(266,67): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(276,79): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
@@ -95,68 +74,30 @@ C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zb
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1346,36): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1347,36): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1360,54): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1428,14): warning C4101: 'dy': unreferenced local variable
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1407,14): warning C4101: 'best_match': unreferenced local variable
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1404,14): warning C4101: 'nc': unreferenced local variable
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1412,14): warning C4101: 'dist': unreferenced local variable
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1403,14): warning C4101: 'c': unreferenced local variable
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1411,14): warning C4101: 'match': unreferenced local variable
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1406,14): warning C4101: 'pc': unreferenced local variable
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1427,14): warning C4101: 'dx': unreferenced local variable
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1408,14): warning C4101: 'best_dist': unreferenced local variable
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1503,49): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1634,21): warning C4101: 'blocks': unreferenced local variable
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1633,15): warning C4101: 'data_bits': unreferenced local variable
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1643,24): warning C4101: 'dim': unreferenced local variable
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1639,24): warning C4101: 'block_sz': unreferenced local variable
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1638,24): warning C4101: 'ncodewords': unreferenced local variable
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1641,24): warning C4101: 'ndata': unreferenced local variable
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1645,24): warning C4101: 'i': unreferenced local variable
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1642,24): warning C4101: 'npar': unreferenced local variable
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1640,24): warning C4101: 'ecc_level': unreferenced local variable
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1637,24): warning C4101: 'nshort_blocks': unreferenced local variable
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1636,24): warning C4101: 'nblocks': unreferenced local variable
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1635,20): warning C4101: 'block_data': unreferenced local variable
-  qr_finder.c
-  error.c
-  image.c
-  img_scanner.c
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(205,29): warning C4018: '<': signed/unsigned mismatch
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(251,37): warning C4018: '<': signed/unsigned mismatch
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(700,20): warning C4018: '>': signed/unsigned mismatch
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(703,9): warning C4018: '<=': signed/unsigned mismatch
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(710,18): warning C4018: '<': signed/unsigned mismatch
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(716,22): warning C4018: '<': signed/unsigned mismatch
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(727,19): warning C4018: '>=': signed/unsigned mismatch
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(756,20): warning C4018: '>': signed/unsigned mismatch
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(759,9): warning C4018: '<=': signed/unsigned mismatch
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(764,18): warning C4018: '<': signed/unsigned mismatch
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(770,22): warning C4018: '<': signed/unsigned mismatch
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\img_scanner.c(781,19): warning C4018: '>=': signed/unsigned mismatch
-  binarize.c
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\qrcode\binarize.c(540,78): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\qrcode\binarize.c(541,79): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\qrcode\binarize.c(548,45): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\qrcode\binarize.c(562,45): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\qrcode\binarize.c(571,71): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-  rs.c
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\qrcode\rs.c(38,38): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-  util.c
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\qrcode\util.c(22,35): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\qrcode\util.c(64,19): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\qrcode\util.c(65,20): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\qrcode\util.c(71,23): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\qrcode\util.c(73,28): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\qrcode\util.c(76,41): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\qrcode\util.c(78,45): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
-  refcnt.c
-  scanner.c
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\scanner.c(301,27): warning C4018: '<=': signed/unsigned mismatch
-  symbol.c
-  Generating Code...
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qr_finder.c(100): warning C4716: '_zbar_find_qr': must return a value
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1868): warning C4700: uninitialized local variable 'fmt_info' used
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1492,52): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1493,52): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1568,95): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1569,95): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1570,95): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1642,86): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1644,86): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1646,94): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1648,94): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1752,49): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1885,21): warning C4101: 'blocks': unreferenced local variable
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1884,15): warning C4101: 'data_bits': unreferenced local variable
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1894,24): warning C4101: 'dim': unreferenced local variable
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1890,24): warning C4101: 'block_sz': unreferenced local variable
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1889,24): warning C4101: 'ncodewords': unreferenced local variable
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1892,24): warning C4101: 'ndata': unreferenced local variable
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1896,24): warning C4101: 'i': unreferenced local variable
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1893,24): warning C4101: 'npar': unreferenced local variable
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1891,24): warning C4101: 'ecc_level': unreferenced local variable
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1888,24): warning C4101: 'nshort_blocks': unreferenced local variable
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1887,24): warning C4101: 'nblocks': unreferenced local variable
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1886,20): warning C4101: 'block_data': unreferenced local variable
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(2119): warning C4700: uninitialized local variable 'fmt_info' used
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1130): warning C4715: 'qr_hom_fit': not all control paths return a value
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1655): warning C4700: uninitialized local variable 'ret' used
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\qrdec.c(1906): warning C4700: uninitialized local variable 'ret' used
      Creating library C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\x64\Debug\libzbar-64.lib and object C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\x64\Debug\libzbar-64.exp
   zbar64.vcxproj -> C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\x64\Debug\libzbar-64.dll
