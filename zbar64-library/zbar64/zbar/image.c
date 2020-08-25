@@ -25,6 +25,7 @@
 #include "image.h"
 #include <zbar.h>
 #include "refcnt.h"
+#include "symbol.h"
 
 zbar_image_t* zbar_image_create()
 {
@@ -107,3 +108,11 @@ __inline void zbar_image_free_data(zbar_image_t* img)
     }
     img->data = NULL;
 }
+
+const zbar_symbol_t* zbar_image_first_symbol(const zbar_image_t* img)
+{
+    return((img->syms) ? img->syms->head : NULL);
+}
+
+
+

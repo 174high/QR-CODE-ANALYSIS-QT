@@ -83,3 +83,45 @@ zbar_symbol_set_t* _zbar_symbol_set_create()
     _zbar_refcnt(&syms->refcnt, 1);
     return(syms);
 }
+
+const char* zbar_symbol_get_data(const zbar_symbol_t* sym)
+{
+    return(sym->data);
+}
+
+const zbar_symbol_t* zbar_symbol_next(const zbar_symbol_t* sym)
+{
+    return((sym) ? sym->next : NULL);
+}
+
+const zbar_symbol_t*
+zbar_symbol_set_first_symbol(const zbar_symbol_set_t* syms)
+{
+    zbar_symbol_t* sym = syms->tail;
+    if (sym)
+        return(sym->next);
+    return(syms->head);
+}
+
+unsigned zbar_symbol_get_loc_size(const zbar_symbol_t* sym)
+{
+    return(sym->npts);
+}
+
+int zbar_symbol_get_loc_x(const zbar_symbol_t* sym,
+    unsigned idx)
+{
+    if (idx < sym->npts)
+        return(sym->pts[idx].x);
+    else
+        return(-1);
+}
+
+int zbar_symbol_get_loc_y(const zbar_symbol_t* sym,
+    unsigned idx)
+{
+    if (idx < sym->npts)
+        return(sym->pts[idx].y);
+    else
+        return(-1);
+}

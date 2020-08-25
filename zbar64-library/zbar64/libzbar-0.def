@@ -11,3 +11,9 @@ zbar_image_set_size
 zbar_image_set_data
 zbar_scan_image
 zbar_scanner_reset
+zbar_symbol_get_data
+zbar_symbol_next
+zbar_image_first_symbol
+zbar_symbol_get_loc_size
+zbar_symbol_get_loc_x
+zbar_symbol_get_loc_y

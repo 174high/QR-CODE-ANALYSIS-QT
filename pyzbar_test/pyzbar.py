@@ -10,10 +10,10 @@ from .wrapper import (
     zbar_image_scanner_create, zbar_image_scanner_destroy,
     zbar_image_create, zbar_image_destroy,
     zbar_image_set_format,zbar_image_set_size, zbar_image_set_data,
-    zbar_scan_image,
-#    zbar_image_first_symbol, zbar_symbol_get_data,
+    zbar_scan_image, zbar_symbol_get_data ,  ZBarSymbol ,
+    zbar_image_first_symbol, zbar_symbol_next ,
 #    zbar_symbol_get_loc_size, zbar_symbol_get_loc_x, zbar_symbol_get_loc_y,
-#    zbar_symbol_next, ZBarConfig, ZBarSymbol, EXTERNAL_DEPENDENCIES
+#    ZBarConfig,  EXTERNAL_DEPENDENCIES
 )
 
 import time,datetime
@@ -71,6 +71,50 @@ def _image_scanner():
             yield scanner
         finally:
             zbar_image_scanner_destroy(scanner)
+
+def _symbols_for_image(image):
+    """Generator of symbols.
+
+    Args:
+        image: `zbar_image`
+
+    Yields:
+        POINTER(zbar_symbol): Symbol
+    """
+    symbol = zbar_image_first_symbol(image)
+    while symbol:
+        yield symbol
+        symbol = zbar_symbol_next(symbol)
+
+
+def _decode_symbols(symbols):
+    """Generator of decoded symbol information.
+
+    Args:
+        symbols: iterable of instances of `POINTER(zbar_symbol)`
+
+    Yields:
+        Decoded: decoded symbol
+    """
+    for symbol in symbols:
+        data = string_at(zbar_symbol_get_data(symbol))
+        # The 'type' int in a value in the ZBarSymbol enumeration
+        symbol_type = ZBarSymbol(symbol.contents.type).name
+        polygon = convex_hull(
+            (
+                zbar_symbol_get_loc_x(symbol, index),
+                zbar_symbol_get_loc_y(symbol, index)
+            )
+            for index in _RANGEFN(zbar_symbol_get_loc_size(symbol))
+        )
+
+        yield Decoded(
+            data=data,
+            type=symbol_type,
+            rect=bounding_box(polygon),
+            polygon=polygon
+        )
+
 
 
 def _pixel_data(image):
@@ -151,5 +195,11 @@ def decode(image, symbols=None):
             zbar_image_set_data(img, cast(pixels, c_void_p), len(pixels), None)
             decoded = zbar_scan_image(scanner, img)
 
+            if decoded < 0:
+                raise PyZbarError('Unsupported image format')
+#            else:
+#                results.extend(_decode_symbols(_symbols_for_image(img)))
+
+    return results
 
 

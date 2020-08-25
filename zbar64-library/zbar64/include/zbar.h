@@ -109,6 +109,14 @@ typedef struct zbar_symbol_s zbar_symbol_t;
 struct zbar_symbol_set_s;
 typedef struct zbar_symbol_set_s zbar_symbol_set_t;
 
+/** set iterator.
+ * @returns the first decoded symbol result in a set
+ * @returns NULL if the set is empty
+ * @since 0.10
+ */
+extern const zbar_symbol_t*
+zbar_symbol_set_first_symbol(const zbar_symbol_set_t* symbols);
+
 
 /** consistently compute fourcc values across architectures
  * (adapted from v4l2 specification)
