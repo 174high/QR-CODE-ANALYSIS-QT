@@ -95,7 +95,7 @@ struct zbar_image_scanner_s {
 
     const void* userdata;       /* application data */
     /* user result callback */
-    //zbar_image_data_handler_t* handler;
+    zbar_image_data_handler_t* handler;
 
     unsigned long time;         /* scan start time */
     zbar_image_t* img;          /* currently scanning image *root* */
@@ -808,7 +808,7 @@ int zbar_scan_image(zbar_image_scanner_t* iscn,
 
     /* FIXME tmp hack to filter bad EAN results */
     /* FIXME tmp hack to merge simple case EAN add-ons */
- /*  char filter = (!iscn->enable_cache &&
+    char filter = (!iscn->enable_cache &&
         (density == 1 || CFG(iscn, ZBAR_CFG_Y_DENSITY) == 1));
     int nean = 0, naddon = 0;
     if (syms->nsyms) {
@@ -823,16 +823,16 @@ int zbar_scan_image(zbar_image_scanner_t* iscn,
             {
                 if ((sym->type == ZBAR_CODABAR || filter) && sym->quality < 4) {
                     if (iscn->enable_cache) {
-  */                      /* revert cache update */
-  /*                      zbar_symbol_t* entry = cache_lookup(iscn, sym);
+                        /* revert cache update */
+                        zbar_symbol_t* entry = cache_lookup(iscn, sym);
                         if (entry)
                             entry->cache_count--;
                         else
                             assert(0);
                     }
 
-     */               /* recycle */
-   /*                 *symp = sym->next;
+                    /* recycle */
+                    *symp = sym->next;
                     syms->nsyms--;
                     sym->next = NULL;
                     _zbar_image_scanner_recycle_syms(iscn, sym);
@@ -851,13 +851,13 @@ int zbar_scan_image(zbar_image_scanner_t* iscn,
         }
 
         if (nean == 1 && naddon == 1 && iscn->ean_config) {
-   */         /* create container symbol for composite result */
-   /*         zbar_symbol_t* ean = NULL, * addon = NULL;
+            /* create container symbol for composite result */
+            zbar_symbol_t* ean = NULL, * addon = NULL;
             for (symp = &syms->head; *symp; ) {
                 zbar_symbol_t* sym = *symp;
                 if (sym->type < ZBAR_COMPOSITE && sym->type > ZBAR_PARTIAL) {
-  */                  /* move to composite */
-  /*                  *symp = sym->next;
+                    /* move to composite */
+                    *symp = sym->next;
                     syms->nsyms--;
                     sym->next = NULL;
                     if (sym->type <= ZBAR_EAN5)
@@ -888,8 +888,8 @@ int zbar_scan_image(zbar_image_scanner_t* iscn,
 
     if (syms->nsyms && iscn->handler)
         iscn->handler(img, iscn->userdata);
-       */
-    //svg_close();
+       
+    svg_close();
     return(syms->nsyms);
 }
 
