@@ -24,4 +24,4 @@
 #include "error.h"
 #include <string.h>
 
-int _zbar_verbosity = 2;
+int _zbar_verbosity = 0;

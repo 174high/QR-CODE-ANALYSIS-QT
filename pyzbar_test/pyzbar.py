@@ -12,7 +12,7 @@ from .wrapper import (
     zbar_image_set_format,zbar_image_set_size, zbar_image_set_data,
     zbar_scan_image, zbar_symbol_get_data ,  ZBarSymbol ,
     zbar_image_first_symbol, zbar_symbol_next ,
-#    zbar_symbol_get_loc_size, zbar_symbol_get_loc_x, zbar_symbol_get_loc_y,
+    zbar_symbol_get_loc_size, zbar_symbol_get_loc_x, zbar_symbol_get_loc_y,
 #    ZBarConfig,  EXTERNAL_DEPENDENCIES
 )
 
@@ -197,8 +197,8 @@ def decode(image, symbols=None):
 
             if decoded < 0:
                 raise PyZbarError('Unsupported image format')
-#            else:
-#                results.extend(_decode_symbols(_symbols_for_image(img)))
+            else:
+                results.extend(_decode_symbols(_symbols_for_image(img)))
 
     return results
 

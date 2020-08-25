@@ -1,7 +1,7 @@
 ﻿  decoder.c
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder.c(35,8): warning C4013: 'memset' undefined; assuming extern returning int
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder.c(35,43): warning C4311: 'type cast': pointer truncation from 'unsigned int *' to 'long'
-C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder.c(35,56): warning C4311: 'type cast': pointer truncation from 'zbar_decoder_t *' to 'long'
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder.c(81,8): warning C4013: 'memset' undefined; assuming extern returning int
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder.c(81,43): warning C4311: 'type cast': pointer truncation from 'unsigned int *' to 'long'
+C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder.c(81,56): warning C4311: 'type cast': pointer truncation from 'zbar_decoder_t *' to 'long'
   isaac.c
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(27,44): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
 C:\Users\shijonn\Desktop\LOPLIP\innovation\QR-CODE\source\QR-code-analysis-QT\zbar64-library\zbar64\zbar\decoder\isaac.c(28,44): warning C4554: '>>': check operator precedence for possible error; use parentheses to clarify precedence
