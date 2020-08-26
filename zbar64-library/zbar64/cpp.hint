@@ -1,2 +1,0 @@
-#define ZBAR64_API __declspec(dllexport)
-#define ZBAR64_API __declspec(dllimport)
